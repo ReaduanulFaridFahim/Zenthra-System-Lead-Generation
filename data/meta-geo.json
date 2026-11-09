@@ -1,0 +1,280 @@
+{
+  "countries": {
+    "Bangladesh": {
+      "country": "Bangladesh",
+      "dialCode": "+880",
+      "currency": "BDT",
+      "cities": [
+        "Dhaka",
+        "Chittagong",
+        "Sylhet",
+        "Gazipur",
+        "Narayanganj",
+        "Khulna",
+        "Rajshahi",
+        "Bogura"
+      ]
+    },
+    "India": {
+      "country": "India",
+      "dialCode": "+91",
+      "currency": "INR",
+      "cities": [
+        "Mumbai",
+        "Bangalore",
+        "New Delhi",
+        "Hyderabad",
+        "Chennai",
+        "Pune",
+        "Kolkata",
+        "Ahmedabad"
+      ]
+    },
+    "Japan": {
+      "country": "Japan",
+      "dialCode": "+81",
+      "currency": "JPY",
+      "cities": [
+        "Tokyo",
+        "Osaka",
+        "Yokohama",
+        "Nagoya",
+        "Kyoto",
+        "Fukuoka"
+      ]
+    },
+    "Singapore": {
+      "country": "Singapore",
+      "dialCode": "+65",
+      "currency": "SGD",
+      "cities": [
+        "Singapore"
+      ]
+    },
+    "United Arab Emirates": {
+      "country": "United Arab Emirates",
+      "dialCode": "+971",
+      "currency": "AED",
+      "cities": [
+        "Dubai",
+        "Abu Dhabi",
+        "Sharjah",
+        "Ajman"
+      ]
+    },
+    "Saudi Arabia": {
+      "country": "Saudi Arabia",
+      "dialCode": "+966",
+      "currency": "SAR",
+      "cities": [
+        "Riyadh",
+        "Jeddah",
+        "Dammam",
+        "Khobar"
+      ]
+    },
+    "United States": {
+      "country": "United States",
+      "dialCode": "+1",
+      "currency": "USD",
+      "cities": [
+        "New York",
+        "Chicago",
+        "Miami",
+        "Houston",
+        "Dallas",
+        "Los Angeles",
+        "Atlanta",
+        "San Francisco",
+        "Seattle",
+        "Boston",
+        "Austin",
+        "Denver"
+      ]
+    },
+    "Canada": {
+      "country": "Canada",
+      "dialCode": "+1",
+      "currency": "CAD",
+      "cities": [
+        "Toronto",
+        "Vancouver",
+        "Montreal",
+        "Calgary",
+        "Ottawa"
+      ]
+    },
+    "United Kingdom": {
+      "country": "United Kingdom",
+      "dialCode": "+44",
+      "currency": "GBP",
+      "cities": [
+        "London",
+        "Manchester",
+        "Birmingham",
+        "Leeds",
+        "Glasgow",
+        "Edinburgh",
+        "Bristol"
+      ]
+    },
+    "Germany": {
+      "country": "Germany",
+      "dialCode": "+49",
+      "currency": "EUR",
+      "cities": [
+        "Munich",
+        "Berlin",
+        "Frankfurt",
+        "Hamburg",
+        "Stuttgart",
+        "Cologne",
+        "Dusseldorf"
+      ]
+    },
+    "France": {
+      "country": "France",
+      "dialCode": "+33",
+      "currency": "EUR",
+      "cities": [
+        "Paris",
+        "Lyon",
+        "Marseille",
+        "Toulouse",
+        "Nice"
+      ]
+    },
+    "Australia": {
+      "country": "Australia",
+      "dialCode": "+61",
+      "currency": "AUD",
+      "cities": [
+        "Sydney",
+        "Melbourne",
+        "Brisbane",
+        "Perth",
+        "Adelaide"
+      ]
+    },
+    "Brazil": {
+      "country": "Brazil",
+      "dialCode": "+55",
+      "currency": "BRL",
+      "cities": [
+        "Sao Paulo",
+        "Rio de Janeiro",
+        "Curitiba"
+      ]
+    }
+  },
+  "categories": [
+    {
+      "key": "logistics",
+      "label": "Logistics, Freight & Cold Chain Distribution",
+      "icon": "🚚",
+      "category": "Logistics, Freight & Supply Chain"
+    },
+    {
+      "key": "dental",
+      "label": "Dental & Orthodontics Clinics",
+      "icon": "🦷",
+      "category": "Healthcare & Specialized Dental Clinics"
+    },
+    {
+      "key": "medical",
+      "label": "Medical Clinics & Private Hospitals",
+      "icon": "🩺",
+      "category": "Private Hospitals, Medical Clinics & Surgical Centers"
+    },
+    {
+      "key": "hvac_plumbing",
+      "label": "Commercial HVAC, Plumbing & MEP Contractors",
+      "icon": "❄️",
+      "category": "Commercial Contractors, HVAC & MEP Engineering"
+    },
+    {
+      "key": "construction",
+      "label": "Commercial Construction & Architecture",
+      "icon": "🏗️",
+      "category": "Commercial Construction, General Contracting & Engineering"
+    },
+    {
+      "key": "accounting",
+      "label": "Accounting, CPAs & Tax Advisory",
+      "icon": "📊",
+      "category": "Accounting, Tax Advisory & Fractional CFO Services"
+    },
+    {
+      "key": "legal",
+      "label": "Corporate Law Firms & Legal Counsel",
+      "icon": "⚖️",
+      "category": "Corporate Law Firms, Commercial Attorneys & IP Counsel"
+    },
+    {
+      "key": "rmg_apparel",
+      "label": "Ready-Made Garments (RMG) & Apparel Export",
+      "icon": "👕",
+      "category": "Apparel Manufacturing, RMG & Textile Export"
+    },
+    {
+      "key": "manufacturing",
+      "label": "Precision Manufacturing & CNC Engineering",
+      "icon": "🏭",
+      "category": "Precision Manufacturing, CNC Machining & Industrial Products"
+    },
+    {
+      "key": "software_tech",
+      "label": "Enterprise Software, SaaS & Cloud Solutions",
+      "icon": "💻",
+      "category": "Technology Services, SaaS & Digital Product Engineering"
+    },
+    {
+      "key": "ecommerce_retail",
+      "label": "E-Commerce Brands & Wholesale Distributors",
+      "icon": "🛒",
+      "category": "E-Commerce Retailers, Consumer Brands & Wholesale Distributors"
+    },
+    {
+      "key": "hospitality",
+      "label": "Luxury Hotels, Resorts & Event Venues",
+      "icon": "🏨",
+      "category": "Luxury Hospitality, Boutique Resorts & Event Venues"
+    },
+    {
+      "key": "restaurants",
+      "label": "Fine-Dining Restaurants & Food Groups",
+      "icon": "🍽️",
+      "category": "Fine Dining Restaurants, Hospitality Groups & Caterers"
+    },
+    {
+      "key": "auto_fleet",
+      "label": "Automotive Dealerships & Fleet Centers",
+      "icon": "🚗",
+      "category": "Automotive Dealerships, Commercial Fleet & Repair Centers"
+    },
+    {
+      "key": "real_estate",
+      "label": "Commercial Real Estate & Property Management",
+      "icon": "🏢",
+      "category": "Commercial Real Estate Brokerages & Property Management"
+    },
+    {
+      "key": "pharma_biotech",
+      "label": "Pharmaceuticals, Biotech & Laboratories",
+      "icon": "💊",
+      "category": "Pharmaceuticals, Biotech Labs & Medical Equipment"
+    },
+    {
+      "key": "energy_solar",
+      "label": "Renewable Solar EPC & Cleantech",
+      "icon": "⚡",
+      "category": "Renewable Solar EPC, Energy Storage & Cleantech"
+    },
+    {
+      "key": "education",
+      "label": "Private Academies & Corporate Training",
+      "icon": "🎓",
+      "category": "Private Academies, Vocational Institutes & Corporate Training"
+    }
+  ]
+}

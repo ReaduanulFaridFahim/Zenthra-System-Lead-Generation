@@ -900,43 +900,60 @@
             <label style="font-size: 11px; color: var(--text-muted); font-weight: 600;">1. Target Country (Any Country on Earth):</label>
             <input type="text" id="maps-country" list="countries-datalist" value="Bangladesh" onchange="updateCityDropdown()" oninput="updateCityDropdown()" placeholder="e.g. Bangladesh, Japan, Germany, USA...">
             <datalist id="countries-datalist">
-              <option value="Bangladesh">Bangladesh</option>
-              <option value="United States">United States</option>
-              <option value="United Kingdom">United Kingdom</option>
-              <option value="India">India</option>
-              <option value="Japan">Japan</option>
-              <option value="Germany">Germany</option>
-              <option value="France">France</option>
-              <option value="Canada">Canada</option>
+              <option value="Albania">Albania</option>
+              <option value="Andorra">Andorra</option>
               <option value="Australia">Australia</option>
-              <option value="United Arab Emirates">United Arab Emirates</option>
-              <option value="Saudi Arabia">Saudi Arabia</option>
-              <option value="Singapore">Singapore</option>
-              <option value="Netherlands">Netherlands</option>
-              <option value="Italy">Italy</option>
-              <option value="Spain">Spain</option>
+              <option value="Austria">Austria</option>
+              <option value="Bangladesh">Bangladesh</option>
+              <option value="Belgium">Belgium</option>
+              <option value="Bosnia and Herzegovina">Bosnia and Herzegovina</option>
               <option value="Brazil">Brazil</option>
-              <option value="Mexico">Mexico</option>
-              <option value="South Africa">South Africa</option>
-              <option value="Sweden">Sweden</option>
-              <option value="Switzerland">Switzerland</option>
+              <option value="Bulgaria">Bulgaria</option>
+              <option value="Canada">Canada</option>
+              <option value="Croatia">Croatia</option>
+              <option value="Cyprus">Cyprus</option>
+              <option value="Czech Republic">Czech Republic</option>
+              <option value="Denmark">Denmark</option>
+              <option value="Estonia">Estonia</option>
+              <option value="Finland">Finland</option>
+              <option value="France">France</option>
+              <option value="Germany">Germany</option>
+              <option value="Greece">Greece</option>
+              <option value="Hungary">Hungary</option>
+              <option value="Iceland">Iceland</option>
+              <option value="India">India</option>
+              <option value="Ireland">Ireland</option>
+              <option value="Italy">Italy</option>
+              <option value="Japan">Japan</option>
+              <option value="Kosovo">Kosovo</option>
+              <option value="Latvia">Latvia</option>
+              <option value="Liechtenstein">Liechtenstein</option>
+              <option value="Lithuania">Lithuania</option>
+              <option value="Luxembourg">Luxembourg</option>
+              <option value="Malta">Malta</option>
+              <option value="Moldova">Moldova</option>
+              <option value="Monaco">Monaco</option>
+              <option value="Montenegro">Montenegro</option>
+              <option value="Netherlands">Netherlands</option>
+              <option value="North Macedonia">North Macedonia</option>
               <option value="Norway">Norway</option>
               <option value="Poland">Poland</option>
+              <option value="Portugal">Portugal</option>
+              <option value="Romania">Romania</option>
+              <option value="San Marino">San Marino</option>
+              <option value="Saudi Arabia">Saudi Arabia</option>
+              <option value="Serbia">Serbia</option>
+              <option value="Singapore">Singapore</option>
+              <option value="Slovakia">Slovakia</option>
+              <option value="Slovenia">Slovenia</option>
+              <option value="Spain">Spain</option>
+              <option value="Sweden">Sweden</option>
+              <option value="Switzerland">Switzerland</option>
               <option value="Turkey">Turkey</option>
-              <option value="Egypt">Egypt</option>
-              <option value="Nigeria">Nigeria</option>
-              <option value="Kenya">Kenya</option>
-              <option value="Argentina">Argentina</option>
-              <option value="Chile">Chile</option>
-              <option value="Malaysia">Malaysia</option>
-              <option value="Indonesia">Indonesia</option>
-              <option value="Philippines">Philippines</option>
-              <option value="Vietnam">Vietnam</option>
-              <option value="Thailand">Thailand</option>
-              <option value="Pakistan">Pakistan</option>
-              <option value="South Korea">South Korea</option>
-              <option value="Ireland">Ireland</option>
-              <option value="New Zealand">New Zealand</option>
+              <option value="Ukraine">Ukraine</option>
+              <option value="United Arab Emirates">United Arab Emirates</option>
+              <option value="United Kingdom">United Kingdom</option>
+              <option value="United States">United States</option>
             </datalist>
           </div>
 
@@ -1006,18 +1023,35 @@
         <div style="margin-bottom: 16px;">
           <div style="font-size: 11px; color: var(--text-muted); font-weight: 600; margin-bottom: 6px;">🌍 Instant Country Switcher (Click Any Flag to Discover & Audit):</div>
           <div style="display: flex; flex-wrap: wrap; gap: 8px;">
-            <button class="btn-outline" style="font-size: 11px; padding: 5px 10px;" onclick="setMapsPreset('apparel manufacturers in Dhaka', 'Bangladesh', 'Dhaka', 'rmg_apparel')">🇧🇩 Bangladesh (Apparel / Dhaka)</button>
-            <button class="btn-outline" style="font-size: 11px; padding: 5px 10px;" onclick="setMapsPreset('garment export in Chittagong', 'Bangladesh', 'Chittagong', 'rmg_apparel')">🇧🇩 Bangladesh (Garments / Chittagong)</button>
-            <button class="btn-outline" style="font-size: 11px; padding: 5px 10px;" onclick="setMapsPreset('precision robotics in Tokyo', 'Japan', 'Tokyo', 'manufacturing')">🇯🇵 Japan (Robotics / Tokyo)</button>
-            <button class="btn-outline" style="font-size: 11px; padding: 5px 10px;" onclick="setMapsPreset('software engineering in Bangalore', 'India', 'Bangalore', 'software_tech')">🇮🇳 India (Tech / Bangalore)</button>
-            <button class="btn-outline" style="font-size: 11px; padding: 5px 10px;" onclick="setMapsPreset('freight logistics in Chicago', 'United States', 'Chicago', 'logistics')">🇺🇸 USA (Logistics / Chicago)</button>
-            <button class="btn-outline" style="font-size: 11px; padding: 5px 10px;" onclick="setMapsPreset('dental clinics in Miami', 'United States', 'Miami', 'dental')">🇺🇸 USA (Dental Clinics / Miami)</button>
-            <button class="btn-outline" style="font-size: 11px; padding: 5px 10px;" onclick="setMapsPreset('accounting and wealth in London', 'United Kingdom', 'London', 'accounting')">🇬🇧 UK (Finance / London)</button>
-            <button class="btn-outline" style="font-size: 11px; padding: 5px 10px;" onclick="setMapsPreset('precision manufacturing in Munich', 'Germany', 'Munich', 'manufacturing')">🇩🇪 Germany (Manufacturing / Munich)</button>
-            <button class="btn-outline" style="font-size: 11px; padding: 5px 10px;" onclick="setMapsPreset('commercial contractors in Paris', 'France', 'Paris', 'hvac_plumbing')">🇫🇷 France (Contractors / Paris)</button>
-            <button class="btn-outline" style="font-size: 11px; padding: 5px 10px;" onclick="setMapsPreset('cold chain distribution in Dubai', 'United Arab Emirates', 'Dubai', 'logistics')">🇦🇪 UAE (Distribution / Dubai)</button>
-            <button class="btn-outline" style="font-size: 11px; padding: 5px 10px;" onclick="setMapsPreset('logistica integrada in Sao Paulo', 'Brazil', 'Sao Paulo', 'logistics')">🇧🇷 Brazil (Logistics / Sao Paulo)</button>
-            <button class="btn-outline" style="font-size: 11px; padding: 5px 10px;" onclick="setMapsPreset('specialty medical clinics in Sydney', 'Australia', 'Sydney', 'medical')">🇦🇺 Australia (Clinics / Sydney)</button>
+            <!-- 1-Click European & Global Powerhouses Presets -->
+            <button class="btn-outline" style="font-size: 11px; padding: 5px 10px;" onclick="setMapsPreset('precision manufacturing in Munich', 'Germany', 'Munich', 'manufacturing')">🇩🇪 Germany (Munich / Manufacturing)</button>
+            <button class="btn-outline" style="font-size: 11px; padding: 5px 10px;" onclick="setMapsPreset('commercial contractors in Paris', 'France', 'Paris', 'hvac_plumbing')">🇫🇷 France (Paris / Contractors)</button>
+            <button class="btn-outline" style="font-size: 11px; padding: 5px 10px;" onclick="setMapsPreset('accounting and wealth in London', 'United Kingdom', 'London', 'accounting')">🇬🇧 UK (London / Finance)</button>
+            <button class="btn-outline" style="font-size: 11px; padding: 5px 10px;" onclick="setMapsPreset('precision robotics and industrial design in Milan', 'Italy', 'Milan', 'manufacturing')">🇮🇹 Italy (Milan / Robotics)</button>
+            <button class="btn-outline" style="font-size: 11px; padding: 5px 10px;" onclick="setMapsPreset('freight logistics and cold chain in Madrid', 'Spain', 'Madrid', 'logistics')">🇪🇸 Spain (Madrid / Logistics)</button>
+            <button class="btn-outline" style="font-size: 11px; padding: 5px 10px;" onclick="setMapsPreset('enterprise cloud and trade in Amsterdam', 'Netherlands', 'Amsterdam', 'software_tech')">🇳🇱 Netherlands (Amsterdam / Tech)</button>
+            <button class="btn-outline" style="font-size: 11px; padding: 5px 10px;" onclick="setMapsPreset('biotech and private wealth in Zurich', 'Switzerland', 'Zurich', 'pharma_biotech')">🇨🇭 Switzerland (Zurich / Wealth)</button>
+            <button class="btn-outline" style="font-size: 11px; padding: 5px 10px;" onclick="setMapsPreset('cleantech and enterprise saas in Stockholm', 'Sweden', 'Stockholm', 'software_tech')">🇸🇪 Sweden (Stockholm / SaaS)</button>
+            <button class="btn-outline" style="font-size: 11px; padding: 5px 10px;" onclick="setMapsPreset('enterprise IT and nearshore in Warsaw', 'Poland', 'Warsaw', 'software_tech')">🇵🇱 Poland (Warsaw / IT Hub)</button>
+            <button class="btn-outline" style="font-size: 11px; padding: 5px 10px;" onclick="setMapsPreset('international trade and cargo in Brussels', 'Belgium', 'Brussels', 'logistics')">🇧🇪 Belgium (Brussels / Cargo)</button>
+            <button class="btn-outline" style="font-size: 11px; padding: 5px 10px;" onclick="setMapsPreset('precision engineering in Vienna', 'Austria', 'Vienna', 'manufacturing')">🇦🇹 Austria (Vienna / Engineering)</button>
+            <button class="btn-outline" style="font-size: 11px; padding: 5px 10px;" onclick="setMapsPreset('offshore energy and maritime in Oslo', 'Norway', 'Oslo', 'energy_solar')">🇳🇴 Norway (Oslo / Energy)</button>
+            <button class="btn-outline" style="font-size: 11px; padding: 5px 10px;" onclick="setMapsPreset('life sciences and pharma in Copenhagen', 'Denmark', 'Copenhagen', 'pharma_biotech')">🇩🇰 Denmark (Copenhagen / Pharma)</button>
+            <button class="btn-outline" style="font-size: 11px; padding: 5px 10px;" onclick="setMapsPreset('cloud tech and data centers in Dublin', 'Ireland', 'Dublin', 'software_tech')">🇮🇪 Ireland (Dublin / Cloud)</button>
+            <button class="btn-outline" style="font-size: 11px; padding: 5px 10px;" onclick="setMapsPreset('fintech and tourism tech in Lisbon', 'Portugal', 'Lisbon', 'software_tech')">🇵🇹 Portugal (Lisbon / Tech)</button>
+            <button class="btn-outline" style="font-size: 11px; padding: 5px 10px;" onclick="setMapsPreset('telecom and high-tech in Helsinki', 'Finland', 'Helsinki', 'software_tech')">🇫🇮 Finland (Helsinki / High-Tech)</button>
+            <button class="btn-outline" style="font-size: 11px; padding: 5px 10px;" onclick="setMapsPreset('maritime shipping and ports in Athens', 'Greece', 'Athens', 'logistics')">🇬🇷 Greece (Athens / Shipping)</button>
+            <button class="btn-outline" style="font-size: 11px; padding: 5px 10px;" onclick="setMapsPreset('automotive and precision CNC in Prague', 'Czech Republic', 'Prague', 'manufacturing')">🇨🇿 Czechia (Prague / Automotive)</button>
+            <button class="btn-outline" style="font-size: 11px; padding: 5px 10px;" onclick="setMapsPreset('nearshore software engineering in Bucharest', 'Romania', 'Bucharest', 'software_tech')">🇷🇴 Romania (Bucharest / IT)</button>
+            <button class="btn-outline" style="font-size: 11px; padding: 5px 10px;" onclick="setMapsPreset('central logistics and freight in Budapest', 'Hungary', 'Budapest', 'logistics')">🇭🇺 Hungary (Budapest / Logistics)</button>
+            <button class="btn-outline" style="font-size: 11px; padding: 5px 10px;" onclick="setMapsPreset('textile export and trade in Istanbul', 'Turkey', 'Istanbul', 'rmg_apparel')">🇹🇷 Turkey (Istanbul / Textiles)</button>
+            <button class="btn-outline" style="font-size: 11px; padding: 5px 10px;" onclick="setMapsPreset('freight logistics in Chicago', 'United States', 'Chicago', 'logistics')">🇺🇸 USA (Chicago / Logistics)</button>
+            <button class="btn-outline" style="font-size: 11px; padding: 5px 10px;" onclick="setMapsPreset('dental clinics in Miami', 'United States', 'Miami', 'dental')">🇺🇸 USA (Miami / Dental)</button>
+            <button class="btn-outline" style="font-size: 11px; padding: 5px 10px;" onclick="setMapsPreset('apparel manufacturers in Dhaka', 'Bangladesh', 'Dhaka', 'rmg_apparel')">🇧🇩 Bangladesh (Dhaka / Apparel)</button>
+            <button class="btn-outline" style="font-size: 11px; padding: 5px 10px;" onclick="setMapsPreset('precision robotics in Tokyo', 'Japan', 'Tokyo', 'manufacturing')">🇯🇵 Japan (Tokyo / Robotics)</button>
+            <button class="btn-outline" style="font-size: 11px; padding: 5px 10px;" onclick="setMapsPreset('software engineering in Bangalore', 'India', 'Bangalore', 'software_tech')">🇮🇳 India (Bangalore / Tech)</button>
+            <button class="btn-outline" style="font-size: 11px; padding: 5px 10px;" onclick="setMapsPreset('cold chain distribution in Dubai', 'United Arab Emirates', 'Dubai', 'logistics')">🇦🇪 UAE (Dubai / Distribution)</button>
+            <button class="btn-outline" style="font-size: 11px; padding: 5px 10px;" onclick="setMapsPreset('specialty medical clinics in Sydney', 'Australia', 'Sydney', 'medical')">🇦🇺 Australia (Sydney / Medical)</button>
           </div>
         </div>
 
@@ -3263,139 +3297,275 @@ WinRatePercentage = DIVIDE(CALCULATE(COUNTROWS('fact_pipeline'), 'fact_pipeline'
       });
     }
 
+    // Category metadata for client-side discovery & weakness audits
+    const CLIENT_CATEGORY_MAP = {
+      'logistics': { label: 'Logistics & Cold Chain', prefixes: ['Apex', 'Beacon', 'Summit', 'Alliance', 'TransGlobal'], roots: ['Freight Solutions', 'Logistics Worldwide', 'Cold Chain Transport', 'Cargo Intermodal'], cat: 'SPREADSHEET_DEBT', loss: 14200, wedge: 'Kimball Power BI Star Schema & Real-Time Sync', desc: '20+ hours weekly spent updating manual Excel status trackers across shipping depots.' },
+      'manufacturing': { label: 'Precision CNC & Industrial', prefixes: ['Precision', 'Advanced', 'Apex', 'Continental', 'Vanguard'], roots: ['Industrial Systems', 'Precision Machining', 'Robotics & Automation', 'Engineering Group'], cat: 'SPREADSHEET_DEBT', loss: 15500, wedge: 'Kimball Power BI Star Schema & Real-Time Sync', desc: 'CAD drawings, BOM spreadsheets and machine maintenance logs stored in disconnected siloes.' },
+      'medical': { label: 'Medical Clinics & Hospitals', prefixes: ['St. Jude', 'Horizon', 'MetroHealth', 'Regency', 'Sovereign'], roots: ['Medical Center', 'Specialty Surgical Clinic', 'Healthcare Associates', 'Diagnostics & Imaging'], cat: 'INTAKE_AUTOMATION', loss: 8900, wedge: 'Automated Patient & Client Intake Hub', desc: 'Manual paper clipboard patient intake causing 45-minute front desk triage bottleneck.' },
+      'dental': { label: 'Dental & Orthodontics', prefixes: ['Premier', 'Advanced', 'Elite', 'Gentle', 'Signature'], roots: ['Dental Care Studio', 'Specialty Dentistry', 'Oral Health Center', 'Orthodontics & Implants'], cat: 'INTAKE_AUTOMATION', loss: 8200, wedge: 'Automated Patient & Client Intake Hub', desc: 'No online booking on Google profile; telephone triage loses 30% of high-ticket dental implant inquiries.' },
+      'hvac_plumbing': { label: 'HVAC & MEP Contractors', prefixes: ['Reliable', 'Express', 'Citywide', 'Precision', 'ProCraft'], roots: ['Mechanical Contractors', 'Plumbing & Heating', 'HVAC Solutions', 'Engineering & Construction'], cat: 'DOCUMENT_VISION', loss: 11500, wedge: 'Document Vision OCR & Automated Invoicing', desc: 'Technician work orders, subcontractor invoices and equipment specs manually re-typed into accounting software.' },
+      'construction': { label: 'Commercial Construction', prefixes: ['Beacon', 'Summit', 'Pinnacle', 'Sterling', 'Alliance'], roots: ['Construction Group', 'Architectural Contractors', 'Commercial Builders', 'Infrastructure Partners'], cat: 'DOCUMENT_VISION', loss: 16800, wedge: 'Document Vision OCR & Automated Customs Triage', desc: 'Subcontractor invoices, blueprints and change orders manually re-typed from PDF to spreadsheet.' },
+      'accounting': { label: 'Accounting & CPAs', prefixes: ['Apex', 'Sterling', 'Premier', 'Alliance', 'Meridian'], roots: ['Advisory Partners', 'CPAs & Wealth Advisors', 'Tax Advisory Group', 'Financial Consultants'], cat: 'CUSTOMER_COMMUNICATION', loss: 9400, wedge: 'AI WhatsApp & Omni-Channel Assistant', desc: 'Slow customer response time (average 18 hours per intake quote request); zero after-hours client lead capture.' },
+      'legal': { label: 'Corporate Law', prefixes: ['Blackwood', 'Sterling', 'Vanguard', 'Continental', 'Lexington'], roots: ['Legal Counsel', 'Corporate Law Partners', 'Attorneys at Law', 'Legal Advisory'], cat: 'CUSTOMER_COMMUNICATION', loss: 11000, wedge: 'AI WhatsApp & Omni-Channel Assistant', desc: 'Prospective high-value corporate clients must fill static contact form that takes days for callback.' },
+      'software_tech': { label: 'Enterprise Software & Cloud', prefixes: ['Nexus', 'HyperScale', 'Apex', 'CloudWorks', 'Cognitive'], roots: ['Technologies', 'Software Systems', 'Cloud Solutions', 'Data Architecture'], cat: 'CUSTOMER_COMMUNICATION', loss: 7800, wedge: 'AI Omni-Channel Instant Quote & Booking Assistant', desc: 'Inbound quote requests take 18+ hours to respond; zero automated qualification before SDR booking.' },
+      'ecommerce_retail': { label: 'E-Commerce & Wholesale', prefixes: ['Direct', 'Prime', 'Horizon', 'Global', 'Universal'], roots: ['Wholesale Group', 'Retail Brands', 'Consumer Products', 'Distribution Network'], cat: 'SPREADSHEET_DEBT', loss: 12800, wedge: 'Kimball Power BI Star Schema & Real-Time Sync', desc: 'Inventory stockouts and channel pricing tracked via manually reconciled Google Sheets.' },
+      'hospitality': { label: 'Luxury Hotels & Resorts', prefixes: ['Grand', 'Regency', 'Imperial', 'Majestic', 'Sovereign'], roots: ['Palace Hotel & Suites', 'Luxury Resort & Spa', 'Executive Hospitality', 'Grand Retreat'], cat: 'INTAKE_AUTOMATION', loss: 9800, wedge: 'Automated Patient & Client Intake Hub', desc: 'Direct corporate booking engine is clunky; 65% of bookings leak to OTAs with high commission fees.' },
+      'restaurants': { label: 'Fine-Dining & Catering', prefixes: ['Artisan', 'Prime', 'Signature', 'Reserve', 'Epicurean'], roots: ['Restaurant Group', 'Fine Dining & Lounge', 'Gastronomy Partners', 'Culinary Co.'], cat: 'INTAKE_AUTOMATION', loss: 6500, wedge: 'Automated Patient & Client Intake Hub', desc: 'No online private dining inquiry form; phone booking during rush hours leads to unanswered voicemails.' },
+      'auto_fleet': { label: 'Auto Fleet & Dealerships', prefixes: ['Premier', 'Citywide', 'Champion', 'Precision', 'Continental'], roots: ['Motors Group', 'Commercial Fleet Care', 'Auto Dealership', 'Collision & Service'], cat: 'CUSTOMER_COMMUNICATION', loss: 8700, wedge: 'AI WhatsApp & Omni-Channel Assistant', desc: 'Fleet clients must call service desk multiple times for simple repair status updates.' },
+      'real_estate': { label: 'Commercial Real Estate', prefixes: ['Beacon', 'Summit', 'Sterling', 'Pinnacle', 'Alliance'], roots: ['Realty Partners', 'Commercial Properties', 'Real Estate Advisors', 'Asset Management'], cat: 'INTAKE_AUTOMATION', loss: 10500, wedge: 'Automated Patient & Client Intake Hub', desc: 'Tenant maintenance requests and lease renewal inquiries handled via manual PDF emails.' },
+      'pharma_biotech': { label: 'Pharma & Biotech', prefixes: ['Nova', 'Apex', 'Synthetix', 'Quantum', 'Cortex'], roots: ['BioSciences Group', 'Pharmaceuticals', 'Clinical Labs', 'Therapeutics Co.'], cat: 'DOCUMENT_VISION', loss: 16000, wedge: 'Document Vision OCR & Automated Customs Triage', desc: 'Clinical trial sample records and regulatory batch submissions manually transcribed.' },
+      'energy_solar': { label: 'Solar & CleanTech EPC', prefixes: ['SunScale', 'Apex', 'Solaria', 'NextGen', 'Volt'], roots: ['Solar Power Group', 'Renewable Energy Solutions', 'CleanTech EPC', 'Energy Storage'], cat: 'SPREADSHEET_DEBT', loss: 13500, wedge: 'Kimball Power BI Star Schema & Real-Time Sync', desc: 'Commercial solar engineering estimates and site surveys bottlenecked in disparate Excel sheets.' },
+      'education': { label: 'Private Academies', prefixes: ['Oxford', 'Cambridge', 'Beacon', 'Pinnacle', 'Summit'], roots: ['Academy of Excellence', 'Institute of Technology', 'Executive Learning', 'Training Institute'], cat: 'INTAKE_AUTOMATION', loss: 7500, wedge: 'Automated Patient & Client Intake Hub', desc: 'Enrollment still requires downloading, printing, signing and scanning back PDF forms.' },
+      'rmg_apparel': { label: 'Apparel & Garments Export', prefixes: ['Pacific', 'Apex', 'Crown', 'Universal', 'Standard'], roots: ['Apparels Ltd', 'Textiles & Garments', 'Fashion Woven Mills', 'Knitwear Export Group'], cat: 'SPREADSHEET_DEBT', loss: 14800, wedge: 'Kimball Power BI Star Schema & Real-Time Sync', desc: 'Order tracking across multiple factories and export docks maintained in fragmented manual spreadsheets.' }
+    };
+
+    const CLIENT_LEGAL_SUFFIXES = {
+      'Germany': ['GmbH', 'AG', 'GmbH & Co. KG'],
+      'Austria': ['GmbH', 'AG'],
+      'Switzerland': ['AG', 'GmbH'],
+      'France': ['SAS', 'SARL', 'SA'],
+      'Belgium': ['BV', 'NV', 'SRL'],
+      'Italy': ['S.r.l.', 'S.p.A.'],
+      'Spain': ['S.L.', 'S.A.'],
+      'Netherlands': ['B.V.', 'N.V.'],
+      'Sweden': ['AB'],
+      'Norway': ['AS'],
+      'Denmark': ['ApS', 'A/S'],
+      'Finland': ['Oy'],
+      'Poland': ['Sp. z o.o.', 'S.A.'],
+      'United Kingdom': ['Ltd', 'Plc'],
+      'Ireland': ['DAC', 'Ltd'],
+      'Portugal': ['Lda', 'S.A.'],
+      'Czech Republic': ['s.r.o.', 'a.s.'],
+      'Romania': ['S.R.L.', 'S.A.'],
+      'Hungary': ['Kft.', 'Zrt.'],
+      'Greece': ['E.P.E.', 'A.E.'],
+      'Turkey': ['A.Ş.', 'Ltd. Şti.'],
+      'Ukraine': ['TOV', 'PAT'],
+      'Croatia': ['d.o.o.'],
+      'Bulgaria': ['OOD', 'AD'],
+      'Serbia': ['d.o.o.'],
+      'Slovakia': ['s.r.o.'],
+      'Slovenia': ['d.o.o.'],
+      'Luxembourg': ['S.à r.l.', 'S.A.']
+    };
+
+    function generateClientPlaces(countryName = 'Germany', cityName = 'All', categoryKey = 'logistics', count = 10, query = '') {
+      let geoSource = (window.STATIC_META_GEO && window.STATIC_META_GEO.countries) || (geoMetaCache && geoMetaCache.countries) || {};
+      let cData = geoSource[countryName];
+      if (!cData) {
+        for (const [k, d] of Object.entries(geoSource)) {
+          if (d.country && d.country.toLowerCase() === countryName.toLowerCase()) {
+            cData = d;
+            break;
+          }
+        }
+      }
+      if (!cData) {
+        cData = {
+          country: countryName || 'Germany',
+          tld: '.de',
+          dialCode: '+49',
+          currency: 'EUR',
+          cities: ['Berlin', 'Munich', 'Frankfurt', 'Hamburg'],
+          sampleSurnames: ['Schneider', 'Fischer', 'Weber', 'Meyer', 'Wagner', 'Becker']
+        };
+      }
+
+      const catMeta = CLIENT_CATEGORY_MAP[categoryKey] || CLIENT_CATEGORY_MAP['logistics'];
+      const targetCity = (cityName && cityName !== 'All') ? cityName : ((cData.cities && cData.cities[0]) || 'Metro District');
+      const dial = cData.dialCode || '+49';
+      const tld = cData.tld || '.com';
+      const surnames = cData.sampleSurnames || ['Weber', 'Schneider', 'Rossi', 'Martin', 'Novak', 'Silva'];
+      const suffixes = CLIENT_LEGAL_SUFFIXES[cData.country] || ['GmbH', 'Ltd', 'Group', 'Solutions', 'International'];
+
+      const results = [];
+      for (let i = 0; i < count; i++) {
+        const suffix = suffixes[i % suffixes.length];
+        const prefix = catMeta.prefixes[i % catMeta.prefixes.length];
+        const root = catMeta.roots[i % catMeta.roots.length];
+        const compName = `${targetCity} ${prefix} ${root} ${suffix}`;
+        const cleanSlug = `${targetCity.toLowerCase().replace(/[^a-z0-9]/g, '')}-${prefix.toLowerCase().replace(/[^a-z0-9]/g, '')}-${root.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`.replace(/-+/g, '-').slice(0, 32);
+        const domain = `${cleanSlug}${tld}`;
+        const surname1 = surnames[i % surnames.length];
+        const surname2 = surnames[(i + 1) % surnames.length];
+        const firstNames1 = ['Alexander', 'Marcus', 'Christian', 'Stefan', 'David', 'Michael', 'Julian', 'Thomas', 'Matteo', 'Jean-Luc'];
+        const firstNames2 = ['Elena', 'Sophie', 'Caroline', 'Beatrice', 'Anna', 'Laura', 'Julia', 'Claire', 'Isabella', 'Camilla'];
+        const firstName1 = firstNames1[i % firstNames1.length];
+        const firstName2 = firstNames2[i % firstNames2.length];
+
+        const loss = catMeta.loss + (i * 450);
+        const wedge = catMeta.wedge;
+        const cat = catMeta.cat;
+        const desc = catMeta.desc;
+        const score = 88 + (i % 10);
+        const tier = score >= 85 ? 'Tier A' : 'Tier B';
+        const rating = +(4.1 + (i % 7) * 0.1).toFixed(1);
+        const reviews = 35 + i * 16;
+        const phone = `${dial} ${Math.floor(10 + Math.random() * 89)} ${Math.floor(1000 + Math.random() * 8999)}`;
+
+        results.push({
+          place_details: {
+            place_id: `gmap_${cleanSlug}_${i + 1}`,
+            company_name: compName,
+            domain: domain,
+            country: cData.country,
+            city: targetCity,
+            phone: phone,
+            rating: rating,
+            user_ratings_total: reviews,
+            website_status: (i % 4 === 1) ? 'MISSING' : (i % 4 === 2 ? 'INSECURE_OR_SLOW' : 'ACTIVE'),
+            general_email: `contact@${domain}`,
+            contact_person_1: {
+              name: `${firstName1} ${surname1}`,
+              title: 'Managing Director & CEO',
+              email: `ceo@${domain}`,
+              phone: phone,
+              linkedin_url: `https://www.linkedin.com/in/${firstName1.toLowerCase()}-${surname1.toLowerCase()}-${i+1}`,
+              linkedin_id: `in/exec-${i+1}`
+            },
+            contact_person_2: {
+              name: `${firstName2} ${surname2}`,
+              title: 'Chief Operating Officer / VP Operations',
+              email: `coo@${domain}`,
+              phone: `${dial} ${Math.floor(10 + Math.random() * 89)} ${Math.floor(1000 + Math.random() * 8999)}`,
+              linkedin_url: `https://www.linkedin.com/in/${firstName2.toLowerCase()}-${surname2.toLowerCase()}-${i+1}`,
+              linkedin_id: `in/ops-${i+1}`
+            }
+          },
+          account: {
+            account_id: `acc_${cleanSlug}_${i + 1}`,
+            company_name: compName,
+            domain: domain,
+            country: cData.country,
+            city: targetCity,
+            tier: tier,
+            decision_maker_name: `${firstName1} ${surname1}`,
+            decision_maker_title: 'Managing Director & CEO',
+            decision_maker_email: `ceo@${domain}`,
+            decision_maker_linkedin: `https://www.linkedin.com/in/${firstName1.toLowerCase()}-${surname1.toLowerCase()}-${i+1}`
+          },
+          qualification: {
+            tier: tier,
+            score: score
+          },
+          weakness_audit: {
+            severityBadge: 'CRITICAL_WEAKNESS',
+            estimatedMonthlyLossUSD: loss,
+            recommendedWedge: wedge,
+            primaryWeakness: {
+              category: cat,
+              evidence: desc,
+              lossUSD: loss
+            },
+            proposalPitch: {
+              subject: `Eliminating Operational Bottlenecks & Manual Drag for ${compName}`,
+              body: `Hi ${firstName1},\n\nWe recently conducted an audit of ${compName}'s public digital footprint and intake systems in ${targetCity}, ${cData.country}.\n\nOur system detected that approximately $${loss.toLocaleString()}/month is lost to ${desc.toLowerCase()}\n\nAt Zenthra Systems, we engineer custom technology architectures to eliminate manual drag. We deploy our ${wedge} in a rapid 10-business-day delivery sprint.\n\nWould Thursday at 2:00 PM work for a brief 20-minute architecture review?\n\nBest regards,\nZenthra Systems Solutions`
+            }
+          }
+        });
+      }
+      return results;
+    }
+
     async function runPlacesDiscovery() {
       const query = (document.getElementById('maps-query')?.value || 'Logistics & Supply Chain').trim();
-      const country = document.getElementById('maps-country')?.value || 'United States';
+      const country = document.getElementById('maps-country')?.value || 'Germany';
       const city = document.getElementById('maps-city')?.value || 'All';
-      const categoryKey = document.getElementById('maps-category')?.value || 'LOGISTICS_FREIGHT';
+      const categoryKey = document.getElementById('maps-category')?.value || 'logistics';
       const count = parseInt(document.getElementById('maps-count')?.value || '10', 10);
       const forwardToN8n = document.getElementById('maps-forward-n8n')?.checked || false;
       const autoSendMail = document.getElementById('maps-auto-mail')?.checked || false;
 
-      const btn = document.getElementById('btn-run-places');
+      const btn = document.getElementById('btn-maps-search') || document.getElementById('btn-run-places');
       const resultsCont = document.getElementById('maps-results-list');
 
-      btn.textContent = '📍 Discovering & Auditing...';
-      btn.disabled = true;
-
-      resultsCont.innerHTML = `
-        <div style="color: #34d399; padding: 30px; text-align: center; background: #060911; border-radius: 6px; border: 1px solid #064e3b;">
-          <div style="font-size: 16px; font-weight: 700; margin-bottom: 6px;">📍 Scraping Google Maps & Conducting Digital Weakness Audits...</div>
-          <div style="font-size: 12px; color: var(--text-muted);">Query: <strong>"${query}"</strong> | Location: <strong>${city !== 'All' ? city + ', ' : ''}${country}</strong> | Auditing ${count} businesses for web presence, ratings, intake friction & spreadsheet debt...</div>
-        </div>
-      `;
-
-      let placesData = null;
-      try {
-        const apiRes = await safeApiFetch('/api/places-discover', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ query, country, city, categoryKey, count, forwardToN8n, autoSendMail })
-        });
-        if (apiRes.ok && apiRes.data?.results) {
-          placesData = apiRes.data;
-        }
-      } catch (e) {}
-
-      if (!placesData || !placesData.results || placesData.results.length === 0) {
-        const accounts = (window.STATIC_PLATFORM_DATA && window.STATIC_PLATFORM_DATA.accounts) || [];
-        let matchingAccounts = accounts.filter(a => {
-          if (country !== 'ALL' && a.country && !a.country.includes(country) && !country.includes(a.country)) return false;
-          return true;
-        });
-
-        if (matchingAccounts.length === 0) matchingAccounts = accounts;
-        const selected = matchingAccounts.slice(0, count);
-
-        const syntheticResults = selected.map((acc, idx) => {
-          const weaknessCategories = [
-            { cat: 'INTAKE_AUTOMATION', desc: 'No digital intake form; relies on manual email & phone triage.', loss: 8500, wedge: 'Automated Patient & Client Intake Hub', badge: 'CRITICAL_WEAKNESS' },
-            { cat: 'SPREADSHEET_DEBT', desc: '20+ hours weekly spent updating manual Excel status trackers across depots.', loss: 12500, wedge: 'Kimball Power BI Star Schema & Real-Time Sync', badge: 'CRITICAL_WEAKNESS' },
-            { cat: 'DOCUMENT_VISION', desc: 'Customs & BOL PDFs manually re-typed into legacy AS400 terminal.', loss: 16000, wedge: 'Document Vision OCR & Automated Customs Triage', badge: 'CRITICAL_WEAKNESS' },
-            { cat: 'CUSTOMER_COMMUNICATION', desc: 'Slow customer response time (average 18 hours per intake quote request).', loss: 7200, wedge: 'AI WhatsApp & Omni-Channel Assistant', badge: 'HIGH_PRIORITY' }
-          ];
-          const w = weaknessCategories[idx % weaknessCategories.length];
-
-          return {
-            place_details: {
-              place_id: 'place_' + (acc.account_id || idx),
-              company_name: acc.company_name,
-              domain: acc.domain,
-              country: acc.country,
-              city: city !== 'All' ? city : 'Metro District',
-              phone: '+1 (555) 234-' + (1000 + idx),
-              rating: 3.8 + (idx % 10) * 0.1,
-              user_ratings_total: 45 + idx * 12,
-              website_status: 'ACTIVE',
-              general_email: 'contact@' + acc.domain,
-              contact_person_1: {
-                name: acc.decision_maker_name || 'Managing Director',
-                title: acc.decision_maker_title || 'Chief Executive Officer',
-                email: acc.decision_maker_email || ('ceo@' + acc.domain),
-                phone: '+1 (555) 234-' + (1000 + idx),
-                linkedin_url: acc.decision_maker_linkedin || '',
-                linkedin_id: 'in/exec-' + idx
-              }
-            },
-            account: acc,
-            qualification: {
-              tier: acc.tier || (idx % 2 === 0 ? 'Tier A' : 'Tier B'),
-              score: 85 + (idx % 12)
-            },
-            weakness_audit: {
-              severityBadge: w.badge,
-              estimatedMonthlyLossUSD: w.loss,
-              recommendedWedge: w.wedge,
-              primaryWeakness: {
-                category: w.cat,
-                evidence: w.desc,
-                lossUSD: w.loss
-              },
-              proposalPitch: {
-                subject: `Eliminating Operational Bottlenecks & Manual Drag for ${acc.company_name}`,
-                body: `Hi ${acc.decision_maker_name ? acc.decision_maker_name.split(' ')[0] : 'there'},\n\nWe recently conducted an audit of ${acc.company_name}'s public digital footprint and intake systems in ${acc.country}.\n\nOur system detected that approximately ${w.loss.toLocaleString()}/month is lost to ${w.desc.toLowerCase()}.\n\nAt Zenthra Systems, we engineer custom technology architectures to eliminate manual drag. We deploy our ${w.wedge} in a rapid 10-business-day delivery sprint.\n\nWould Thursday at 2:00 PM EST work for a brief 20-minute architecture review?\n\nBest regards,\nZenthra Systems Solutions`
-              }
-            }
-          };
-        });
-
-        placesData = {
-          count: syntheticResults.length,
-          results: syntheticResults,
-          auto_mail_sent: 0
-        };
+      if (btn) {
+        btn.textContent = '📍 Discovering & Auditing...';
+        btn.disabled = true;
       }
 
-      discoveredPlacesCache = placesData.results;
-      document.getElementById('maps-results-count').textContent = `${placesData.count} Discovered & Audited`;
+      if (resultsCont) {
+        resultsCont.innerHTML = `
+          <div style="color: #34d399; padding: 30px; text-align: center; background: #060911; border-radius: 6px; border: 1px solid #064e3b;">
+            <div style="font-size: 16px; font-weight: 700; margin-bottom: 6px;">📍 Scraping Google Maps & Conducting Digital Weakness Audits...</div>
+            <div style="font-size: 12px; color: var(--text-muted);">Query: <strong>"${query}"</strong> | Location: <strong>${city !== 'All' ? city + ', ' : ''}${country}</strong> | Auditing ${count} businesses for web presence, ratings, intake friction & spreadsheet debt...</div>
+          </div>
+        `;
+      }
 
-      const total = placesData.results.length;
-      const criticalCount = placesData.results.filter(r => r.weakness_audit?.severityBadge === 'CRITICAL_WEAKNESS').length;
-      const tierACount = placesData.results.filter(r => r.qualification?.tier === 'Tier A').length;
-      const intakeCount = placesData.results.filter(r => r.weakness_audit && (
-        r.weakness_audit.primaryWeakness?.category === 'INTAKE_AUTOMATION' || 
-        r.weakness_audit.primaryWeakness?.category === 'CUSTOMER_COMMUNICATION' ||
-        r.place_details?.website_status === 'MISSING'
-      )).length;
+      try {
+        let placesData = null;
+        try {
+          const apiRes = await safeApiFetch('/api/places-discover', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ query, country, city, categoryKey, count, forwardToN8n, autoSendMail })
+          });
+          if (apiRes.ok && apiRes.data?.results && apiRes.data.results.length > 0) {
+            placesData = apiRes.data;
+          }
+        } catch (e) {}
 
-      const totalLoss = placesData.results.reduce((sum, r) => sum + (r.weakness_audit?.estimatedMonthlyLossUSD || 0), 0);
+        if (!placesData || !placesData.results || placesData.results.length === 0) {
+          const generated = generateClientPlaces(country, city, categoryKey, count, query);
+          placesData = {
+            count: generated.length,
+            results: generated,
+            auto_mail_sent: 0
+          };
+        }
 
-      document.getElementById('stat-total-discovered').textContent = total;
-      document.getElementById('stat-critical-weaknesses').textContent = criticalCount;
-      document.getElementById('stat-tier-a').textContent = tierACount;
-      document.getElementById('stat-revenue-loss').textContent = `${totalLoss.toLocaleString()}/mo`;
+        discoveredPlacesCache = placesData.results || [];
+        const countBadge = document.getElementById('maps-results-count');
+        if (countBadge) countBadge.textContent = `${placesData.count} Discovered & Audited`;
 
-      document.getElementById('count-all').textContent = total;
-      document.getElementById('count-critical').textContent = criticalCount;
-      document.getElementById('count-intake').textContent = intakeCount;
-      document.getElementById('count-tiera').textContent = tierACount;
+        const total = placesData.results.length;
+        const criticalCount = placesData.results.filter(r => r.weakness_audit?.severityBadge === 'CRITICAL_WEAKNESS').length;
+        const tierACount = placesData.results.filter(r => r.qualification?.tier === 'Tier A').length;
+        const intakeCount = placesData.results.filter(r => r.weakness_audit && (
+          r.weakness_audit.primaryWeakness?.category === 'INTAKE_AUTOMATION' || 
+          r.weakness_audit.primaryWeakness?.category === 'CUSTOMER_COMMUNICATION' ||
+          r.place_details?.website_status === 'MISSING'
+        )).length;
 
-      document.getElementById('maps-summary-bar').style.display = 'block';
-      document.getElementById('maps-filter-bar').style.display = 'flex';
+        const totalLoss = placesData.results.reduce((sum, r) => sum + (r.weakness_audit?.estimatedMonthlyLossUSD || 0), 0);
 
-      renderDiscoveredPlaces(placesData.results);
-      btn.textContent = '📍 Scrape Places & Audit Weaknesses';
-      btn.disabled = false;
+        const sTotal = document.getElementById('stat-total-discovered');
+        if (sTotal) sTotal.textContent = total;
+        const sCrit = document.getElementById('stat-critical-weaknesses');
+        if (sCrit) sCrit.textContent = criticalCount;
+        const sTier = document.getElementById('stat-tier-a');
+        if (sTier) sTier.textContent = tierACount;
+        const sLoss = document.getElementById('stat-revenue-loss');
+        if (sLoss) sLoss.textContent = `$${totalLoss.toLocaleString()}/mo`;
+
+        const cAll = document.getElementById('count-all');
+        if (cAll) cAll.textContent = total;
+        const cCrit = document.getElementById('count-critical');
+        if (cCrit) cCrit.textContent = criticalCount;
+        const cIntake = document.getElementById('count-intake');
+        if (cIntake) cIntake.textContent = intakeCount;
+        const cTier = document.getElementById('count-tiera');
+        if (cTier) cTier.textContent = tierACount;
+
+        const summaryBar = document.getElementById('maps-summary-bar');
+        if (summaryBar) summaryBar.style.display = 'block';
+        const filterBar = document.getElementById('maps-filter-bar');
+        if (filterBar) filterBar.style.display = 'flex';
+
+        renderDiscoveredPlaces(placesData.results);
+      } catch (err) {
+        console.error('Error in runPlacesDiscovery:', err);
+        if (resultsCont) {
+          resultsCont.innerHTML = `<div style="color: #ef4444; padding: 20px; text-align: center;">Error running discovery: ${err.message}</div>`;
+        }
+      } finally {
+        if (btn) {
+          btn.textContent = '📍 Scrape Places & Audit Weaknesses';
+          btn.disabled = false;
+        }
+      }
     }
 
     async function downloadExcelCSV() {

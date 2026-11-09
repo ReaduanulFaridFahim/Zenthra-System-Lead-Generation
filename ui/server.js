@@ -70,12 +70,32 @@ const server = http.createServer(async (req, res) => {
     return;
   }
 
-  // 1. Static HTML Portal
-  if (req.method === 'GET' && (req.url === '/' || req.url === '/index.html')) {
+  // 1. Static HTML Portal & Assets
+  if (req.method === 'GET' && (req.url === '/' || req.url === '/index.html' || req.url === '/console.html')) {
     const html = fs.readFileSync(HTML_FILE, 'utf8');
     res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8' });
     res.end(html);
     return;
+  }
+
+  if (req.method === 'GET' && req.url === '/portal.html') {
+    const portalFile = path.resolve(__dirname, '..', 'portal.html');
+    if (fs.existsSync(portalFile)) {
+      res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8' });
+      res.end(fs.readFileSync(portalFile, 'utf8'));
+      return;
+    }
+  }
+
+  if (req.method === 'GET' && req.url.startsWith('/data/')) {
+    const dataFile = path.resolve(__dirname, '..', req.url.replace(/^\//, '').split('?')[0]);
+    if (fs.existsSync(dataFile)) {
+      const ext = path.extname(dataFile);
+      const ct = ext === '.json' ? 'application/json' : (ext === '.js' ? 'application/javascript' : 'text/plain');
+      res.writeHead(200, { 'Content-Type': ct });
+      res.end(fs.readFileSync(dataFile));
+      return;
+    }
   }
 
   // 2. GET /api/data (Full Platform State)

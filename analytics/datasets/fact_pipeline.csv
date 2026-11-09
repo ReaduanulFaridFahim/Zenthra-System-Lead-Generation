@@ -1,0 +1,9 @@
+deal_id,account_id,service_id,created_date_key,close_date_key,deal_stage,deal_value_usd,win_probability,weighted_value_usd,is_closed_won,is_closed_lost,sales_cycle_days,monthly_retainer_usd
+DEAL_101,ACC_001,SRV_01,20261005,20261020,Closed Won,12500,1,12500,1,0,15,3500
+DEAL_102,ACC_004,SRV_03,20261012,20261115,Closed Won,55000,1,55000,1,0,34,6500
+DEAL_103,ACC_003,SRV_02,20261018,20261130,Proposal Submitted,38000,0.6,22800,0,0,25,4500
+DEAL_104,ACC_002,SRV_01,20261022,20261125,Technical Scope Confirmed,15000,0.5,7500,0,0,18,3500
+DEAL_105,ACC_006,SRV_01,20261101,20261120,Discovery Meeting Booked,12500,0.3,3750,0,0,7,3500
+DEAL_106,ACC_009,SRV_02,20261103,20261210,Discovery Meeting Booked,42000,0.25,10500,0,0,5,5000
+DEAL_107,ACC_005,SRV_04,20260915,20261010,Closed Lost,45000,0,0,0,1,25,0
+DEAL_108,ACC_008,SRV_01,20261028,20261118,Proposal Submitted,28000,0.6,16800,0,0,14,3500

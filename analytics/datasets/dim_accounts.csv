@@ -1,0 +1,11 @@
+account_id,company_name,country,industry,headcount,revenue_tier,lead_tier,initial_lead_score
+ACC_001,Apex Global Logistics Inc.,United States,Logistics & Supply Chain,240,$25M-$50M,Tier A,95
+ACC_002,Meridian Capital Partners LLP,United Kingdom,Fintech & Wealth Management,120,$25M-$50M,Tier A,88
+ACC_003,Al-Mansoor Trading & Distribution,United Arab Emirates,Logistics & Distribution,380,$50M-$100M,Tier A,90
+ACC_004,Strata Cloud Solutions,United States,SaaS & Enterprise Software,85,$10M-$25M,Tier A,92
+ACC_005,Synapse Healthcare Systems GmbH,Germany,Healthcare Technology,160,$25M-$50M,Tier B,78
+ACC_006,Vanguard Freight Network,United States,Logistics & Distribution,210,$50M-$100M,Tier A,85
+ACC_007,Kestrel Legal Technologies,United Kingdom,Legal & Professional Services,65,$10M-$25M,Tier B,74
+ACC_008,Nordic Precision Manufacturing,Sweden,Manufacturing,310,$50M-$100M,Tier A,82
+ACC_009,Oasis Retail Logistics FZ-LLC,United Arab Emirates,Logistics & Supply Chain,190,$25M-$50M,Tier A,89
+ACC_010,Beacon Financial Analytics,United States,Financial Services,95,$10M-$25M,Tier B,76

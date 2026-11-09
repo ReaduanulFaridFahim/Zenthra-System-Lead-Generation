@@ -1,0 +1,1121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Zenthra Systems — B2B Social Media Poster Studio</title>
+  <meta name="description" content="Generate high-converting 1080x1350 and multi-format dark tech minimalist B2B graphics for LinkedIn, X (Twitter), and Instagram.">
+  <meta property="og:title" content="Zenthra Systems — B2B Social Media Poster Studio">
+  <meta property="og:description" content="Design, preview, and export high-converting 1080x1350 social posters with 1 click.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-base: #f8fafc;
+      --bg-surface: #ffffff;
+      --border-subtle: #e2e8f0;
+      --border-medium: #cbd5e1;
+      --accent-primary: #0284c7;
+      --accent-secondary: #2563eb;
+      --accent-gradient: linear-gradient(135deg, #0284c7 0%, #2563eb 100%);
+      --text-primary: #0f172a;
+      --text-secondary: #334155;
+      --text-tertiary: #64748b;
+      --font-sans: 'Plus Jakarta Sans', sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background: var(--bg-base);
+      color: var(--text-primary);
+      font-family: var(--font-sans);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Top Nav */
+    header {
+      background: #ffffff;
+      border-bottom: 1px solid var(--border-subtle);
+      padding: 0.85rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .brand-icon {
+      width: 38px;
+      height: 38px;
+      border-radius: 10px;
+      background: var(--accent-gradient);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .brand-icon svg {
+      width: 20px;
+      height: 20px;
+      fill: #ffffff;
+    }
+
+    .brand-title {
+      font-weight: 800;
+      font-size: 1.05rem;
+    }
+
+    .brand-tag {
+      font-size: 0.7rem;
+      color: var(--text-tertiary);
+      text-transform: uppercase;
+      font-weight: 600;
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      text-decoration: none;
+      cursor: pointer;
+      border: 1px solid transparent;
+      transition: all 0.2s;
+    }
+
+    .btn-primary {
+      background: var(--accent-gradient);
+      color: #ffffff;
+      box-shadow: 0 2px 6px rgba(2, 132, 199, 0.25);
+    }
+
+    .btn-primary:hover {
+      box-shadow: 0 4px 12px rgba(2, 132, 199, 0.35);
+      transform: translateY(-1px);
+    }
+
+    .btn-secondary {
+      background: #ffffff;
+      border-color: var(--border-medium);
+      color: var(--text-secondary);
+    }
+
+    .btn-secondary:hover {
+      background: #f1f5f9;
+      color: var(--text-primary);
+    }
+
+    /* Studio Main Layout */
+    .studio-container {
+      max-width: 1440px;
+      margin: 1.5rem auto;
+      padding: 0 1.5rem;
+      display: grid;
+      grid-template-columns: 460px 1fr;
+      gap: 2rem;
+      flex: 1;
+      width: 100%;
+    }
+
+    /* Left Control Panel */
+    .control-panel {
+      background: #ffffff;
+      border: 1px solid var(--border-subtle);
+      border-radius: 16px;
+      padding: 1.5rem;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+      max-height: calc(100vh - 120px);
+      overflow-y: auto;
+    }
+
+    .panel-title {
+      font-size: 1.1rem;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .preset-select {
+      width: 100%;
+      padding: 0.6rem 0.85rem;
+      border-radius: 8px;
+      border: 1px solid var(--border-medium);
+      font-family: var(--font-sans);
+      font-size: 0.85rem;
+      background: #f8fafc;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+
+    .form-group label {
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .form-input {
+      width: 100%;
+      padding: 0.55rem 0.75rem;
+      border-radius: 8px;
+      border: 1px solid var(--border-medium);
+      font-family: var(--font-sans);
+      font-size: 0.85rem;
+      color: var(--text-primary);
+    }
+
+    .form-input:focus {
+      outline: none;
+      border-color: var(--accent-primary);
+      box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.15);
+    }
+
+    .pill-selector {
+      display: flex;
+      background: #f1f5f9;
+      padding: 0.25rem;
+      border-radius: 9px;
+      gap: 0.25rem;
+      border: 1px solid var(--border-subtle);
+    }
+
+    .pill-btn {
+      flex: 1;
+      padding: 0.35rem 0.5rem;
+      border-radius: 7px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      border: none;
+      background: transparent;
+      color: var(--text-tertiary);
+      cursor: pointer;
+      text-align: center;
+      transition: all 0.2s;
+    }
+
+    .pill-btn.active {
+      background: #ffffff;
+      color: var(--accent-primary);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+    }
+
+    .point-card-control {
+      background: #f8fafc;
+      border: 1px solid var(--border-subtle);
+      border-radius: 10px;
+      padding: 0.85rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .point-header {
+      font-size: 0.75rem;
+      font-weight: 750;
+      color: var(--accent-primary);
+      font-family: var(--font-mono);
+    }
+
+    /* Right Canvas Preview Area */
+    .preview-area {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      gap: 1.25rem;
+    }
+
+    .canvas-wrapper {
+      background: #0f172a;
+      padding: 1.5rem;
+      border-radius: 20px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+      max-width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 640px;
+    }
+
+    #posterCanvas {
+      max-width: 100%;
+      height: auto;
+      max-height: 600px;
+      border-radius: 12px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+      object-fit: contain;
+    }
+
+    .copy-strip {
+      width: 100%;
+      max-width: 680px;
+      display: flex;
+      gap: 0.65rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    /* Toast Notification System */
+    .toast-container {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 2000;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      pointer-events: none;
+    }
+
+    .toast-msg {
+      background: #0f172a;
+      color: #ffffff;
+      padding: 0.75rem 1.25rem;
+      border-radius: 10px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.25);
+      border-left: 4px solid #10b981;
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+      animation: toastSlideIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      pointer-events: auto;
+    }
+
+    @keyframes toastSlideIn {
+      from { transform: translateX(50px); opacity: 0; }
+      to { transform: translateX(0); opacity: 1; }
+    }
+
+    @media (max-width: 1024px) {
+      .studio-container {
+        grid-template-columns: 1fr;
+      }
+      .control-panel {
+        max-height: none;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <a href="index.html" class="brand">
+      <div class="brand-icon">
+        <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path></svg>
+      </div>
+      <div>
+        <div class="brand-title">Zenthra Systems</div>
+        <div class="brand-tag">Autonomous Social Media Poster Studio</div>
+      </div>
+    </a>
+
+    <div class="nav-actions">
+      <a href="index.html" class="btn btn-secondary">← Back to Portal</a>
+      <button class="btn btn-primary" onclick="downloadPoster()">
+        <span>⬇ Download HD PNG</span>
+      </button>
+    </div>
+  </header>
+
+  <main class="studio-container">
+    <!-- Left Controls -->
+    <div class="control-panel">
+      <div class="panel-title">
+        <span>⚙️ Poster Customizer</span>
+        <span id="dimensionBadge" style="font-size: 0.75rem; color: var(--accent-primary); font-family: var(--font-mono);">1080 × 1350 (4:5)</span>
+      </div>
+
+      <div class="form-group">
+        <label>Aspect Ratio & Format</label>
+        <div class="pill-selector">
+          <button class="pill-btn active" id="ratio45" onclick="setAspectRatio('4:5')">4:5 Portrait</button>
+          <button class="pill-btn" id="ratio11" onclick="setAspectRatio('1:1')">1:1 Square</button>
+          <button class="pill-btn" id="ratio169" onclick="setAspectRatio('16:9')">16:9 Card</button>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Visual Theme Palette</label>
+        <div class="pill-selector">
+          <button class="pill-btn active" id="themeDark" onclick="setTheme('dark')">Midnight Blue</button>
+          <button class="pill-btn" id="themeEmerald" onclick="setTheme('emerald')">Cyber Emerald</button>
+          <button class="pill-btn" id="themeIndigo" onclick="setTheme('indigo')">Executive Indigo</button>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>High-Converting B2B Template Presets</label>
+        <div style="display: flex; gap: 0.35rem; flex-wrap: wrap; margin-bottom: 0.5rem;">
+          <button type="button" class="pill-btn preset-chip active" data-preset="brochure" style="font-size: 0.72rem; padding: 0.25rem 0.6rem;" onclick="selectTemplateChip('brochure')">Brochure vs AI</button>
+          <button type="button" class="pill-btn preset-chip" data-preset="zapier" style="font-size: 0.72rem; padding: 0.25rem 0.6rem;" onclick="selectTemplateChip('zapier')">Zapier Tax</button>
+          <button type="button" class="pill-btn preset-chip" data-preset="lead-triage" style="font-size: 0.72rem; padding: 0.25rem 0.6rem;" onclick="selectTemplateChip('lead-triage')">Sub-30s Triage</button>
+          <button type="button" class="pill-btn preset-chip" data-preset="invoice-ai" style="font-size: 0.72rem; padding: 0.25rem 0.6rem;" onclick="selectTemplateChip('invoice-ai')">Invoice AI</button>
+          <button type="button" class="pill-btn preset-chip" data-preset="cyclistic-bi" style="font-size: 0.72rem; padding: 0.25rem 0.6rem;" onclick="selectTemplateChip('cyclistic-bi')">BI Dashboard</button>
+          <button type="button" class="pill-btn preset-chip" data-preset="bottleneck-breakdown" style="font-size: 0.72rem; padding: 0.25rem 0.6rem;" onclick="selectTemplateChip('bottleneck-breakdown')">Margin Leak</button>
+          <button type="button" class="pill-btn preset-chip" data-preset="ai-vs-human" style="font-size: 0.72rem; padding: 0.25rem 0.6rem;" onclick="selectTemplateChip('ai-vs-human')">AI vs FTE</button>
+          <button type="button" class="pill-btn preset-chip" data-preset="scale-matrix" style="font-size: 0.72rem; padding: 0.25rem 0.6rem;" onclick="selectTemplateChip('scale-matrix')">Scale Matrix</button>
+        </div>
+        <select class="preset-select" id="presetSelect" onchange="loadPreset(this.value)">
+          <option value="brochure">1. Brochure Sites vs Next.js + AI Agents</option>
+          <option value="zapier">2. The True Cost of Zapier vs n8n Clusters</option>
+          <option value="lead-triage">3. Eliminating Manual Lead Routing (Sub-30s)</option>
+          <option value="invoice-ai">4. Autonomous Invoicing & Vision GL Reconciliation</option>
+          <option value="cyclistic-bi">5. Cyclistic BI & Scalable BigQuery Pipelines</option>
+          <option value="bottleneck-breakdown">6. The Bottleneck Breakdown (Margin Leak)</option>
+          <option value="ai-vs-human">7. AI Agent vs Human FTE Benchmark</option>
+          <option value="scale-matrix">8. The Autonomous Scale Matrix</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>Category Tag</label>
+        <input type="text" id="inputCategory" class="form-input" value="B2B TECH INSIGHT" oninput="handleInput()">
+      </div>
+
+      <div class="form-group">
+        <label>Main Headline</label>
+        <input type="text" id="inputHeadline" class="form-input" value="Is Your Website Costing You 6-Figure Deals?" oninput="handleInput()">
+      </div>
+
+      <div class="form-group">
+        <label>Subheadline</label>
+        <input type="text" id="inputSubheadline" class="form-input" value="Why modern Western enterprises are leaving template sites behind." oninput="handleInput()">
+      </div>
+
+      <!-- Point 1 -->
+      <div class="point-card-control">
+        <span class="point-header">VALUE POINT 01</span>
+        <input type="text" id="p1Title" class="form-input" value="Sub-Second Page Speeds (<0.8s)" oninput="handleInput()">
+        <input type="text" id="p1Desc" class="form-input" value="Engineered in Next.js & TypeScript for 99+ Core Web Vitals." oninput="handleInput()">
+      </div>
+
+      <!-- Point 2 -->
+      <div class="point-card-control">
+        <span class="point-header">VALUE POINT 02</span>
+        <input type="text" id="p2Title" class="form-input" value="24/7 Autonomous AI Sales Agents" oninput="handleInput()">
+        <input type="text" id="p2Desc" class="form-input" value="Instantly qualify and book inbound leads without human delay." oninput="handleInput()">
+      </div>
+
+      <!-- Point 3 -->
+      <div class="point-card-control">
+        <span class="point-header">VALUE POINT 03</span>
+        <input type="text" id="p3Title" class="form-input" value="Custom API & Microservice Pipelines" oninput="handleInput()">
+        <input type="text" id="p3Desc" class="form-input" value="Automate payments, CRM sync, and enterprise workflows." oninput="handleInput()">
+      </div>
+
+      <div class="form-group">
+        <label>CTA Header Text</label>
+        <input type="text" id="inputCtaText" class="form-input" value="Scale your digital infrastructure with custom AI & web engineering." oninput="handleInput()">
+      </div>
+
+      <div class="form-group">
+        <label>CTA Contact Text</label>
+        <input type="text" id="inputCtaSub" class="form-input" value="DM us or email connect.zenthra@gmail.com" oninput="handleInput()">
+      </div>
+    </div>
+
+    <!-- Right Canvas & Copy Strip -->
+    <div class="preview-area">
+      <div class="canvas-wrapper">
+        <canvas id="posterCanvas" width="1080" height="1350"></canvas>
+      </div>
+
+      <div class="copy-strip">
+        <button class="btn btn-secondary" onclick="copyCopy('linkedin')">📋 Copy LinkedIn Post</button>
+        <button class="btn btn-secondary" onclick="copyCopy('twitter')">📋 Copy X / Twitter</button>
+        <button class="btn btn-secondary" onclick="copyCopy('instagram')">📋 Copy IG Caption</button>
+        <button class="btn btn-action" id="btnN8nCloud" onclick="dispatchN8nCloudSocial()" style="background: #ea4b71; color: #ffffff; border: none; font-weight: 700; box-shadow: 0 2px 8px rgba(234, 75, 113, 0.35);">⚡ Dispatch to n8n Cloud</button>
+        <button class="btn btn-primary" onclick="downloadPoster()">⬇ Download HD PNG</button>
+      </div>
+    </div>
+  </main>
+
+  <div id="toastContainer" class="toast-container"></div>
+
+  <script>
+    const THEMES = {
+      dark: {
+        bg: '#0a0d14',
+        glow: 'rgba(0, 102, 255, 0.22)',
+        brand: '#0084ff',
+        brandSub: '#64748b',
+        categoryBg: '#1e293b',
+        categoryText: '#38bdf8',
+        headline: '#ffffff',
+        subheadline: '#94a3b8',
+        divider: '#1e293b',
+        cardBg: '#0f172a',
+        cardBorder: '#1e293b',
+        cardNumber: '#0084ff',
+        cardTitle: '#f8fafc',
+        cardDesc: '#94a3b8',
+        ctaBg: '#111827',
+        ctaBorder: '#1e293b',
+        ctaText: '#ffffff',
+        ctaSub: '#38bdf8'
+      },
+      emerald: {
+        bg: '#05130e',
+        glow: 'rgba(16, 185, 129, 0.22)',
+        brand: '#10b981',
+        brandSub: '#64748b',
+        categoryBg: '#064e3b',
+        categoryText: '#6ee7b7',
+        headline: '#ffffff',
+        subheadline: '#94a3b8',
+        divider: '#064e3b',
+        cardBg: '#0a2218',
+        cardBorder: '#064e3b',
+        cardNumber: '#10b981',
+        cardTitle: '#f8fafc',
+        cardDesc: '#94a3b8',
+        ctaBg: '#071e15',
+        ctaBorder: '#064e3b',
+        ctaText: '#ffffff',
+        ctaSub: '#6ee7b7'
+      },
+      indigo: {
+        bg: '#090d1a',
+        glow: 'rgba(99, 102, 241, 0.22)',
+        brand: '#6366f1',
+        brandSub: '#64748b',
+        categoryBg: '#1e1b4b',
+        categoryText: '#a5b4fc',
+        headline: '#ffffff',
+        subheadline: '#94a3b8',
+        divider: '#1e1b4b',
+        cardBg: '#11162d',
+        cardBorder: '#1e1b4b',
+        cardNumber: '#6366f1',
+        cardTitle: '#f8fafc',
+        cardDesc: '#94a3b8',
+        ctaBg: '#0d1224',
+        ctaBorder: '#1e1b4b',
+        ctaText: '#ffffff',
+        ctaSub: '#a5b4fc'
+      }
+    };
+
+    const PRESETS = {
+      brochure: {
+        category: "B2B TECH INSIGHT",
+        headline: "Is Your Website Costing You 6-Figure Deals?",
+        subheadline: "Why modern Western enterprises are leaving template sites behind.",
+        p1Title: "Sub-Second Page Speeds (<0.8s)",
+        p1Desc: "Engineered in Next.js & TypeScript for 99+ Core Web Vitals.",
+        p2Title: "24/7 Autonomous AI Sales Agents",
+        p2Desc: "Instantly qualify and book inbound leads without human delay.",
+        p3Title: "Custom API & Microservice Pipelines",
+        p3Desc: "Automate payments, CRM sync, and enterprise workflows.",
+        ctaText: "Scale your digital infrastructure with custom AI & web engineering.",
+        ctaSub: "DM us or email connect.zenthra@gmail.com",
+        linkedin: "Most B2B websites lose 60% of enterprise prospects before the page finishes loading.\n\nIn 2026, static brochure templates built on bloated WordPress themes are killing deal flow. Scaling brands in the US and Europe are switching to custom Next.js applications equipped with autonomous AI qualification agents.\n\nHere is what that looks like in production:\n01. Sub-second page loads (<0.8s) with 99+ Core Web Vitals.\n02. 24/7 AI agents qualifying incoming traffic and scheduling directly on Cal.com.\n03. Turnkey 2-week delivery with zero vendor lock-in.\n\nWant to audit your web infrastructure? Drop a comment or email us at connect.zenthra@gmail.com.\n\n#SoftwareEngineering #B2BGrowth #NextJS #Automation #EnterpriseAI",
+        twitter: "Is your website quietly killing 6-figure enterprise deals?\n\nTemplate sites take 3+ seconds to load. Modern Next.js apps load in <0.8s with 24/7 autonomous AI concierges that book meetings while you sleep.\n\nWe build turnkey in 2 weeks. DM or email connect.zenthra@gmail.com ⚡",
+        instagram: "Stop letting slow brochure websites leak enterprise revenue.\n\nZenthra Systems architects high-throughput web apps and autonomous n8n AI pipelines for founders worldwide.\n\nSwipe through for the 3 core pillars ➡️\n\nLink in bio to calculate your ROI or email connect.zenthra@gmail.com."
+      },
+      zapier: {
+        category: "ENTERPRISE AUTOMATION",
+        headline: "Why Zapier Breaks at 10,000 Tasks/Mo",
+        subheadline: "The true financial breakdown between task stitching and custom n8n clusters.",
+        p1Title: "Task Tax Elimination",
+        p1Desc: "Save $800+/mo in Zapier task overages with self-hosted n8n.",
+        p2Title: "Sub-Second Event Processing",
+        p2Desc: "Direct Webhook-to-PostgreSQL processing with zero rate limits.",
+        p3Title: "Complete Data Sovereignty",
+        p3Desc: "Customer PII never traverses third-party automation servers.",
+        ctaText: "Migrate your mission-critical workflows to private n8n infrastructure.",
+        ctaSub: "Book a discovery call: https://cal.com/zenthra-systems-dyuqpi/30min",
+        linkedin: "Zapier is great for a 2-person MVP. But once your company hits 10,000+ monthly events, the 'task tax' becomes an exorbitant operational drain.\n\nAt Zenthra Systems, we engineer custom self-hosted and cloud n8n clusters that:\n1. Eliminate recurring task overage fees.\n2. Execute webhooks sub-second without queuing delays.\n3. Guarantee 100% GDPR alignment and data privacy.\n\nStop renting fragile automations. Own your infrastructure.\n\n#n8n #Automation #SystemsEngineering #B2B #DataPipelines",
+        twitter: "Paying $800+/mo for Zapier task overages?\n\nMigrate to enterprise n8n workflow systems. Sub-second event routing, zero task tax, and 100% data sovereignty.\n\nLearn more: connect.zenthra@gmail.com",
+        instagram: "The Zapier tax is real. Once you hit scale, custom n8n workflow pipelines save tens of thousands in recurring software fees.\n\nDM 'AUTOMATE' to audit your stack."
+      },
+      "lead-triage": {
+        category: "LEAD CONVERSION",
+        headline: "Stop Paying Salaries for Manual Lead Routing",
+        subheadline: "How autonomous n8n workflows triage Meta & Google Ads leads in <30 seconds.",
+        p1Title: "Sub-30 Second Lead Enrichment",
+        p1Desc: "Enrich Apollo & Hunter data and sync directly to HubSpot CRM.",
+        p2Title: "Intelligent Slack Priority Pings",
+        p2Desc: "Alert account executives with custom discovery memos instantly.",
+        p3Title: "Automated Calendar Sync",
+        p3Desc: "Send pre-filled Cal.com scheduling links while the lead is hot.",
+        ctaText: "Convert inbound demand into booked discovery calls automatically.",
+        ctaSub: "Schedule your strategy session on Cal.com",
+        linkedin: "If your sales team takes 4 hours to follow up with an inbound lead, your close rate drops by 80%.\n\nOur autonomous lead triage pipeline captures, enriches, deduplicates, and alerts your team on Slack in under 30 seconds.\n\nDelivered turnkey in 2 weeks.\n\n#SalesOps #HubSpot #n8n #LeadGeneration",
+        twitter: "Speed to lead is everything. Our automated n8n pipeline enriches and routes leads in <30 seconds.\n\nDM us to implement this for your team.",
+        instagram: "How fast is your sales team following up with new leads? If it's more than 5 minutes, you're losing deals.\n\nAutomate sub-30s triage with Zenthra Systems."
+      },
+      "invoice-ai": {
+        category: "FINANCIAL AI OPS",
+        headline: "The 24/7 Autonomous Invoicing AI",
+        subheadline: "Extract PDF line-items, reconcile POs, and sync to QuickBooks automatically.",
+        p1Title: "Multi-Page Vision Extraction",
+        p1Desc: "GPT-4o vision parses complex PDF tables and multi-currency line items.",
+        p2Title: "Two-Way Vendor Reconciliation",
+        p2Desc: "Matches vendor invoices against internal purchase orders autonomously.",
+        p3Title: "Confidence Scored Approvals",
+        p3Desc: "Auto-approves >98% match scores; routes edge cases to Slack.",
+        ctaText: "Eliminate repetitive manual accounting entry forever.",
+        ctaSub: "Inquiries: connect.zenthra@gmail.com",
+        linkedin: "Manual invoice entry is one of the highest-friction, error-prone operations in mid-market companies.\n\nWe build autonomous document vision systems that parse PDFs, reconcile purchase orders, and sync straight into QuickBooks or ERPs with 99%+ accuracy.\n\n#FinTech #AIAutomation #Accounting #GPT4o",
+        twitter: "Still paying your finance team to manually re-type invoice numbers into QuickBooks?\n\nAutomate line-item extraction and PO matching with our custom vision AI pipeline.",
+        instagram: "Automate accounting bottlenecks. Parse vendor PDFs and reconcile POs autonomously in seconds."
+      },
+      "cyclistic-bi": {
+        category: "DATA ENGINEERING",
+        headline: "From Raw Data to Executive Looker Dashboards",
+        subheadline: "How we transformed millions of ride-share records into real-time BI.",
+        p1Title: "BigQuery Automated ETL",
+        p1Desc: "Hourly ingestion and cleaning of multi-gigabyte transactional tables.",
+        p2Title: "Geospatial Member Segmentation",
+        p2Desc: "Clustered rider behaviors to uncover high-margin conversion funnels.",
+        p3Title: "Executive Looker Visualizations",
+        p3Desc: "Real-time KPI boards with automated weekly email digests.",
+        ctaText: "Turn your scattered databases into actionable business intelligence.",
+        ctaSub: "Book a consultation: https://cal.com/zenthra-systems-dyuqpi/30min",
+        linkedin: "Scattered data in CSVs and disparate databases costs enterprises millions in blind spots.\n\nOur Cyclistic data pipeline case study proves how automated BigQuery ETL and Looker Studio dashboards unlock immediate operational clarity.\n\n#DataEngineering #BigQuery #LookerStudio #Analytics",
+        twitter: "Turn scattered database records into real-time executive dashboards. Built on BigQuery and Looker.",
+        instagram: "Actionable business intelligence engineered for high-growth operators. Check out our Cyclistic data pipeline case study."
+      },
+      "bottleneck-breakdown": {
+        category: "OPERATIONAL AUDIT",
+        headline: "Where Your Margins Are Really Leaking",
+        subheadline: "The hidden $150k/year operational tax of manual data transfers.",
+        p1Title: "Fragmented Tool Silos",
+        p1Desc: "Data trapped between CRM, ERP, and spreadsheets causes 20+ hours of weekly manual sync.",
+        p2Title: "Human Latency Tax",
+        p2Desc: "Every 10-minute delay in operational handoffs costs 15% in customer churn and missed SLAs.",
+        p3Title: "Autonomous Event Mesh",
+        p3Desc: "Private n8n clusters bridge tools with real-time webhooks and guaranteed retries.",
+        ctaText: "Reclaim 85% of your team's wasted administrative hours.",
+        ctaSub: "Schedule an operational audit: https://cal.com/zenthra-systems-dyuqpi/30min",
+        linkedin: "Where do operational margins really leak in $2M-$20M companies?\n\nIt's rarely in marketing ad spend. It's in the invisible 'Manual Glue Tax'—high-salary operators copying CSVs, re-typing invoice items, and manually re-assigning leads across tools.\n\nAt Zenthra Systems, we replace brittle manual handoffs with private, self-hosted n8n event meshes.\n\nKey takeaways:\n• Zero recurring per-task overages\n• Real-time webhook reconciliation\n• 85% reduction in manual hours\n\nBook a 30-min architecture review: https://cal.com/zenthra-systems-dyuqpi/30min\n\n#Operations #Automation #n8n #B2B #SystemsEngineering",
+        twitter: "Your margins aren't leaking in ad spend. They're leaking in the 20 hours/week your team spends copying data between CRM, ERP, and spreadsheets.\n\nWe build autonomous event meshes that fix this turnkey: https://cal.com/zenthra-systems-dyuqpi/30min",
+        instagram: "Stop paying high-salary team members to act as human data routers.\n\nPrivate autonomous n8n workflows automate 85% of administrative tasks.\n\nLink in bio for custom audit."
+      },
+      "ai-vs-human": {
+        category: "EXECUTIVE BENCHMARK",
+        headline: "AI Agent vs. Human FTE: The Real Numbers",
+        subheadline: "Comparing 24/7 autonomous agents against traditional operational overhead.",
+        p1Title: "Response Latency (<30s vs 4.2h)",
+        p1Desc: "Instant qualification and lead routing vs end-of-day inbox triage and delayed follow-ups.",
+        p2Title: "Coverage (24/7/365 vs 40h/wk)",
+        p2Desc: "Zero after-hours backlog or missed international time-zone enterprise opportunities.",
+        p3Title: "Cost ($0 Overage vs $75k+ FTE)",
+        p3Desc: "Self-hosted workflows eliminate expensive per-seat software licenses and staffing bloat.",
+        ctaText: "Benchmark your operations: schedule a technical audit on Cal.com.",
+        ctaSub: "Book: https://cal.com/zenthra-systems-dyuqpi/30min | connect.zenthra@gmail.com",
+        linkedin: "The math behind autonomous operations is no longer speculative.\n\nComparing an autonomous n8n AI agent with traditional human triage:\n⏱️ Speed: <30 seconds vs 4.2 hours average response latency\n🌍 Availability: 24/7/365 continuous operation across all global time zones\n💰 Financials: One-time engineering deployment vs $75,000+/year per FTE\n\nWe build turnkey production AI systems in 2 weeks.\n\nSchedule a strategy session: https://cal.com/zenthra-systems-dyuqpi/30min\n\n#ArtificialIntelligence #Operations #WorkflowAutomation #EnterpriseAI",
+        twitter: "AI Agent vs Human FTE:\n⚡ <30s response vs 4.2 hours\n🌐 24/7 coverage vs 40h/week\n📉 $0 task tax vs $75k/year overhead\n\nAudit your workflow: https://cal.com/zenthra-systems-dyuqpi/30min",
+        instagram: "The future of operations is autonomous.\n\nSwipe to see the hard numbers comparing AI agents to traditional manual workflows ➡️"
+      },
+      "scale-matrix": {
+        category: "SYSTEMS ARCHITECTURE",
+        headline: "The Autonomous Scale Matrix",
+        subheadline: "How enterprise engineering teams scale from 1,000 to 1,000,000 monthly events.",
+        p1Title: "Webhook-First Ingestion",
+        p1Desc: "Ingest events instantly with HMAC verification and dead-letter queue fallbacks.",
+        p2Title: "Private Supabase pgvector",
+        p2Desc: "Sub-50ms semantic search on company knowledge without third-party data leakage.",
+        p3Title: "Decoupled Orchestration",
+        p3Desc: "Containerized n8n clusters that scale horizontally without per-step pricing.",
+        ctaText: "Upgrade to an enterprise event mesh with turnkey 2-week delivery.",
+        ctaSub: "Book architecture review: https://cal.com/zenthra-systems-dyuqpi/30min",
+        linkedin: "Scaling from 1,000 to 1,000,000 workflow events breaks fragile no-code setups.\n\nHere is the architecture we deploy for enterprise clients:\n1. Webhook-first ingestion with HMAC security\n2. Private Supabase pgvector database for sovereign knowledge retrieval\n3. High-throughput n8n cluster for business logic\n\nComplete data sovereignty. Zero vendor lock-in.\n\nSchedule a technical session: https://cal.com/zenthra-systems-dyuqpi/30min\n\n#SoftwareArchitecture #n8n #Supabase #Engineering #DevOps",
+        twitter: "How to scale to 1M events without Zapier bill shocks:\n1. Webhook ingestion + HMAC\n2. Private Supabase pgvector\n3. Self-hosted n8n cluster\n\nTurnkey in 2 weeks: https://cal.com/zenthra-systems-dyuqpi/30min",
+        instagram: "The enterprise architecture behind zero-maintenance automations. Full breakdown inside."
+      }
+    };
+
+    function selectTemplateChip(key) {
+      document.getElementById('presetSelect').value = key;
+      loadPreset(key);
+    }
+
+    let activePreset = 'brochure';
+    let activeTheme = 'dark';
+    let activeRatio = '4:5';
+
+    function setAspectRatio(ratio) {
+      activeRatio = ratio;
+      document.querySelectorAll('#ratio45, #ratio11, #ratio169').forEach(btn => btn.classList.remove('active'));
+      if (ratio === '4:5') document.getElementById('ratio45').classList.add('active');
+      if (ratio === '1:1') document.getElementById('ratio11').classList.add('active');
+      if (ratio === '16:9') document.getElementById('ratio169').classList.add('active');
+
+      const badge = document.getElementById('dimensionBadge');
+      if (ratio === '4:5') badge.textContent = '1080 × 1350 (4:5)';
+      if (ratio === '1:1') badge.textContent = '1080 × 1080 (1:1)';
+      if (ratio === '16:9') badge.textContent = '1200 × 675 (16:9)';
+
+      renderPoster();
+      showToast(`Aspect ratio set to ${ratio}`);
+    }
+
+    function setTheme(theme) {
+      activeTheme = theme;
+      document.querySelectorAll('#themeDark, #themeEmerald, #themeIndigo').forEach(btn => btn.classList.remove('active'));
+      if (theme === 'dark') document.getElementById('themeDark').classList.add('active');
+      if (theme === 'emerald') document.getElementById('themeEmerald').classList.add('active');
+      if (theme === 'indigo') document.getElementById('themeIndigo').classList.add('active');
+
+      renderPoster();
+      showToast(`Applied theme: ${theme.toUpperCase()}`);
+    }
+
+    function loadPreset(key) {
+      activePreset = key;
+      const data = PRESETS[key];
+      if (!data) return;
+
+      document.querySelectorAll('.preset-chip').forEach(btn => {
+        if (btn.getAttribute('data-preset') === key) btn.classList.add('active');
+        else btn.classList.remove('active');
+      });
+
+      document.getElementById('inputCategory').value = data.category;
+      document.getElementById('inputHeadline').value = data.headline;
+      document.getElementById('inputSubheadline').value = data.subheadline;
+      document.getElementById('p1Title').value = data.p1Title;
+      document.getElementById('p1Desc').value = data.p1Desc;
+      document.getElementById('p2Title').value = data.p2Title;
+      document.getElementById('p2Desc').value = data.p2Desc;
+      document.getElementById('p3Title').value = data.p3Title;
+      document.getElementById('p3Desc').value = data.p3Desc;
+      document.getElementById('inputCtaText').value = data.ctaText;
+      document.getElementById('inputCtaSub').value = data.ctaSub;
+
+      renderPoster();
+      showToast(`Loaded Template: ${data.category}`);
+    }
+
+    function handleInput() {
+      renderPoster();
+    }
+
+    function renderPoster() {
+      const canvas = document.getElementById('posterCanvas');
+      const ctx = canvas.getContext('2d');
+
+      // Set dimensions by ratio
+      let width = 1080;
+      let height = 1350;
+
+      if (activeRatio === '1:1') {
+        width = 1080;
+        height = 1080;
+      } else if (activeRatio === '16:9') {
+        width = 1200;
+        height = 675;
+      }
+
+      canvas.width = width;
+      canvas.height = height;
+
+      const theme = THEMES[activeTheme] || THEMES.dark;
+
+      // Values
+      const category = document.getElementById('inputCategory').value;
+      const headline = document.getElementById('inputHeadline').value;
+      const subheadline = document.getElementById('inputSubheadline').value;
+      const p1Title = document.getElementById('p1Title').value;
+      const p1Desc = document.getElementById('p1Desc').value;
+      const p2Title = document.getElementById('p2Title').value;
+      const p2Desc = document.getElementById('p2Desc').value;
+      const p3Title = document.getElementById('p3Title').value;
+      const p3Desc = document.getElementById('p3Desc').value;
+      const ctaText = document.getElementById('inputCtaText').value;
+      const ctaSub = document.getElementById('inputCtaSub').value;
+
+      // 1. Background
+      ctx.fillStyle = theme.bg;
+      ctx.fillRect(0, 0, width, height);
+
+      // 2. Subtle Accent Glow
+      const glowX = width * 0.85;
+      const glowY = height * 0.18;
+      const gradient = ctx.createRadialGradient(glowX, glowY, 40, glowX, glowY, width * 0.55);
+      gradient.addColorStop(0, theme.glow);
+      gradient.addColorStop(1, 'transparent');
+      ctx.fillStyle = gradient;
+      ctx.fillRect(0, 0, width, height);
+
+      if (activeRatio === '16:9') {
+        // Landscape Layout
+        renderLandscape(ctx, width, height, theme, { category, headline, subheadline, p1Title, p1Desc, p2Title, p2Desc, p3Title, p3Desc, ctaText, ctaSub });
+      } else if (activeRatio === '1:1') {
+        // Square Layout
+        renderSquare(ctx, width, height, theme, { category, headline, subheadline, p1Title, p1Desc, p2Title, p2Desc, p3Title, p3Desc, ctaText, ctaSub });
+      } else {
+        // Portrait (4:5) Default Layout
+        renderPortrait(ctx, width, height, theme, { category, headline, subheadline, p1Title, p1Desc, p2Title, p2Desc, p3Title, p3Desc, ctaText, ctaSub });
+      }
+    }
+
+    function renderPortrait(ctx, width, height, theme, data) {
+      // Top Brand Header
+      ctx.font = 'bold 24px "Plus Jakarta Sans", sans-serif';
+      ctx.fillStyle = theme.brand;
+      ctx.fillText('ZENTHRA SYSTEMS', 80, 100);
+
+      ctx.font = '600 16px "Plus Jakarta Sans", sans-serif';
+      ctx.fillStyle = theme.brandSub;
+      ctx.fillText('ENTERPRISE DIGITAL ARCHITECTURE', 80, 130);
+
+      // Category Tag
+      ctx.fillStyle = theme.categoryBg;
+      ctx.beginPath();
+      ctx.roundRect(80, 185, 230, 42, 8);
+      ctx.fill();
+
+      ctx.font = '700 14px "Plus Jakarta Sans", sans-serif';
+      ctx.fillStyle = theme.categoryText;
+      ctx.fillText(`• ${data.category.toUpperCase()}`, 100, 212);
+
+      // Main Headline
+      ctx.font = '800 50px "Plus Jakarta Sans", sans-serif';
+      ctx.fillStyle = theme.headline;
+      ctx.fillText(data.headline, 80, 310, 920);
+
+      // Subheadline
+      ctx.font = 'normal 24px "Plus Jakarta Sans", sans-serif';
+      ctx.fillStyle = theme.subheadline;
+      ctx.fillText(data.subheadline, 80, 380, 920);
+
+      // Divider Line
+      ctx.strokeStyle = theme.divider;
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.moveTo(80, 440);
+      ctx.lineTo(1000, 440);
+      ctx.stroke();
+
+      // Points
+      const points = [
+        { title: data.p1Title, desc: data.p1Desc },
+        { title: data.p2Title, desc: data.p2Desc },
+        { title: data.p3Title, desc: data.p3Desc }
+      ];
+
+      let startY = 510;
+      points.forEach((point, index) => {
+        ctx.fillStyle = theme.cardBg;
+        ctx.beginPath();
+        ctx.roundRect(80, startY, 920, 105, 12);
+        ctx.fill();
+        ctx.strokeStyle = theme.cardBorder;
+        ctx.lineWidth = 1.5;
+        ctx.stroke();
+
+        ctx.fillStyle = theme.cardNumber;
+        ctx.font = 'bold 22px "JetBrains Mono", monospace';
+        ctx.fillText(`0${index + 1}`, 110, startY + 60);
+
+        ctx.font = '700 22px "Plus Jakarta Sans", sans-serif';
+        ctx.fillStyle = theme.cardTitle;
+        ctx.fillText(point.title, 160, startY + 46);
+
+        ctx.font = 'normal 18px "Plus Jakarta Sans", sans-serif';
+        ctx.fillStyle = theme.cardDesc;
+        ctx.fillText(point.desc, 160, startY + 78);
+
+        startY += 130;
+      });
+
+      // Footer / CTA
+      ctx.fillStyle = theme.ctaBg;
+      ctx.beginPath();
+      ctx.roundRect(80, 1140, 920, 120, 12);
+      ctx.fill();
+      ctx.strokeStyle = theme.ctaBorder;
+      ctx.stroke();
+
+      ctx.font = '700 22px "Plus Jakarta Sans", sans-serif';
+      ctx.fillStyle = theme.ctaText;
+      ctx.fillText(data.ctaText, 110, 1190);
+
+      ctx.font = '600 18px "Plus Jakarta Sans", sans-serif';
+      ctx.fillStyle = theme.ctaSub;
+      ctx.fillText(data.ctaSub, 110, 1225);
+    }
+
+    function renderSquare(ctx, width, height, theme, data) {
+      ctx.font = 'bold 22px "Plus Jakarta Sans", sans-serif';
+      ctx.fillStyle = theme.brand;
+      ctx.fillText('ZENTHRA SYSTEMS', 60, 80);
+
+      ctx.fillStyle = theme.categoryBg;
+      ctx.beginPath();
+      ctx.roundRect(60, 120, 220, 36, 8);
+      ctx.fill();
+      ctx.font = '700 13px "Plus Jakarta Sans", sans-serif';
+      ctx.fillStyle = theme.categoryText;
+      ctx.fillText(`• ${data.category.toUpperCase()}`, 78, 143);
+
+      ctx.font = '800 44px "Plus Jakarta Sans", sans-serif';
+      ctx.fillStyle = theme.headline;
+      ctx.fillText(data.headline, 60, 220, 960);
+
+      ctx.font = 'normal 20px "Plus Jakarta Sans", sans-serif';
+      ctx.fillStyle = theme.subheadline;
+      ctx.fillText(data.subheadline, 60, 280, 960);
+
+      const points = [
+        { title: data.p1Title, desc: data.p1Desc },
+        { title: data.p2Title, desc: data.p2Desc },
+        { title: data.p3Title, desc: data.p3Desc }
+      ];
+
+      let startY = 340;
+      points.forEach((point, index) => {
+        ctx.fillStyle = theme.cardBg;
+        ctx.beginPath();
+        ctx.roundRect(60, startY, 960, 95, 12);
+        ctx.fill();
+        ctx.strokeStyle = theme.cardBorder;
+        ctx.stroke();
+
+        ctx.fillStyle = theme.cardNumber;
+        ctx.font = 'bold 20px "JetBrains Mono", monospace';
+        ctx.fillText(`0${index + 1}`, 90, startY + 54);
+
+        ctx.font = '700 20px "Plus Jakarta Sans", sans-serif';
+        ctx.fillStyle = theme.cardTitle;
+        ctx.fillText(point.title, 140, startY + 42);
+
+        ctx.font = 'normal 16px "Plus Jakarta Sans", sans-serif';
+        ctx.fillStyle = theme.cardDesc;
+        ctx.fillText(point.desc, 140, startY + 70);
+
+        startY += 115;
+      });
+
+      ctx.fillStyle = theme.ctaBg;
+      ctx.beginPath();
+      ctx.roundRect(60, 920, 960, 100, 12);
+      ctx.fill();
+      ctx.strokeStyle = theme.ctaBorder;
+      ctx.stroke();
+
+      ctx.font = '700 19px "Plus Jakarta Sans", sans-serif';
+      ctx.fillStyle = theme.ctaText;
+      ctx.fillText(data.ctaText, 90, 960);
+
+      ctx.font = '600 16px "Plus Jakarta Sans", sans-serif';
+      ctx.fillStyle = theme.ctaSub;
+      ctx.fillText(data.ctaSub, 90, 992);
+    }
+
+    function renderLandscape(ctx, width, height, theme, data) {
+      ctx.font = 'bold 20px "Plus Jakarta Sans", sans-serif';
+      ctx.fillStyle = theme.brand;
+      ctx.fillText('ZENTHRA SYSTEMS', 60, 60);
+
+      ctx.fillStyle = theme.categoryBg;
+      ctx.beginPath();
+      ctx.roundRect(300, 40, 200, 30, 6);
+      ctx.fill();
+      ctx.font = '700 12px "Plus Jakarta Sans", sans-serif';
+      ctx.fillStyle = theme.categoryText;
+      ctx.fillText(`• ${data.category.toUpperCase()}`, 315, 60);
+
+      ctx.font = '800 38px "Plus Jakarta Sans", sans-serif';
+      ctx.fillStyle = theme.headline;
+      ctx.fillText(data.headline, 60, 130, 1080);
+
+      ctx.font = 'normal 18px "Plus Jakarta Sans", sans-serif';
+      ctx.fillStyle = theme.subheadline;
+      ctx.fillText(data.subheadline, 60, 175, 1080);
+
+      const points = [
+        { title: data.p1Title, desc: data.p1Desc },
+        { title: data.p2Title, desc: data.p2Desc },
+        { title: data.p3Title, desc: data.p3Desc }
+      ];
+
+      // 3 side-by-side cards
+      const cardWidth = 345;
+      let startX = 60;
+      points.forEach((point, index) => {
+        ctx.fillStyle = theme.cardBg;
+        ctx.beginPath();
+        ctx.roundRect(startX, 230, cardWidth, 230, 12);
+        ctx.fill();
+        ctx.strokeStyle = theme.cardBorder;
+        ctx.stroke();
+
+        ctx.fillStyle = theme.cardNumber;
+        ctx.font = 'bold 20px "JetBrains Mono", monospace';
+        ctx.fillText(`0${index + 1}`, startX + 25, 275);
+
+        ctx.font = '700 18px "Plus Jakarta Sans", sans-serif';
+        ctx.fillStyle = theme.cardTitle;
+        ctx.fillText(point.title, startX + 25, 320, cardWidth - 50);
+
+        ctx.font = 'normal 15px "Plus Jakarta Sans", sans-serif';
+        ctx.fillStyle = theme.cardDesc;
+        wrapText(ctx, point.desc, startX + 25, 360, cardWidth - 50, 22);
+
+        startX += 365;
+      });
+
+      ctx.fillStyle = theme.ctaBg;
+      ctx.beginPath();
+      ctx.roundRect(60, 500, 1080, 110, 12);
+      ctx.fill();
+      ctx.strokeStyle = theme.ctaBorder;
+      ctx.stroke();
+
+      ctx.font = '700 18px "Plus Jakarta Sans", sans-serif';
+      ctx.fillStyle = theme.ctaText;
+      ctx.fillText(data.ctaText, 90, 545);
+
+      ctx.font = '600 15px "Plus Jakarta Sans", sans-serif';
+      ctx.fillStyle = theme.ctaSub;
+      ctx.fillText(data.ctaSub, 90, 580);
+    }
+
+    function wrapText(ctx, text, x, y, maxWidth, lineHeight) {
+      const words = text.split(' ');
+      let line = '';
+      for (let n = 0; n < words.length; n++) {
+        const testLine = line + words[n] + ' ';
+        const metrics = ctx.measureText(testLine);
+        if (metrics.width > maxWidth && n > 0) {
+          ctx.fillText(line, x, y);
+          line = words[n] + ' ';
+          y += lineHeight;
+        } else {
+          line = testLine;
+        }
+      }
+      ctx.fillText(line, x, y);
+    }
+
+    function downloadPoster() {
+      const canvas = document.getElementById('posterCanvas');
+      const link = document.createElement('a');
+      link.download = `zenthra_poster_${activeRatio.replace(':', '_')}_${Date.now()}.png`;
+      link.href = canvas.toDataURL('image/png');
+      link.click();
+      showToast(`Exported ${activeRatio} HD PNG to Downloads!`);
+    }
+
+    function copyCopy(platform) {
+      const preset = PRESETS[activePreset] || {};
+      const currentHeadline = document.getElementById('inputHeadline').value;
+      let text = preset[platform] || '';
+
+      if (preset.headline && currentHeadline !== preset.headline && text) {
+        text = text.replace(preset.headline, currentHeadline);
+      }
+
+      if (!text) {
+        text = `${currentHeadline}\n\n${document.getElementById('inputSubheadline').value}\n\n01. ${document.getElementById('p1Title').value}: ${document.getElementById('p1Desc').value}\n02. ${document.getElementById('p2Title').value}: ${document.getElementById('p2Desc').value}\n03. ${document.getElementById('p3Title').value}: ${document.getElementById('p3Desc').value}\n\nSchedule strategy session: https://cal.com/zenthra-systems-dyuqpi/30min\n\n#EnterpriseAI #Automation #n8n #Engineering`;
+      }
+
+      navigator.clipboard.writeText(text).then(() => {
+        showToast(`Copied ${platform.toUpperCase()} post copy to clipboard!`);
+      });
+    }
+
+    function showToast(message) {
+      const container = document.getElementById('toastContainer');
+      const toast = document.createElement('div');
+      toast.className = 'toast-msg';
+      toast.innerHTML = `<span>✓</span> <span>${message}</span>`;
+      container.appendChild(toast);
+      setTimeout(() => {
+        toast.style.opacity = '0';
+        toast.style.transform = 'translateY(10px)';
+        toast.style.transition = 'all 0.3s ease';
+        setTimeout(() => toast.remove(), 300);
+      }, 2600);
+    }
+
+    async function dispatchN8nCloudSocial() {
+      const btn = document.getElementById('btnN8nCloud');
+      const origText = btn.textContent;
+      btn.textContent = '⚡ Dispatching...';
+      btn.disabled = true;
+
+      const payload = {
+        category: document.getElementById('inputCategory').value,
+        headline: document.getElementById('inputHeadline').value,
+        subheadline: document.getElementById('inputSubheadline').value,
+        points: [
+          { title: document.getElementById('p1Title').value, desc: document.getElementById('p1Desc').value },
+          { title: document.getElementById('p2Title').value, desc: document.getElementById('p2Desc').value },
+          { title: document.getElementById('p3Title').value, desc: document.getElementById('p3Desc').value }
+        ],
+        booking_url: 'https://cal.com/zenthra-systems-dyuqpi/30min'
+      };
+
+      try {
+        const response = await fetch('https://zenthrasystems.app.n8n.cloud/webhook/zenthra-social-publish', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+
+        if (response.ok) {
+          showToast('✓ Dispatched to n8n Cloud Social Cluster!');
+        } else {
+          copyCopy('linkedin');
+          showToast('📋 Ready! Activate workflow in n8n Cloud to enable webhook streaming.');
+        }
+      } catch (err) {
+        copyCopy('linkedin');
+        showToast('📋 LinkedIn copy copied! Import workflows/zenthra_social_automation.json into n8n Cloud.');
+      } finally {
+        btn.textContent = origText;
+        btn.disabled = false;
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      renderPoster();
+    });
+  </script>
+</body>
+</html>

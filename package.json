@@ -1,0 +1,24 @@
+{
+  "name": "zenthra-system-lead-generation",
+  "version": "3.0.0",
+  "description": "Zenthra System Lead Generation — Autonomous Enterprise AI Operations, B2B Prospecting & SDR Outreach Engine with 12 Extended Service Practices",
+  "homepage": "https://readuanulfaridfahim.github.io/Zenthra-System-Lead-Generation/",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ReaduanulFaridFahim/Zenthra-System-Lead-Generation.git"
+  },
+  "scripts": {
+    "start": "node ui/server.js",
+    "seed": "node database/seed.js",
+    "seed:extended": "node database/seed_extended_services.js",
+    "orchestrate": "node agents/orchestrator.js",
+    "pricing": "node pricing/pricing_calculator.js",
+    "generate-bi": "node analytics/generate_bi_dataset.js",
+    "score": "node analytics/lead_scorer.js",
+    "campaigns": "node campaigns/campaign_matrix.js",
+    "n8n:list": "node workflows/n8n_client.js list"
+  },
+  "dependencies": {
+    "nodemailer": "^10.4.0"
+  }
+}

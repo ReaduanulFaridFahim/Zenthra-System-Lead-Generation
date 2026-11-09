@@ -1,0 +1,11 @@
+activity_id,date_key,account_id,activity_type,channel,status,touches_count
+ACT_01,20261005,ACC_001,Cold Email Dispatched,Email,Delivered,1
+ACT_02,20261007,ACC_001,LinkedIn Connection Sent,LinkedIn,Accepted,1
+ACT_03,20261009,ACC_001,Positive Reply Received,Email,Replied,1
+ACT_04,20261012,ACC_001,Discovery Meeting Conducted,Video Call,Completed,1
+ACT_05,20261012,ACC_004,Cold Email Dispatched,Email,Delivered,1
+ACT_06,20261015,ACC_004,Positive Reply Received,Email,Replied,1
+ACT_07,20261018,ACC_003,Cold Email Dispatched,Email,Delivered,1
+ACT_08,20261022,ACC_002,Cold Email Dispatched,Email,Delivered,1
+ACT_09,20261101,ACC_006,Cold Email Dispatched,Email,Delivered,1
+ACT_10,20261103,ACC_009,Cold Email Dispatched,Email,Delivered,1

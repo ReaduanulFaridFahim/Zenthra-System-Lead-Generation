@@ -1,0 +1,236 @@
+{
+  "name": "Zenthra Systems - Autonomous Lead Intelligence & Outreach Engine",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "e581297d-6060-4966-9ab5-1db3f05b1111",
+      "name": "When clicking ‘Test workflow’",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        220,
+        340
+      ]
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "zenthra-prospect-ingest",
+        "options": {}
+      },
+      "id": "c1389274-1234-4567-8901-abcdef123456",
+      "name": "Webhook: Ingest Prospect",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        220,
+        540
+      ],
+      "webhookId": "zenthra-prospect-ingest"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Sample Seed Account for testing if triggered manually\nconst input = $input.first()?.json || {};\nreturn [{\n  json: {\n    company_name: input.company_name || \"Apex Global Logistics\",\n    website: input.website || \"https://apex-global-logistics-example.com\",\n    industry: input.industry || \"Logistics & Freight\",\n    headcount: input.headcount || 180,\n    country: input.country || \"United States\",\n    decision_maker_name: input.decision_maker_name || \"Marcus Vance\",\n    decision_maker_title: input.decision_maker_title || \"Chief Financial Officer\",\n    decision_maker_email: input.decision_maker_email || \"marcus.v@apexlogistics-demo.com\",\n    observed_signals: input.observed_signals || \"Active job requisition for Power BI Analyst open for 52 days; recent press release on opening 3 new regional distribution centers; reliance on legacy ERP.\"\n  }\n}];"
+      },
+      "id": "78291032-4567-8901-2345-67890abcdef1",
+      "name": "Normalize Account Payload",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        460,
+        440
+      ]
+    },
+    {
+      "parameters": {
+        "model": "gpt-4o",
+        "messages": {
+          "values": [
+            {
+              "content": "You are the Lead Qualification, Service Matching, and Scoring Agent for Zenthra Systems (Technology Services, AI Engineering, Power BI, Automation, Web Dev, Data Analytics).\n\nAnalyze the target company below based on Zenthra's 100-point scoring model:\n1. Service & Vertical Fit (0-20 pts)\n2. Financial Capacity / Company Scale (0-20 pts)\n3. Demonstrable Technical Debt (0-20 pts)\n4. Buying Signals & Urgency (0-20 pts)\n5. Decision-Maker Accessibility (0-10 pts)\n6. Geographic / Legal Compatibility (0-10 pts)\n\nRecommend the SINGLE best primary Zenthra service wedge from:\n- Microsoft Power BI Modernization\n- AI Agents & Workflow Automation\n- Enterprise RAG & Knowledge Retrieval\n- Web Platform Modernization\n- Business Requirements Analysis\n\nReturn ONLY a valid JSON object matching this schema:\n{\n  \"lead_score\": 85,\n  \"tier\": \"Tier A\",\n  \"recommended_service\": \"Microsoft Power BI Modernization\",\n  \"wedge_offer\": \"5-Day Executive KPI Sprint\",\n  \"acute_pain_identified\": \"Finance team spending 15+ hours manually consolidating fragmented distribution reports due to an unfulfilled BI developer requisition.\",\n  \"qualification_summary\": \"High-margin freight business with growing transaction volume and immediate executive visibility pain.\"\n}",
+              "role": "system"
+            },
+            {
+              "content": "=Company: {{ $json.company_name }}\nWebsite: {{ $json.website }}\nIndustry: {{ $json.industry }}\nHeadcount: {{ $json.headcount }}\nLocation: {{ $json.country }}\nDecision Maker: {{ $json.decision_maker_name }} ({{ $json.decision_maker_title }})\nObserved Buying Signals: {{ $json.observed_signals }}",
+              "role": "user"
+            }
+          ]
+        },
+        "options": {
+          "responseFormat": {
+            "type": "json_object"
+          },
+          "temperature": 0.2
+        }
+      },
+      "id": "99120394-8888-4444-aaaa-bbbbccccdddd",
+      "name": "Agent 3 & 4: Deep Research & Scoring",
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.4,
+      "position": [
+        700,
+        440
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const account = $('Normalize Account Payload').first().json;\nlet parsedEvaluation = {};\ntry {\n  const rawOutput = $input.first().json.message?.content || $input.first().json.response || '{}';\n  parsedEvaluation = typeof rawOutput === 'string' ? JSON.parse(rawOutput) : rawOutput;\n} catch (e) {\n  parsedEvaluation = { lead_score: 50, tier: 'Tier C', error: e.message };\n}\n\nreturn [{\n  json: {\n    ...account,\n    qualification: parsedEvaluation\n  }\n}];"
+      },
+      "id": "11223344-5566-7788-99aa-bbccddeeff00",
+      "name": "Format Scored Lead",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        940,
+        440
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "number": [
+            {
+              "value1": "={{ $json.qualification.lead_score }}",
+              "operation": "largerEqual",
+              "value2": 60
+            }
+          ]
+        }
+      },
+      "id": "aabbccdd-1122-3344-5566-77889900aabb",
+      "name": "Filter: Tier A / B Only",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        1180,
+        440
+      ]
+    },
+    {
+      "parameters": {
+        "model": "gpt-4o",
+        "messages": {
+          "values": [
+            {
+              "content": "You are the Senior Outbound Sales Copywriting Specialist for Zenthra Systems.\nDraft a concise, hyper-personalized, non-spammy 3-touch outbound cold email sequence for the decision-maker.\n\nStrict Rules:\n1. Zero generic fluff (\"hope this email finds you well\", \"we are the premier AI provider\").\n2. Hook directly into the observed technical pain or hiring signal.\n3. Propose the specific wedge offer (e.g. 5-day Power BI sprint or process automation audit).\n4. Keep initial email under 120 words.\n5. Include clear compliance opt-out text.\n\nReturn JSON:\n{\n  \"email_1\": {\n    \"subject\": \"...\",\n    \"body\": \"...\"\n  },\n  \"email_2\": {\n    \"subject\": \"...\",\n    \"body\": \"...\"\n  },\n  \"linkedin_connection_note\": \"...\"\n}",
+              "role": "system"
+            },
+            {
+              "content": "=Prospect: {{ $json.decision_maker_name }} ({{ $json.decision_maker_title }})\nCompany: {{ $json.company_name }}\nRecommended Service: {{ $json.qualification.recommended_service }}\nWedge Offer: {{ $json.qualification.wedge_offer }}\nAcute Pain: {{ $json.qualification.acute_pain_identified }}",
+              "role": "user"
+            }
+          ]
+        },
+        "options": {
+          "responseFormat": {
+            "type": "json_object"
+          },
+          "temperature": 0.4
+        }
+      },
+      "id": "ffee0011-2233-4455-6677-8899aabbccdd",
+      "name": "Agent 6: Personalized Outreach Drafter",
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.4,
+      "position": [
+        1440,
+        340
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const prospect = $('Format Scored Lead').first().json;\nlet outreachCopy = {};\ntry {\n  const raw = $input.first().json.message?.content || '{}';\n  outreachCopy = typeof raw === 'string' ? JSON.parse(raw) : raw;\n} catch (e) {\n  outreachCopy = { error: 'Failed to parse outreach copy' };\n}\n\nreturn [{\n  json: {\n    timestamp: new Date().toISOString(),\n    status: \"AWAITING_HUMAN_APPROVAL\",\n    company: prospect.company_name,\n    contact: `${prospect.decision_maker_name} (${prospect.decision_maker_title})`,\n    email: prospect.decision_maker_email,\n    score: prospect.qualification.lead_score,\n    tier: prospect.qualification.tier,\n    service: prospect.qualification.recommended_service,\n    wedge: prospect.qualification.wedge_offer,\n    drafted_copy: outreachCopy\n  }\n}];"
+      },
+      "id": "12345678-90ab-cdef-1234-567890abcdef",
+      "name": "Stage for Human Approval Gate",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1700,
+        340
+      ]
+    }
+  ],
+  "connections": {
+    "When clicking ‘Test workflow’": {
+      "main": [
+        [
+          {
+            "node": "Normalize Account Payload",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook: Ingest Prospect": {
+      "main": [
+        [
+          {
+            "node": "Normalize Account Payload",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Normalize Account Payload": {
+      "main": [
+        [
+          {
+            "node": "Agent 3 & 4: Deep Research & Scoring",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Agent 3 & 4: Deep Research & Scoring": {
+      "main": [
+        [
+          {
+            "node": "Format Scored Lead",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Format Scored Lead": {
+      "main": [
+        [
+          {
+            "node": "Filter: Tier A / B Only",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter: Tier A / B Only": {
+      "main": [
+        [
+          {
+            "node": "Agent 6: Personalized Outreach Drafter",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Agent 6: Personalized Outreach Drafter": {
+      "main": [
+        [
+          {
+            "node": "Stage for Human Approval Gate",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  }
+}

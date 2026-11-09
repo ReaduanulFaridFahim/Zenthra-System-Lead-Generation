@@ -1,0 +1,47 @@
+{
+  "campaign_id": "camp_01_ai_dev",
+  "service": "AI Development & Generative AI",
+  "target_personas": [
+    "CTO",
+    "VP of Engineering",
+    "Chief AI Officer",
+    "Head of Architecture"
+  ],
+  "priority_verticals": [
+    "SaaS & Software",
+    "Fintech",
+    "Healthcare Tech"
+  ],
+  "subject_lines": [
+    "Private enterprise RAG architecture for {{company}}",
+    "Eliminating AI hallucination risk across {{company}}'s documentation",
+    "{{first_name}} — private LLM deployment question"
+  ],
+  "touch_1_variations": [
+    "Hi {{first_name}},\n\nMost technology leaders we speak with want internal generative AI search across proprietary documentation and tickets, but are blocked by data privacy, role permissions, and hallucination risks.\n\nZenthra Systems designs private, SOC2-aligned Retrieval-Augmented Generation (RAG) architectures deployed directly in your private cloud (AWS/GCP/Azure). Your enterprise IP never touches public training loops.\n\nWe have prepared a 4-page technical implementation blueprint covering vector chunking, hybrid search, and strict access filtering.\n\nCan I send over the PDF architecture brief for your engineering team?\n\nBest regards,\nZenthra Systems AI Practice",
+    "Hi {{first_name}},\n\nSaw {{company}}'s recent engineering expansion. If your team is evaluating LLM integrations, the hardest challenge is usually ensuring accurate retrieval over unstructured enterprise knowledge bases without data leakage.\n\nWe build private RAG pipelines using Qdrant/pgvector and fine-tuned retrieval models that guarantee sub-second semantic search with exact source citations.\n\nWould your engineering team be interested in reviewing our benchmark architecture?",
+    "Hi {{first_name}},\n\nAre your engineers or customer support teams losing hours searching through fragmented technical documentation and internal wikis?\n\nWe engineer custom enterprise AI assistants deployed in private VPCs with strict role-based access control.\n\nCould we connect for 10 minutes this week to discuss your technical requirements?"
+  ],
+  "linkedin_connection": [
+    "Hi {{first_name}}, saw your technical leadership at {{company}}. We engineer private, secure RAG architectures for enterprise engineering teams. Would love to connect and exchange notes on LLM production deployment.",
+    "Hi {{first_name}}, following {{company}}'s product roadmap. We specialize in private enterprise generative AI and vector search. Great to connect with engineering leaders."
+  ],
+  "linkedin_post_connection": [
+    "Thanks for connecting, {{first_name}}! Here is our technical benchmark comparison on vector databases (pgvector vs Qdrant vs Pinecone) for enterprise RAG: https://zenthra-systems.example.com/resources/vector-benchmark.",
+    "Glad to connect! If you ever want to brainstorm private LLM architectures or evaluation frameworks, always happy to chat."
+  ],
+  "value_follow_ups": [
+    "Hi {{first_name}},\n\nWanted to share a quick benchmark: implementing hybrid search (combining BM25 keyword matching with dense vector embeddings) reduces RAG retrieval hallucination by over 40% compared to pure vector search alone.",
+    "Hi {{first_name}},\n\nFollowing up on my note. We offer a 2-week RAG Proof-of-Concept that ingests up to 1,000 internal documents in a sandboxed VPC to prove citation accuracy before you commit to production.\n\nAre you free for 10 minutes this Thursday?",
+    "Hi {{first_name}},\n\nChecking in to see if private AI infrastructure is on your technical roadmap for this quarter."
+  ],
+  "breakup_email": "Hi {{first_name}},\n\nUnderstood that timing might not be ideal right now. I will close out my outreach. Feel free to reach out whenever AI infrastructure becomes a priority.\n\nBest regards,\nZenthra Systems",
+  "discovery_invitation": "Hi {{first_name}},\n\nWould you be open to a 15-minute technical discovery session this Thursday at 1:00 PM EST? Calendar: https://calendly.com/zenthra-systems/discovery.",
+  "objection_responses": {
+    "data_privacy": "We deploy 100% inside your dedicated VPC or private cloud environment. Zero client data or embeddings ever leave your infrastructure.",
+    "hallucinations": "We implement multi-step guardrails and citation verification—if a query cannot be verified against retrieved ground-truth documents, the system explicitly returns an unverified status.",
+    "internal_team": "We provide your engineers with full source code, Terraform scripts, and CI/CD pipelines so your team owns and maintains the architecture.",
+    "no_budget": "Our feasibility prototype is $18,500 and establishes full benchmark metrics within 14 days.",
+    "model_lock_in": "Our architecture is model-agnostic, supporting OpenAI, Anthropic, or local open-weights models (Llama 3 / Mistral) interchangeably via an abstracted API."
+  }
+}

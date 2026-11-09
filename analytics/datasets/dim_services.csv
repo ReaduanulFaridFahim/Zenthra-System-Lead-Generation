@@ -1,0 +1,7 @@
+service_id,service_name,service_category,default_wedge_name,target_acv_usd,target_margin_pct
+SRV_01,Microsoft Power BI Development,Business Intelligence,5-Day Executive KPI Sprint,12500,68
+SRV_02,AI Agents & Business Automation,Automation,Workflow Bottleneck Audit,38000,65
+SRV_03,AI Development & Generative AI,Artificial Intelligence,Private Enterprise RAG Proof-of-Concept,55000,70
+SRV_04,Modern Web Development,Software Engineering,Technical Architecture Sprint,45000,62
+SRV_05,Data Analytics & Pipelines,Data Engineering,Data Warehouse Health Check,28000,64
+SRV_06,Business Analysis & Process Mapping,Consulting,Operational Process Mapping Sprint,15000,72

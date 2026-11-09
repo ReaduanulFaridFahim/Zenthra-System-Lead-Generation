@@ -1,0 +1,47 @@
+{
+  "campaign_id": "camp_05_power_bi",
+  "service": "Microsoft Power BI Development",
+  "target_personas": [
+    "CFO",
+    "VP of Finance",
+    "Financial Controller",
+    "BI Manager"
+  ],
+  "priority_verticals": [
+    "Logistics & Supply Chain",
+    "Financial Services",
+    "Manufacturing"
+  ],
+  "subject_lines": [
+    "Question regarding {{company}}'s reporting latency",
+    "Eliminating 15 hours of weekly spreadsheet assembly at {{company}}",
+    "{{first_name}} — quick thought on your open BI requisition"
+  ],
+  "touch_1_variations": [
+    "Hi {{first_name}},\n\nI noticed {{company}} has had an open search for a BI & Analytics specialist to support operational reporting.\n\nWhen organizations scale across multiple entities, consolidating disparate accounting and operational metrics in Excel typically costs finance teams 12–15 hours every week.\n\nAt Zenthra Systems, we engineer automated Microsoft Power BI architectures. We recently helped a multi-hub distribution business eliminate 14 weekly hours of spreadsheet consolidation using our 5-Day Executive KPI Sprint.\n\nWould it make sense to review a 3-minute video teardown of how this connects directly to your ERP data?\n\nBest regards,\nZenthra Systems Enterprise Sales\nhttps://zenthra-systems.example.com",
+    "Hi {{first_name}},\n\nMost CFOs we speak with in {{industry}} are frustrated by the multi-day lag required to calculate gross margin by customer and business unit.\n\nSpreadsheet-based consolidation introduces formula risk and consumes hours of senior finance time that should be spent on strategic planning.\n\nZenthra Systems builds board-ready Power BI workspaces that automate your weekly and monthly reporting cycles.\n\nAre you open to a brief conversation this week to see our operational finance dashboard framework?",
+    "Hi {{first_name}},\n\nSaw {{company}}'s recent operational expansion. As transaction volumes grow, manual Excel reporting invariably creates visibility bottlenecks for executive leadership.\n\nWe specialize in rapid Power BI implementations that connect directly to your underlying ERP and CRM, providing real-time KPI dashboards in under 10 business days.\n\nWould you be opposed to seeing a 3-minute screen recording of how this works in practice?"
+  ],
+  "linkedin_connection": [
+    "Hi {{first_name}}, noticed your focus on financial operations at {{company}}. We help finance leaders replace manual Excel reporting debt with automated Power BI dashboards. Would love to connect and share our operational KPI frameworks.",
+    "Hi {{first_name}}, saw {{company}}'s growth in {{industry}}. We design executive Power BI workspaces for scaling mid-market companies. Great to connect with fellow finance leaders."
+  ],
+  "linkedin_post_connection": [
+    "Thanks for connecting, {{first_name}}! Here is a link to our 4-page checklist on modernizing Excel reporting to Power BI: https://zenthra-systems.example.com/resources/excel-to-bi. Hope it is useful for your team.",
+    "Glad to connect! If {{company}} is ever reviewing reporting automation or dashboard performance, I would be happy to share notes on what we are seeing across similar {{industry}} firms."
+  ],
+  "value_follow_ups": [
+    "Hi {{first_name}},\n\nWanted to share a quick insight: we find that 80% of finance reporting delays stem not from complex DAX formulas, but from un-optimized Power Query ETL pipelines connecting to legacy ERPs.\n\nHappy to share our data modeling checklist if you are evaluating your internal reporting architecture.",
+    "Hi {{first_name}},\n\nFollowing up on my previous note. One of our recent logistics clients was able to reduce month-end close reporting from 5 business days to 4 hours by implementing an automated Power BI star schema.\n\nDo you have 10 minutes this Thursday to discuss whether a similar sprint fits {{company}}?",
+    "Hi {{first_name}},\n\nQuick thought: if your team is currently hiring a BI analyst, our 5-Day Executive Sprint can bridge the gap immediately and deliver your core executive dashboards before you complete the hiring cycle."
+  ],
+  "breakup_email": "Hi {{first_name}},\n\nI realize you are likely focused on other critical priorities at {{company}}. I will pause my outreach here so I do not crowd your inbox.\n\nIf reporting modernization or Power BI becomes a priority later this year, please feel free to reach out anytime.\n\nBest regards,\nZenthra Systems",
+  "discovery_invitation": "Hi {{first_name}},\n\nWould you be open to a 15-minute introductory discovery call this Thursday at 2:00 PM EST? You can also pick a time directly on our calendar here: https://calendly.com/zenthra-systems/discovery.",
+  "objection_responses": {
+    "internal_team": "We completely respect that you have an in-house team. Most of our clients do. We act as a specialized strike team to deliver executive dashboards in 10 days without pulling your developers away from core initiatives.",
+    "no_budget": "Understood. That is why our entry sprint is structured as a fixed $12.5k package that recoups its cost in recovered finance labor within 60 days.",
+    "already_have_software": "Commercial software is great for standard reports, but often lacks the custom business logic needed for multi-entity reporting. We build tailored models on your existing Microsoft tenant.",
+    "bad_timing": "Completely understand. I will set a reminder to check in with you at the start of next quarter.",
+    "security_concerns": "Our deployments occur directly inside your secure Microsoft 365 tenant using Row-Level Security (RLS). No client data ever leaves your cloud environment."
+  }
+}

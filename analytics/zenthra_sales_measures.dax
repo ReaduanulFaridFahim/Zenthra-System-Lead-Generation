@@ -1,0 +1,71 @@
+// ========================================================
+// ZENTHRA SYSTEMS - PRODUCTION POWER BI DAX MEASURES
+// Version: 3.0-Production
+// Purpose: Executive Sales Funnel & Financial Telemetry
+// ========================================================
+
+// 1. PIPELINE FINANCIALS
+[Total Pipeline Value] := 
+CALCULATE(
+    SUM(FactPipelineDeals[DealAmount]),
+    NOT(FactPipelineDeals[DealStage] IN {"Closed Lost"})
+)
+
+[Weighted Pipeline Value] := 
+SUMX(
+    FILTER(
+        FactPipelineDeals,
+        NOT(FactPipelineDeals[DealStage] IN {"Closed Won", "Closed Lost"})
+    ),
+    FactPipelineDeals[DealAmount] * FactPipelineDeals[StageProbability]
+)
+
+[Closed Won Revenue YTD] := 
+CALCULATE(
+    SUM(FactPipelineDeals[DealAmount]),
+    FactPipelineDeals[DealStage] = "Closed Won",
+    DATESYTD(DimDate[Date])
+)
+
+[Average Contract Value] := 
+CALCULATE(
+    AVERAGE(FactPipelineDeals[DealAmount]),
+    FactPipelineDeals[DealStage] = "Closed Won"
+)
+
+// 2. CONVERSION VELOCITY
+[Win Rate %] := 
+VAR WonDeals = CALCULATE(COUNTROWS(FactPipelineDeals), FactPipelineDeals[DealStage] = "Closed Won")
+VAR ClosedDeals = CALCULATE(COUNTROWS(FactPipelineDeals), FactPipelineDeals[DealStage] IN {"Closed Won", "Closed Lost"})
+RETURN
+DIVIDE(WonDeals, ClosedDeals, 0)
+
+[Average Sales Cycle (Days)] := 
+AVERAGEX(
+    FILTER(FactPipelineDeals, FactPipelineDeals[DealStage] = "Closed Won"),
+    DATEDIFF(FactPipelineDeals[CreatedDate], FactPipelineDeals[CloseDate], DAY)
+)
+
+// 3. OUTBOUND FUNNEL RATIOS
+[Positive Reply Rate %] := 
+VAR PositiveReplies = CALCULATE(COUNTROWS(FactSalesActivities), FactSalesActivities[ActivityStatus] = "Replied_Positive")
+VAR TotalSent = CALCULATE(COUNTROWS(FactSalesActivities), FactSalesActivities[ActivityStatus] IN {"Sent", "Opened", "Replied_Positive", "Replied_Negative"})
+RETURN
+DIVIDE(PositiveReplies, TotalSent, 0)
+
+[Meeting Booking Rate %] := 
+VAR Meetings = CALCULATE(COUNTROWS(FactSalesActivities), FactSalesActivities[ActivityType] = "Discovery_Meeting", FactSalesActivities[ActivityStatus] IN {"Booked", "Completed"})
+VAR PositiveReplies = CALCULATE(COUNTROWS(FactSalesActivities), FactSalesActivities[ActivityStatus] = "Replied_Positive")
+RETURN
+DIVIDE(Meetings, PositiveReplies, 0)
+
+// 4. RETENTION & RECURRING REVENUE
+[Active Monthly Retainers (MRR)] := 
+CALCULATE(
+    SUM(FactPipelineDeals[RecurringMonthlyValue]),
+    FactPipelineDeals[DealStage] = "Closed Won",
+    FactPipelineDeals[RetainerActive] = TRUE()
+)
+
+[Annual Recurring Revenue (ARR Run-Rate)] := 
+[Active Monthly Retainers (MRR)] * 12

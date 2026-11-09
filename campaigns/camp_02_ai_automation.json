@@ -1,0 +1,48 @@
+{
+  "campaign_id": "camp_02_ai_automation",
+  "service": "AI Agents & Business Automation",
+  "target_personas": [
+    "COO",
+    "Head of Operations",
+    "VP of Operations",
+    "Director of Shared Services"
+  ],
+  "priority_verticals": [
+    "Logistics",
+    "Professional Services",
+    "Fintech",
+    "Manufacturing"
+  ],
+  "subject_lines": [
+    "Automating repetitive transaction intake at {{company}}",
+    "Eliminating the 48-hour fulfillment bottleneck for {{company}}",
+    "{{first_name}} — operational automation question"
+  ],
+  "touch_1_variations": [
+    "Hi {{first_name}},\n\nIn reviewing {{company}}'s recent operational growth, I noticed your team manages substantial cross-system transaction volume.\n\nFor companies scaling past 100 employees, manual data intake and system re-keying creates fulfillment lag and human error.\n\nAt Zenthra Systems, we deploy custom AI workflow agents that automate document ingestion, validate transaction data, and update core databases automatically.\n\nWould you be open to reviewing a workflow diagram of how we automated invoice reconciliation for a similar operator?\n\nBest regards,\nZenthra Systems Automation Practice",
+    "Hi {{first_name}},\n\nMost operations leaders we speak with in {{industry}} are managing back-office teams spent re-keying shipping documents, invoices, and intake tickets between disconnected platforms.\n\nZenthra Systems designs production-grade automation agents with built-in human approval gates, reducing processing cycle times by up to 75%.\n\nWould you be interested in a 10-minute briefing on our Workflow Bottleneck Audit?",
+    "Hi {{first_name}},\n\nNoticed {{company}} is rapidly scaling operations. As transaction volume doubles, hiring additional administrative coordinators creates linear overhead.\n\nWe build custom multi-agent workflows that connect legacy ERPs with modern cloud tools, handling routine data routing without manual intervention.\n\nCould I share a 2-page case teardown showing how a peer firm automated their order entry?"
+  ],
+  "linkedin_connection": [
+    "Hi {{first_name}}, noticed your leadership in operations at {{company}}. We build intelligent AI workflow agents to eliminate manual back-office bottlenecks. Great to connect with ops leaders.",
+    "Hi {{first_name}}, following {{company}}'s operational growth. We help scaling companies automate repetitive cross-system workflows. Would love to connect and exchange ideas."
+  ],
+  "linkedin_post_connection": [
+    "Thanks for connecting, {{first_name}}! Here is a brief guide on identifying high-ROI automation candidates in operations: https://zenthra-systems.example.com/resources/automation-guide.",
+    "Glad to connect! If you ever want to audit potential bottlenecks in your intake or fulfillment workflows, let me know."
+  ],
+  "value_follow_ups": [
+    "Hi {{first_name}},\n\nWanted to share an observation: the highest ROI in operations automation almost always comes from unstructured document parsing—turning supplier PDFs into clean ERP database records automatically.",
+    "Hi {{first_name}},\n\nFollowing up on my previous note. Our Workflow Bottleneck Audit identifies the exact cost-per-transaction of your manual steps and delivers a functional prototype within 2 weeks.\n\nDo you have 10 minutes to discuss this Thursday?",
+    "Hi {{first_name}},\n\nChecking in to see if reducing operational fulfillment latency is on your radar for this quarter."
+  ],
+  "breakup_email": "Hi {{first_name}},\n\nI realize operational priorities shift quickly. I will step back here so I do not clutter your inbox.\n\nFeel free to reach out whenever automation becomes a priority.\n\nBest,\nZenthra Systems",
+  "discovery_invitation": "Hi {{first_name}},\n\nAre you available for a 15-minute discovery call this Wednesday at 3:00 PM EST? You can also book directly: https://calendly.com/zenthra-systems/discovery.",
+  "objection_responses": {
+    "internal_team": "We build alongside your IT team, using standard open frameworks (Node.js, Python, n8n) so your internal team retains full ownership of the code.",
+    "no_budget": "Our Workflow Bottleneck Audit is $9,500 and typically identifies enough manual labor savings to pay for itself within the first 60 days.",
+    "fear_of_errors": "Every agent we engineer incorporates strict human-in-the-loop approval gates. No transaction commits to your production database without human signoff until 99.5% accuracy is proven.",
+    "bad_timing": "Understood. I will follow up in 90 days when your current initiatives settle.",
+    "tool_sprawl": "We don't add new SaaS platforms. We connect your existing databases and ERPs using secure, serverless API connectors."
+  }
+}

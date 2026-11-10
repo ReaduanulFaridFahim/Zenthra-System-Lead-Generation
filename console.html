@@ -2272,7 +2272,7 @@ WinRatePercentage = DIVIDE(CALCULATE(COUNTROWS('fact_pipeline'), 'fact_pipeline'
       } catch (e) {}
     }
 
-    let globalData = {};
+    let globalData = window.globalData = {};
 
     const PRESETS = {
       apex: {
@@ -2402,7 +2402,7 @@ WinRatePercentage = DIVIDE(CALCULATE(COUNTROWS('fact_pipeline'), 'fact_pipeline'
     async function fetchPlatformData() {
       // Immediate load from bundled static data
       if (window.STATIC_PLATFORM_DATA && (!globalData || !globalData.accounts)) {
-        globalData = JSON.parse(JSON.stringify(window.STATIC_PLATFORM_DATA));
+        globalData = window.globalData = JSON.parse(JSON.stringify(window.STATIC_PLATFORM_DATA));
         renderPlatform();
       }
 
@@ -2410,7 +2410,7 @@ WinRatePercentage = DIVIDE(CALCULATE(COUNTROWS('fact_pipeline'), 'fact_pipeline'
         const res = await fetch('/api/data');
         const ct = res.headers.get('content-type') || '';
         if (res.ok && ct.includes('application/json')) {
-          globalData = await res.json();
+          globalData = window.globalData = await res.json();
           renderPlatform();
           const badge = document.getElementById('backend-status-badge');
           if (badge) {
@@ -2423,7 +2423,7 @@ WinRatePercentage = DIVIDE(CALCULATE(COUNTROWS('fact_pipeline'), 'fact_pipeline'
           try {
             const staticRes = await fetch('./data/platform-data.json');
             if (staticRes.ok) {
-              globalData = await staticRes.json();
+              globalData = window.globalData = await staticRes.json();
               renderPlatform();
             }
           } catch (err2) {
@@ -3043,8 +3043,8 @@ WinRatePercentage = DIVIDE(CALCULATE(COUNTROWS('fact_pipeline'), 'fact_pipeline'
       }
     }
 
-    let discoveredPlacesCache = [];
-    let geoMetaCache = { countries: {}, categories: [] };
+    let discoveredPlacesCache = window.discoveredPlacesCache = [];
+    let geoMetaCache = window.geoMetaCache = { countries: {}, categories: [] };
     let sentProposalsTracker = new Set();
     try {
       const storedProps = localStorage.getItem('zenthra_sent_proposals');
@@ -3057,7 +3057,7 @@ WinRatePercentage = DIVIDE(CALCULATE(COUNTROWS('fact_pipeline'), 'fact_pipeline'
 
     async function loadMetaGeoCategories() {
       if (window.STATIC_META_GEO && window.STATIC_META_GEO.countries) {
-        geoMetaCache = window.STATIC_META_GEO;
+        geoMetaCache = window.geoMetaCache = window.STATIC_META_GEO;
         populateGeoDropdowns();
       }
 
@@ -3067,7 +3067,7 @@ WinRatePercentage = DIVIDE(CALCULATE(COUNTROWS('fact_pipeline'), 'fact_pipeline'
         if (res.ok && ct.includes('application/json')) {
           const data = await res.json();
           if (data && data.countries) {
-            geoMetaCache = data;
+            geoMetaCache = window.geoMetaCache = data;
             populateGeoDropdowns();
           }
         }
@@ -3516,7 +3516,7 @@ WinRatePercentage = DIVIDE(CALCULATE(COUNTROWS('fact_pipeline'), 'fact_pipeline'
           };
         }
 
-        discoveredPlacesCache = placesData.results || [];
+        discoveredPlacesCache = window.discoveredPlacesCache = placesData.results || [];
         const countBadge = document.getElementById('maps-results-count');
         if (countBadge) countBadge.textContent = `${placesData.count} Discovered & Audited`;
 
@@ -5425,10 +5425,10 @@ WinRatePercentage = DIVIDE(CALCULATE(COUNTROWS('fact_pipeline'), 'fact_pipeline'
     }
 
     // === EMAILABLE DIRECTORY & 1-CLICK MAIL HUB ===
-    let emailableContactsData = [];
+    let emailableContactsData = window.emailableContactsData = [];
     let emailableFilteredContacts = [];
     let activePreviewContact = null;
-    let extendedServicesData = [];
+    let extendedServicesData = window.extendedServicesData = [];
     let selectedContactIds = new Set();
 
     function computeAndRenderEmailableKpis(list) {
@@ -5464,7 +5464,7 @@ WinRatePercentage = DIVIDE(CALCULATE(COUNTROWS('fact_pipeline'), 'fact_pipeline'
           if (stored) {
             const parsed = JSON.parse(stored);
             if (Array.isArray(parsed) && parsed.length > 0) {
-              emailableContactsData = parsed;
+              emailableContactsData = window.emailableContactsData = parsed;
               computeAndRenderEmailableKpis(emailableContactsData);
               loaded = true;
             }
@@ -5475,7 +5475,7 @@ WinRatePercentage = DIVIDE(CALCULATE(COUNTROWS('fact_pipeline'), 'fact_pipeline'
           try {
             const apiRes = await safeApiFetch('/api/emailable-contacts?status=ALL');
             if (apiRes.ok && apiRes.data?.contacts) {
-              emailableContactsData = apiRes.data.contacts;
+              emailableContactsData = window.emailableContactsData = apiRes.data.contacts;
               computeAndRenderEmailableKpis(emailableContactsData);
               loaded = true;
             }
@@ -5484,7 +5484,7 @@ WinRatePercentage = DIVIDE(CALCULATE(COUNTROWS('fact_pipeline'), 'fact_pipeline'
 
         if (!loaded) {
           if (window.STATIC_EMAILABLE_CONTACTS && window.STATIC_EMAILABLE_CONTACTS.length > 0) {
-            emailableContactsData = JSON.parse(JSON.stringify(window.STATIC_EMAILABLE_CONTACTS));
+            emailableContactsData = window.emailableContactsData = JSON.parse(JSON.stringify(window.STATIC_EMAILABLE_CONTACTS));
             computeAndRenderEmailableKpis(emailableContactsData);
             loaded = true;
           } else {
@@ -5492,7 +5492,7 @@ WinRatePercentage = DIVIDE(CALCULATE(COUNTROWS('fact_pipeline'), 'fact_pipeline'
               const staticRes = await fetch('./data/emailable-contacts.json');
               if (staticRes.ok) {
                 const list = await staticRes.json();
-                emailableContactsData = list;
+                emailableContactsData = window.emailableContactsData = list;
                 computeAndRenderEmailableKpis(list);
                 loaded = true;
               }
@@ -6205,7 +6205,7 @@ WinRatePercentage = DIVIDE(CALCULATE(COUNTROWS('fact_pipeline'), 'fact_pipeline'
           }
         }
 
-        extendedServicesData = services || [];
+        extendedServicesData = window.extendedServicesData = services || [];
         renderExtendedServicesGrid(extendedServicesData);
       } catch (err) {
         console.error('Error loading extended services:', err);

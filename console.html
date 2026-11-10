@@ -1983,7 +1983,7 @@ WinRatePercentage = DIVIDE(CALCULATE(COUNTROWS('fact_pipeline'), 'fact_pipeline'
         </div>
 
         <!-- Right: Real-Time Financial Math & Payback Cockpit -->
-        <div class="panel" style="border: 1px solid #3b82f6;">
+        <div class="panel" id="m1-output-card" style="border: 1px solid #3b82f6;">
           <div class="panel-title" style="color: #60a5fa; display: flex; justify-content: space-between;">
             <span>📊 Model 1 Commercial Financial Cockpit</span>
             <span class="tag tag-a" id="m1-status-tag">Ready to Execute</span>
@@ -3477,7 +3477,7 @@ WinRatePercentage = DIVIDE(CALCULATE(COUNTROWS('fact_pipeline'), 'fact_pipeline'
       const forwardToN8n = document.getElementById('maps-forward-n8n')?.checked || false;
       const autoSendMail = document.getElementById('maps-auto-mail')?.checked || false;
 
-      const btn = document.getElementById('btn-maps-search') || document.getElementById('btn-run-places');
+      const btn = document.getElementById('btn-maps-search');
       const resultsCont = document.getElementById('maps-results-list');
 
       if (btn) {
@@ -3670,6 +3670,35 @@ WinRatePercentage = DIVIDE(CALCULATE(COUNTROWS('fact_pipeline'), 'fact_pipeline'
 
       const modal = document.getElementById('proposal-modal');
       modal.style.display = 'flex';
+    }
+
+    function onModalDemoChange() {
+      const sel = document.getElementById('modal-demo-project');
+      const bodyEl = document.getElementById('modal-body');
+      if (!sel || !bodyEl) return;
+      const val = sel.value;
+      let currentBody = bodyEl.value;
+
+      currentBody = currentBody.replace(/\n\n--- Interactive Client Prototype ---[\s\S]*?(?=(\n\nBest regards|\nBest regards|$))/i, '');
+
+      if (val !== 'none') {
+        const demoNames = {
+          'demo-rag': 'Enterprise RAG Knowledge Assistant & Semantic Q&A',
+          'demo-intake': '24/7 AI Customer Intake & Lead Qualification Agent',
+          'demo-powerbi': 'Executive Power BI & Revenue Operations Cockpit',
+          'demo-parser': 'Automated Document & Invoice Vision Parser'
+        };
+        const demoName = demoNames[val] || 'Interactive Client Prototype';
+        const demoBlock = `\n\n--- Interactive Client Prototype ---\nYou can test our live ${demoName} directly in our production sandbox:\nhttps://readuanulfaridfahim.github.io/Zenthra-System-Lead-Generation/console.html`;
+        
+        if (currentBody.includes('Best regards')) {
+          currentBody = currentBody.replace('Best regards', `${demoBlock.trim()}\n\nBest regards`);
+        } else {
+          currentBody = currentBody + demoBlock;
+        }
+      }
+
+      bodyEl.value = currentBody;
     }
 
     function onModalExecutiveChange() {
@@ -4651,10 +4680,12 @@ WinRatePercentage = DIVIDE(CALCULATE(COUNTROWS('fact_pipeline'), 'fact_pipeline'
         return;
       }
 
-      const btn = document.getElementById('btn-run-rag');
+      const btn = document.getElementById('btn-exec-rag');
       const cont = document.getElementById('rag-results-container');
-      btn.textContent = 'Querying Vector Index...';
-      btn.disabled = true;
+      if (btn) {
+        btn.textContent = 'Querying Vector Index...';
+        btn.disabled = true;
+      }
 
       let r = null;
       try {
@@ -4721,9 +4752,10 @@ WinRatePercentage = DIVIDE(CALCULATE(COUNTROWS('fact_pipeline'), 'fact_pipeline'
         };
       }
 
-      document.getElementById('rag-latency-tag').textContent = `⚡ Latency: ${r.retrievalLatencyMs}ms | ${r.citations.length} Verified Citations`;
+      const latencyTag = document.getElementById('rag-latency-tag');
+      if (latencyTag) latencyTag.textContent = `⚡ Latency: ${r.retrievalLatencyMs}ms | ${r.citations.length} Verified Citations`;
 
-      cont.innerHTML = `
+      if (cont) cont.innerHTML = `
         <div style="background: #060911; border: 1px solid #1e293b; border-radius: 6px; padding: 14px; margin-bottom: 12px;">
           <div style="font-size: 11px; font-weight: 700; color: #34d399; text-transform: uppercase; margin-bottom: 6px;">🤖 Synthesized Executive Answer:</div>
           <div style="font-size: 12px; color: #f1f5f9; line-height: 1.6; white-space: pre-wrap;">${r.synthesizedAnswer}</div>
@@ -4744,34 +4776,82 @@ WinRatePercentage = DIVIDE(CALCULATE(COUNTROWS('fact_pipeline'), 'fact_pipeline'
         </div>
       `;
 
-      btn.textContent = '⚡ Search Vector Knowledge Base';
-      btn.disabled = false;
+      if (btn) {
+        btn.textContent = '🔍 Query RAG';
+        btn.disabled = false;
+      }
     }
 
     function runRagPresetQuery() {
-      const q = document.getElementById('rag-presets-select')?.value || '';
-      if (!q) return;
-      document.getElementById('rag-query-input').value = q;
+      const sel = document.getElementById('rag-doc-select');
+      const docKey = sel ? sel.value : 'logistics_sop';
+      const sampleQueries = {
+        'logistics_sop': 'What are the cold chain temperature thresholds and alarm policies for vaccines?',
+        'rmg_compliance': 'What are the four-point fabric inspection defect thresholds for EU export?',
+        'cloud_security': 'What encryption and tokenization standards are enforced for customer PII?'
+      };
+      const q = sampleQueries[docKey] || 'What are the cold chain temperature thresholds and alarm policies for vaccines?';
+      const input = document.getElementById('rag-query-input');
+      if (input) input.value = q;
       executeRagQuery();
     }
 
+    function setRagQuery(queryText) {
+      const input = document.getElementById('rag-query-input');
+      if (input) input.value = queryText;
+      executeRagQuery();
+    }
+
+    function switchDemoSubtab(subtabId) {
+      const clean = (subtabId || '').replace('-demo', '').replace('sub-demo-', '');
+      const subtabs = ['rag', 'intake', 'powerbi', 'parser'];
+      subtabs.forEach(st => {
+        const panel = document.getElementById('sub-demo-' + st);
+        const btn = document.getElementById('btn-sub-' + st);
+        const isActive = (st === clean);
+        if (panel) panel.style.display = isActive ? 'block' : 'none';
+        if (btn) {
+          btn.className = isActive ? 'btn-primary' : 'btn-outline';
+        }
+      });
+    }
+
     let intakeConversationHistory = [];
+
+    function setIntakeInput(text) {
+      const input = document.getElementById('intake-chat-input');
+      if (input) input.value = text;
+      sendIntakeMessage();
+    }
+
+    function resetIntakeChat() {
+      const chatWindow = document.getElementById('intake-chat-window');
+      const industrySelect = document.getElementById('intake-industry-select');
+      const industry = industrySelect ? industrySelect.options[industrySelect.selectedIndex].text : 'Enterprise';
+      intakeConversationHistory = [];
+      if (chatWindow) {
+        chatWindow.innerHTML = `
+          <div style="background: #111827; border-left: 3px solid #3b82f6; padding: 10px 12px; border-radius: 6px; font-size: 12px; color: #f1f5f9; align-self: flex-start; max-width: 85%;">
+            👋 <strong>Zenthra Intake Agent:</strong> Hello! Welcome to our 24/7 client portal for <strong>${industry}</strong>. How can I assist you with quotes, booking, or technical architecture today?
+          </div>
+        `;
+      }
+    }
 
     async function sendIntakeMessage() {
       const input = document.getElementById('intake-chat-input');
       const text = (input?.value || '').trim();
       if (!text) return;
 
-      const chatWindow = document.getElementById('intake-chat-messages');
+      const chatWindow = document.getElementById('intake-chat-window');
       const industry = document.getElementById('intake-industry-select')?.value || 'Logistics';
 
-      chatWindow.innerHTML += `
-        <div style="background: #1e3a8a; padding: 8px 12px; border-radius: 6px; font-size: 12px; color: #fff; align-self: flex-end; max-width: 85%;">
+      if (chatWindow) chatWindow.innerHTML += `<div style="background: #1e3a8a; padding: 8px 12px; border-radius: 6px; font-size: 12px; color: #fff; align-self: flex-end; max-width: 85%;">
           🧑‍💼 <strong>You:</strong> ${text}
         </div>
       `;
       input.value = '';
-      chatWindow.scrollTop = chatWindow.scrollHeight;
+      if (chatWindow) chatWindow.scrollTop = chatWindow.scrollHeight;
 
       intakeConversationHistory.push({ role: 'user', content: text });
 
@@ -5092,16 +5172,140 @@ WinRatePercentage = DIVIDE(CALCULATE(COUNTROWS('fact_pipeline'), 'fact_pipeline'
       btn.disabled = false;
     }
 
+    function loadAndRunModel1Sample(sampleKey) {
+      const samples = {
+        'apex': {
+          name: 'Apex Freight & Logistics LLC',
+          city: 'Dallas, TX (USA)',
+          industry: 'Logistics & Supply Chain',
+          weakness: 'BUSINESS_INTELLIGENCE',
+          loss: 9000,
+          customPrice: 10000,
+          dm: 'Marcus Vance (CFO)',
+          email: 'connect.zenthra@gmail.com'
+        },
+        'harley': {
+          name: 'Harley Street Specialist Clinic',
+          city: 'London (UK)',
+          industry: 'Healthcare & Dental',
+          weakness: 'INTAKE_AUTOMATION',
+          loss: 7500,
+          customPrice: 8500,
+          dm: 'Dr. Alistair Finch (Medical Director)',
+          email: 'connect.zenthra@gmail.com'
+        },
+        'emirates': {
+          name: 'Emirates Prestige Luxury Realty',
+          city: 'Dubai (UAE)',
+          industry: 'Luxury Real Estate',
+          weakness: 'CUSTOMER_COMMUNICATION',
+          loss: 12000,
+          customPrice: 13500,
+          dm: 'Tariq Al-Mansoor (Managing Partner)',
+          email: 'connect.zenthra@gmail.com'
+        },
+        'biotech': {
+          name: 'MedVance BioResearch Innovations',
+          city: 'Boston, MA (USA)',
+          industry: 'Biotechnology & Pharmaceuticals',
+          weakness: 'RAG_KNOWLEDGE',
+          loss: 14000,
+          customPrice: 15500,
+          dm: 'Dr. Evelyn Reed (Chief Scientific Officer)',
+          email: 'connect.zenthra@gmail.com'
+        }
+      };
+
+      const s = samples[sampleKey] || samples.apex;
+      const setVal = (id, val) => {
+        const el = document.getElementById(id);
+        if (el) el.value = val;
+      };
+
+      setVal('m1-company-name', s.name);
+      setVal('m1-city', s.city);
+      setVal('m1-industry', s.industry);
+      setVal('m1-weakness-select', s.weakness);
+      setVal('m1-monthly-loss', s.loss);
+      setVal('m1-custom-price', s.customPrice);
+      setVal('m1-decision-maker', s.dm);
+      setVal('m1-recipient-email', s.email);
+
+      executeModel1Sprint();
+    }
+
+    function onModel1WeaknessChange() {
+      const sel = document.getElementById('m1-weakness-select');
+      if (!sel) return;
+      const val = sel.value;
+      const lossMap = {
+        'BUSINESS_INTELLIGENCE': 9000,
+        'INTAKE_AUTOMATION': 6500,
+        'CUSTOMER_COMMUNICATION': 7000,
+        'WEB_PRESENCE': 8500,
+        'RAG_KNOWLEDGE': 12000
+      };
+      const loss = lossMap[val] || 9000;
+      const lossInput = document.getElementById('m1-monthly-loss');
+      if (lossInput) lossInput.value = loss;
+    }
+
+    function switchModel1View(view) {
+      const views = ['email', 'sow', 'deliverables'];
+      views.forEach(v => {
+        const el = document.getElementById('m1-view-' + v);
+        const btn = document.getElementById('m1-btn-view-' + v);
+        if (el) el.style.display = (v === view) ? 'block' : 'none';
+        if (btn) btn.className = (v === view) ? 'btn-primary' : 'btn-outline';
+      });
+    }
+
+    function executeModel1FromPlace(index) {
+      const p = (discoveredPlacesCache && discoveredPlacesCache[index]) ? discoveredPlacesCache[index] : null;
+      if (!p) {
+        alert('Place record not found.');
+        return;
+      }
+      const details = p.place_details || {};
+      const acc = p.account || {};
+      const audit = p.weakness_audit || {};
+      const exec = p.executive_target || details.contact_person_1 || {};
+
+      const setVal = (id, val) => {
+        const el = document.getElementById(id);
+        if (el) el.value = val;
+      };
+
+      setVal('m1-company-name', details.company_name || acc.company_name || 'Enterprise Client');
+      setVal('m1-city', `${details.city || acc.city || ''}, ${details.country || acc.country || ''}`);
+      setVal('m1-industry', details.category || acc.industry || 'Enterprise Services');
+      
+      if (audit.primaryWeakness?.category) {
+        setVal('m1-weakness-select', audit.primaryWeakness.category);
+      }
+      if (audit.estimatedMonthlyLossUSD) {
+        setVal('m1-monthly-loss', audit.estimatedMonthlyLossUSD);
+      }
+      setVal('m1-custom-price', 0);
+      setVal('m1-decision-maker', exec.name ? `${exec.name} (${exec.role || 'Executive Leader'})` : (acc.decision_maker_name || 'Executive Leadership'));
+      setVal('m1-recipient-email', exec.email || details.email || 'connect.zenthra@gmail.com');
+
+      switchTab('model1-tab');
+      executeModel1Sprint();
+    }
+
     async function executeModel1Sprint() {
-      const btn = document.getElementById('btn-execute-m1');
-      btn.textContent = 'Engineering Sprint Pipeline...';
-      btn.disabled = true;
+      const btn = document.getElementById('btn-run-model1');
+      if (btn) {
+        btn.textContent = 'Engineering Sprint Pipeline...';
+        btn.disabled = true;
+      }
 
       const payload = {
-        sampleKey: document.getElementById('m1-sample-select')?.value,
+        sampleKey: 'custom',
         companyName: document.getElementById('m1-company-name')?.value,
-        domain: document.getElementById('m1-company-domain')?.value,
-        country: document.getElementById('m1-company-country')?.value,
+        domain: (document.getElementById('m1-company-name')?.value || '').toLowerCase().replace(/[^a-z0-9]/g, '') + '.com',
+        country: document.getElementById('m1-city')?.value || 'USA',
         decisionMaker: document.getElementById('m1-decision-maker')?.value,
         recipient_email: document.getElementById('m1-recipient-email')?.value,
         dispatch: document.getElementById('m1-dispatch-checkbox')?.checked
@@ -5198,11 +5402,14 @@ WinRatePercentage = DIVIDE(CALCULATE(COUNTROWS('fact_pipeline'), 'fact_pipeline'
         `).join('');
       }
 
-      document.getElementById('m1-output-card').style.display = 'block';
+      const outCard = document.getElementById('m1-output-card');
+      if (outCard) outCard.style.display = 'block';
       loadSentEmailsLog();
 
-      btn.textContent = '⚡ Execute Architecture Sprint';
-      btn.disabled = false;
+      if (btn) {
+        btn.textContent = '⚡ Execute Model 1 Value Sprint';
+        btn.disabled = false;
+      }
     }
 
     function copyModel1Email() {
@@ -6114,14 +6321,22 @@ WinRatePercentage = DIVIDE(CALCULATE(COUNTROWS('fact_pipeline'), 'fact_pipeline'
     }
 
     window.onload = () => {
-      fetchPlatformData();
-      loadMetaGeoCategories();
-      loadMailSettings();
-      loadSentEmailsLog();
-      loadPowerBiSector('Logistics & Freight');
-      executeRagQuery();
-      loadEmailableContacts();
-      loadExtendedServices();
+      const safeRun = (name, fn) => {
+        try {
+          fn();
+        } catch (err) {
+          console.warn('[Zenthra Init Warning] ' + name + ':', err);
+        }
+      };
+
+      safeRun('fetchPlatformData', fetchPlatformData);
+      safeRun('loadMetaGeoCategories', loadMetaGeoCategories);
+      safeRun('loadMailSettings', loadMailSettings);
+      safeRun('loadSentEmailsLog', loadSentEmailsLog);
+      safeRun('loadPowerBiSector', () => loadPowerBiSector('Logistics & Freight'));
+      safeRun('executeRagQuery', executeRagQuery);
+      safeRun('loadEmailableContacts', loadEmailableContacts);
+      safeRun('loadExtendedServices', loadExtendedServices);
     };
   </script>
 

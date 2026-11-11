@@ -3,49 +3,36 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Zenthra Systems — Autonomous AI Operations & Systems Engineering</title>
-  <meta name="description" content="Zenthra Systems builds enterprise n8n workflow systems, autonomous AI agents, resilient data pipelines, and custom web applications with 24/7 SLA.">
-  <meta property="og:type" content="website">
-  <meta property="og:site_name" content="Zenthra Systems">
-  <meta property="og:title" content="Zenthra Systems — Autonomous AI Operations & Systems Engineering">
-  <meta property="og:description" content="Enterprise n8n workflow systems, autonomous AI agents, resilient data pipelines, and custom web applications with 24/7 SLA.">
-  <meta property="og:url" content="https://readuanulfaridfahim.github.io/Zenthera-Systems-AI-Automation/">
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Zenthra Systems — Autonomous AI Operations">
-  <meta name="twitter:description" content="Eliminate repetitive manual operations with enterprise n8n workflows and 24/7 AI agents.">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <title>Zenthra Systems — Autonomous Revenue Engineering & Enterprise AI Operations</title>
+  <meta name="description" content="Enterprise AI Engineering, Google Maps Geo-Lead Discovery, Microsoft Power BI Analytics, Private RAG Systems, and 10-Day Value-Anchored Fixed Sprints across Europe, North America, UK, UAE, and APAC.">
   <style>
     :root {
-      --bg-base: #f8fafc;
-      --bg-surface: #ffffff;
-      --bg-elevated: #f1f5f9;
-      --border-subtle: #e2e8f0;
-      --border-medium: #cbd5e1;
-      
-      --accent-primary: #0284c7;
-      --accent-secondary: #2563eb;
-      --accent-gradient: linear-gradient(135deg, #0284c7 0%, #2563eb 100%);
-      --accent-emerald: #059669;
-      --accent-purple: #7c3aed;
-
-      --text-primary: #0f172a;
-      --text-secondary: #334155;
-      --text-tertiary: #64748b;
+      --bg-base: #07090e;
+      --bg-surface: #0b101d;
+      --bg-card: #0f1527;
+      --bg-card-hover: #131c33;
+      --bg-code: #050811;
+      --border: rgba(255, 255, 255, 0.08);
+      --border-strong: rgba(56, 189, 248, 0.28);
+      --border-emerald: rgba(16, 185, 129, 0.35);
+      --text-main: #f8fafc;
+      --text-secondary: #cbd5e1;
       --text-muted: #94a3b8;
-
-      --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      --font-mono: 'JetBrains Mono', monospace;
-
-      --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.04);
-      --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.06), 0 2px 4px -2px rgba(0, 0, 0, 0.04);
-      --shadow-lg: 0 10px 15px -3px rgba(15, 23, 42, 0.07), 0 4px 6px -4px rgba(15, 23, 42, 0.03);
-      --shadow-xl: 0 20px 25px -5px rgba(15, 23, 42, 0.08), 0 8px 10px -6px rgba(15, 23, 42, 0.04);
-      --shadow-modal: 0 25px 50px -12px rgba(15, 23, 42, 0.35);
+      --text-dim: #64748b;
+      --emerald: #10b981;
+      --emerald-bright: #34d399;
+      --cobalt: #2563eb;
+      --cobalt-bright: #60a5fa;
+      --cyan: #38bdf8;
+      --purple: #8b5cf6;
+      --amber: #f59e0b;
+      --radius-lg: 16px;
+      --radius-md: 12px;
+      --radius-sm: 8px;
+      --shadow-glow: 0 24px 60px -12px rgba(0, 0, 0, 0.75), 0 0 40px rgba(37, 99, 235, 0.12);
     }
 
-    * {
+    *, *::before, *::after {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
@@ -56,2177 +43,1877 @@
     }
 
     body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
       background-color: var(--bg-base);
-      color: var(--text-primary);
-      font-family: var(--font-sans);
+      color: var(--text-main);
       line-height: 1.6;
-      letter-spacing: -0.01em;
-      -webkit-font-smoothing: antialiased;
-      position: relative;
+      overflow-x: hidden;
+      background-image:
+        radial-gradient(ellipse 80% 50% at 15% 0%, rgba(16, 185, 129, 0.09), transparent 60%),
+        radial-gradient(ellipse 75% 45% at 88% 8%, rgba(37, 99, 235, 0.13), transparent 55%),
+        radial-gradient(circle at 50% 60%, rgba(15, 21, 39, 0.65), transparent 70%);
     }
 
-    /* Ambient Background Gradients */
-    .ambient-bg {
-      position: fixed;
-      top: 0;
-      left: 0;
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .mono {
+      font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    }
+
+    .container {
       width: 100%;
-      height: 100%;
-      pointer-events: none;
-      z-index: -1;
-      background: 
-        radial-gradient(at 0% 0%, rgba(37, 99, 235, 0.04) 0px, transparent 50%),
-        radial-gradient(at 100% 10%, rgba(2, 132, 199, 0.05) 0px, transparent 45%),
-        radial-gradient(at 50% 100%, rgba(241, 245, 249, 0.9) 0px, transparent 60%);
+      max-width: 1320px;
+      margin: 0 auto;
+      padding: 0 24px;
     }
 
-    /* Navigation */
-    nav {
+    /* Buttons */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      font-family: inherit;
+      font-weight: 700;
+      font-size: 14px;
+      border-radius: var(--radius-sm);
+      padding: 11px 20px;
+      cursor: pointer;
+      border: 1px solid transparent;
+      transition: transform 0.15s ease, box-shadow 0.2s ease, background 0.2s ease, border-color 0.2s ease;
+      white-space: nowrap;
+    }
+
+    .btn:active {
+      transform: translateY(1px);
+    }
+
+    .btn-emerald {
+      background: linear-gradient(135deg, #059669, #10b981);
+      color: #ffffff;
+      box-shadow: 0 6px 20px rgba(16, 185, 129, 0.28);
+    }
+
+    .btn-emerald:hover {
+      background: linear-gradient(135deg, #047857, #059669);
+      box-shadow: 0 10px 26px rgba(16, 185, 129, 0.38);
+      transform: translateY(-1px);
+    }
+
+    .btn-cobalt {
+      background: linear-gradient(135deg, #1d4ed8, #2563eb);
+      color: #ffffff;
+      box-shadow: 0 6px 20px rgba(37, 99, 235, 0.28);
+    }
+
+    .btn-cobalt:hover {
+      background: linear-gradient(135deg, #1e40af, #1d4ed8);
+      box-shadow: 0 10px 26px rgba(37, 99, 235, 0.38);
+      transform: translateY(-1px);
+    }
+
+    .btn-ghost {
+      background: rgba(15, 21, 39, 0.85);
+      border-color: var(--border);
+      color: var(--text-secondary);
+    }
+
+    .btn-ghost:hover {
+      border-color: var(--cobalt-bright);
+      color: #ffffff;
+      background: rgba(30, 41, 59, 0.9);
+    }
+
+    /* Sticky Navbar */
+    .navbar {
       position: sticky;
       top: 0;
-      z-index: 50;
-      background: rgba(255, 255, 255, 0.96);
-      backdrop-filter: blur(16px);
-      border-bottom: 1px solid var(--border-subtle);
-      padding: 0.85rem 2.5rem;
+      z-index: 1000;
+      background: rgba(7, 9, 14, 0.84);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-inner {
       display: flex;
-      justify-content: space-between;
       align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      height: 72px;
     }
 
     .brand {
       display: flex;
       align-items: center;
-      gap: 0.85rem;
-      text-decoration: none;
-      color: inherit;
+      gap: 12px;
+      font-weight: 800;
+      font-size: 18px;
+      letter-spacing: -0.02em;
     }
 
-    .brand-icon {
-      width: 42px;
-      height: 42px;
-      border-radius: 12px;
-      background: var(--accent-gradient);
+    .brand-mark {
+      width: 38px;
+      height: 38px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, #10b981, #2563eb);
       display: flex;
       align-items: center;
       justify-content: center;
-      box-shadow: 0 4px 12px rgba(2, 132, 199, 0.25);
+      font-size: 18px;
+      color: #ffffff;
+      box-shadow: 0 0 22px rgba(16, 185, 129, 0.35);
+      flex-shrink: 0;
     }
 
-    .brand-icon svg {
-      width: 22px;
-      height: 22px;
-      fill: #ffffff;
-    }
-
-    .brand-title {
-      font-size: 1.15rem;
-      font-weight: 800;
-      letter-spacing: -0.03em;
-      line-height: 1.1;
-    }
-
-    .brand-tag {
-      font-size: 0.72rem;
-      color: var(--text-tertiary);
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
+    .brand-sub {
+      font-size: 11px;
       font-weight: 600;
+      color: var(--emerald-bright);
+      display: block;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
     }
 
     .nav-links {
       display: flex;
       align-items: center;
-      gap: 1.75rem;
-      list-style: none;
-    }
-
-    .nav-links a {
-      text-decoration: none;
-      color: var(--text-secondary);
-      font-size: 0.88rem;
+      gap: 24px;
+      font-size: 13.5px;
       font-weight: 600;
-      transition: color 0.18s;
+      color: var(--text-muted);
     }
 
     .nav-links a:hover {
-      color: var(--accent-primary);
+      color: #ffffff;
     }
 
-    .nav-cta {
+    .nav-actions {
       display: flex;
       align-items: center;
-      gap: 0.65rem;
+      gap: 10px;
     }
 
-    .btn {
+    .nav-status-pill {
       display: inline-flex;
       align-items: center;
-      justify-content: center;
-      gap: 0.5rem;
-      padding: 0.55rem 1.15rem;
-      border-radius: 10px;
-      font-size: 0.86rem;
+      gap: 6px;
+      font-size: 11.5px;
       font-weight: 700;
-      text-decoration: none;
-      cursor: pointer;
-      transition: all 0.2s ease;
-      border: 1px solid transparent;
+      color: var(--emerald-bright);
+      background: rgba(16, 185, 129, 0.12);
+      border: 1px solid rgba(16, 185, 129, 0.35);
+      padding: 5px 11px;
+      border-radius: 999px;
     }
 
-    .btn-primary {
-      background: var(--accent-gradient);
-      color: #ffffff;
-      box-shadow: 0 4px 12px rgba(2, 132, 199, 0.25);
-    }
-
-    .btn-primary:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 6px 18px rgba(2, 132, 199, 0.35);
-      color: #ffffff;
-    }
-
-    .btn-secondary {
-      background: #ffffff;
-      border-color: var(--border-subtle);
-      color: var(--text-secondary);
-    }
-
-    .btn-secondary:hover {
-      background: #f8fafc;
-      border-color: var(--border-medium);
-      color: var(--text-primary);
-    }
-
-    .btn-tour {
-      background: #eff6ff;
-      border-color: #bae6fd;
-      color: #0284c7;
-      font-weight: 700;
-    }
-
-    .btn-tour:hover {
-      background: #e0f2fe;
-      color: #0369a1;
-      transform: translateY(-1px);
-    }
-
-    /* Hero Section */
-    .hero {
-      max-width: 1200px;
-      margin: 3rem auto 2rem auto;
-      padding: 0 1.5rem;
-      text-align: center;
-    }
-
-    .status-pill {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-      background: #ecfdf5;
-      border: 1px solid #a7f3d0;
-      padding: 0.4rem 0.95rem;
-      border-radius: 9999px;
-      font-size: 0.8rem;
-      font-weight: 700;
-      color: #065f46;
-      margin-bottom: 1.5rem;
-      box-shadow: var(--shadow-sm);
-    }
-
-    .status-dot {
-      width: 8px;
-      height: 8px;
+    .pulse-dot {
+      width: 7px;
+      height: 7px;
       border-radius: 50%;
-      background: var(--accent-emerald);
-      box-shadow: 0 0 8px var(--accent-emerald);
-      animation: pulse 2s infinite ease-in-out;
+      background: var(--emerald-bright);
+      box-shadow: 0 0 8px var(--emerald-bright);
+      animation: pulse 2s infinite;
     }
 
     @keyframes pulse {
       0%, 100% { opacity: 1; transform: scale(1); }
-      50% { opacity: 0.4; transform: scale(0.85); }
+      50% { opacity: 0.45; transform: scale(1.25); }
+    }
+
+    .mobile-menu-btn {
+      display: none;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      color: var(--text-main);
+      border-radius: 8px;
+      padding: 8px 12px;
+      font-size: 18px;
+      cursor: pointer;
+    }
+
+    .mobile-drawer {
+      display: none;
+      background: var(--bg-surface);
+      border-bottom: 1px solid var(--border);
+      padding: 16px 24px 22px;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .mobile-drawer.open {
+      display: flex;
+    }
+
+    .mobile-drawer a.mobile-link {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      padding: 6px 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+    }
+
+    /* Hero Section */
+    .hero {
+      padding: 72px 0 56px;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.06fr 0.94fr;
+      gap: 44px;
+      align-items: center;
+    }
+
+    .hero-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(37, 99, 235, 0.12);
+      border: 1px solid rgba(96, 165, 250, 0.3);
+      color: #93c5fd;
+      font-size: 12px;
+      font-weight: 700;
+      padding: 6px 14px;
+      border-radius: 999px;
+      margin-bottom: 20px;
+      letter-spacing: 0.02em;
     }
 
     .hero h1 {
-      font-size: 3.25rem;
-      font-weight: 800;
-      line-height: 1.15;
-      letter-spacing: -0.035em;
-      color: var(--text-primary);
-      margin-bottom: 1.25rem;
+      font-size: clamp(34px, 4.4vw, 54px);
+      font-weight: 900;
+      line-height: 1.09;
+      letter-spacing: -0.03em;
+      margin-bottom: 20px;
     }
 
-    .hero h1 span.gradient-text {
-      background: var(--accent-gradient);
+    .hero h1 .gradient-accent {
+      background: linear-gradient(120deg, #34d399 0%, #38bdf8 55%, #60a5fa 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
+      background-clip: text;
     }
 
-    .hero p.subtitle {
-      font-size: 1.15rem;
+    .hero-desc {
+      font-size: 17px;
       color: var(--text-secondary);
-      max-width: 760px;
-      margin: 0 auto 2.25rem auto;
-      line-height: 1.6;
+      max-width: 600px;
+      margin-bottom: 28px;
+      line-height: 1.65;
     }
 
-    .hero-actions {
+    .hero-cta-row {
       display: flex;
-      justify-content: center;
-      align-items: center;
       flex-wrap: wrap;
-      gap: 0.85rem;
-      margin-bottom: 2rem;
+      gap: 12px;
+      margin-bottom: 28px;
     }
 
-    .global-trust-bar {
+    .hero-cta-row .btn {
+      padding: 13px 24px;
+      font-size: 14.5px;
+    }
+
+    .hero-trust-row {
       display: flex;
-      justify-content: center;
-      align-items: center;
       flex-wrap: wrap;
-      gap: 1.25rem;
-      margin-bottom: 3.5rem;
-      font-size: 0.8rem;
-      color: var(--text-tertiary);
+      gap: 18px;
+      font-size: 12.5px;
+      color: var(--text-muted);
       font-weight: 600;
     }
 
-    .trust-item {
+    .hero-trust-row span {
       display: inline-flex;
       align-items: center;
-      gap: 0.4rem;
-      background: #ffffff;
-      border: 1px solid var(--border-subtle);
-      padding: 0.35rem 0.75rem;
-      border-radius: 9999px;
-      box-shadow: var(--shadow-sm);
+      gap: 6px;
     }
 
-    /* Embedded Live Chat Console Showcase */
-    .chat-preview-section {
-      max-width: 1040px;
-      margin: 0 auto 5rem auto;
-      padding: 0 1.5rem;
-    }
-
-    .preview-card {
-      background: #ffffff;
-      border: 1px solid var(--border-subtle);
-      border-radius: 20px;
-      box-shadow: var(--shadow-xl);
+    /* Interactive Console Preview Card */
+    .console-preview {
+      background: linear-gradient(165deg, rgba(15, 21, 39, 0.96), rgba(7, 10, 19, 0.98));
+      border: 1px solid rgba(56, 189, 248, 0.25);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-glow);
       overflow: hidden;
     }
 
-    .preview-header {
-      padding: 0.95rem 1.5rem;
-      background: #f8fafc;
-      border-bottom: 1px solid var(--border-subtle);
+    .preview-chrome {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 16px;
+      background: #060912;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .chrome-dots {
+      display: flex;
+      gap: 6px;
+    }
+
+    .chrome-dots span {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+    }
+
+    .preview-tabs {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 6px;
+      padding: 10px 14px;
+      background: #080d1a;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .preview-tab-btn {
+      background: transparent;
+      border: 1px solid transparent;
+      color: var(--text-muted);
+      font-size: 11.5px;
+      font-weight: 700;
+      padding: 8px 6px;
+      border-radius: 7px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .preview-tab-btn:hover {
+      color: var(--text-main);
+      background: rgba(255, 255, 255, 0.04);
+    }
+
+    .preview-tab-btn.active {
+      background: rgba(16, 185, 129, 0.14);
+      border-color: rgba(16, 185, 129, 0.45);
+      color: var(--emerald-bright);
+    }
+
+    .preview-body {
+      padding: 20px;
+      min-height: 290px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .preview-kpi-mini-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+    }
+
+    .mini-box {
+      background: var(--bg-code);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 11px 13px;
+    }
+
+    .mini-box-label {
+      font-size: 10.5px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: var(--text-dim);
+      font-weight: 700;
+    }
+
+    .mini-box-val {
+      font-size: 17px;
+      font-weight: 800;
+      margin-top: 3px;
+    }
+
+    .preview-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .preview-row {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      flex-wrap: wrap;
-      gap: 0.75rem;
+      gap: 10px;
+      background: rgba(255, 255, 255, 0.025);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      border-radius: 8px;
+      padding: 9px 12px;
+      font-size: 12px;
     }
 
-    .preview-title {
-      display: flex;
-      align-items: center;
-      gap: 0.65rem;
-      font-size: 0.88rem;
-      font-weight: 700;
-      color: var(--text-primary);
+    /* Live Ticker Strip */
+    .metrics-strip {
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      background: rgba(11, 16, 29, 0.72);
+      padding: 26px 0;
     }
 
-    .preview-actions {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
+    .metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 18px;
     }
 
-    .preview-frame {
-      width: 100%;
-      height: 640px;
-      border: none;
-      background: #ffffff;
+    .metric-cell {
+      padding: 10px 16px;
+      border-left: 2px solid var(--border-emerald);
     }
 
-    /* Pillars Grid */
-    .section-container {
-      max-width: 1200px;
-      margin: 0 auto 5rem auto;
-      padding: 0 1.5rem;
+    .metric-val {
+      font-size: 28px;
+      font-weight: 900;
+      color: var(--text-main);
+      letter-spacing: -0.02em;
+      line-height: 1.15;
+    }
+
+    .metric-lbl {
+      font-size: 12.5px;
+      color: var(--text-muted);
+      margin-top: 4px;
+      font-weight: 500;
+    }
+
+    /* Section Headings */
+    .section {
+      padding: 84px 0;
+    }
+
+    .section-dark {
+      background: rgba(11, 16, 29, 0.55);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
     }
 
     .section-header {
-      text-align: center;
-      margin-bottom: 3rem;
+      max-width: 760px;
+      margin-bottom: 44px;
     }
 
-    .section-tag {
-      font-size: 0.78rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      color: var(--accent-primary);
-      margin-bottom: 0.5rem;
-      display: block;
-    }
-
-    .section-header h2 {
-      font-size: 2.2rem;
+    .section-kicker {
+      display: inline-block;
+      font-size: 11.5px;
       font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.09em;
+      color: var(--emerald-bright);
+      margin-bottom: 10px;
+    }
+
+    .section-title {
+      font-size: clamp(26px, 3vw, 38px);
+      font-weight: 850;
       letter-spacing: -0.025em;
-      color: var(--text-primary);
+      line-height: 1.18;
+      margin-bottom: 12px;
     }
 
-    .cards-grid {
+    .section-sub {
+      font-size: 15.5px;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    /* 4 Pillars Grid */
+    .pillars-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
-      gap: 1.5rem;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 18px;
     }
 
-    .feature-card {
-      background: #ffffff;
-      border: 1px solid var(--border-subtle);
-      border-radius: 16px;
-      padding: 1.75rem;
-      box-shadow: var(--shadow-sm);
-      transition: all 0.25s ease;
+    .pillar-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 24px;
       display: flex;
       flex-direction: column;
+      justify-content: space-between;
+      gap: 16px;
+      transition: transform 0.2s ease, border-color 0.2s ease;
     }
 
-    .feature-card:hover {
+    .pillar-card:hover {
       transform: translateY(-3px);
-      box-shadow: var(--shadow-lg);
-      border-color: #bae6fd;
+      border-color: var(--border-strong);
+      background: var(--bg-card-hover);
     }
 
-    .card-icon-wrap {
-      width: 48px;
-      height: 48px;
-      border-radius: 12px;
-      background: #f0f9ff;
-      border: 1px solid #bae6fd;
+    .pillar-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 10px;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 1.5rem;
-      margin-bottom: 1.25rem;
+      font-size: 20px;
+      background: rgba(37, 99, 235, 0.14);
+      border: 1px solid rgba(96, 165, 250, 0.25);
+      margin-bottom: 14px;
     }
 
-    .feature-card h3 {
-      font-size: 1.15rem;
-      font-weight: 750;
-      color: var(--text-primary);
-      margin-bottom: 0.65rem;
-      letter-spacing: -0.015em;
-    }
-
-    .feature-card p {
-      font-size: 0.88rem;
-      color: var(--text-secondary);
-      line-height: 1.55;
-      margin-bottom: 1.25rem;
-      flex: 1;
-    }
-
-    .feature-card ul {
-      list-style: none;
-      border-top: 1px solid var(--border-subtle);
-      padding-top: 1rem;
-      margin-top: auto;
-    }
-
-    .feature-card li {
-      font-size: 0.8rem;
-      color: var(--text-tertiary);
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      margin-bottom: 0.4rem;
-    }
-
-    .feature-card li::before {
-      content: "✓";
-      color: var(--accent-emerald);
+    .pillar-card h3 {
+      font-size: 16.5px;
       font-weight: 800;
+      margin-bottom: 8px;
+      color: var(--text-main);
     }
 
-    /* ROI & Savings Calculator */
-    .calculator-card {
-      background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
-      border: 1px solid var(--border-subtle);
-      border-radius: 20px;
-      padding: 2.5rem;
-      box-shadow: var(--shadow-xl);
-      display: grid;
-      grid-template-columns: 1.2fr 1fr;
-      gap: 3rem;
+    .pillar-card p {
+      font-size: 13.5px;
+      color: var(--text-muted);
+      line-height: 1.55;
+    }
+
+    .pillar-link {
+      font-size: 12.5px;
+      font-weight: 700;
+      color: var(--cyan);
+      display: inline-flex;
       align-items: center;
+      gap: 5px;
     }
 
-    .calc-controls {
+    .pillar-link:hover {
+      color: var(--emerald-bright);
+    }
+
+    /* Filterable 12 Services Showcase */
+    .service-filters {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 28px;
+    }
+
+    .filter-pill {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      font-family: inherit;
+      font-size: 13px;
+      font-weight: 700;
+      padding: 9px 16px;
+      border-radius: 999px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .filter-pill:hover {
+      border-color: var(--cobalt-bright);
+      color: #ffffff;
+    }
+
+    .filter-pill.active {
+      background: linear-gradient(135deg, rgba(16, 185, 129, 0.18), rgba(37, 99, 235, 0.2));
+      border-color: var(--emerald);
+      color: var(--emerald-bright);
+    }
+
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+
+    .service-card {
+      background: linear-gradient(155deg, #0d1426, #080d1a);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 22px;
       display: flex;
       flex-direction: column;
-      gap: 1.75rem;
+      justify-content: space-between;
+      transition: transform 0.2s ease, border-color 0.2s ease;
     }
 
-    .slider-group label {
+    .service-card:hover {
+      transform: translateY(-2px);
+      border-color: var(--border-strong);
+    }
+
+    .service-top-meta {
       display: flex;
       justify-content: space-between;
-      font-size: 0.9rem;
-      font-weight: 700;
-      color: var(--text-primary);
-      margin-bottom: 0.5rem;
+      align-items: center;
+      margin-bottom: 12px;
+      gap: 8px;
     }
 
-    .slider-group span.val {
-      font-family: var(--font-mono);
-      color: var(--accent-primary);
-    }
-
-    .slider-group input[type="range"] {
-      width: 100%;
-      height: 6px;
+    .service-badge {
+      font-size: 10.5px;
+      font-weight: 800;
+      text-transform: uppercase;
+      padding: 3px 9px;
       border-radius: 5px;
-      background: #e2e8f0;
-      outline: none;
-      -webkit-appearance: none;
+      background: rgba(56, 189, 248, 0.12);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      color: var(--cyan);
     }
 
-    .slider-group input[type="range"]::-webkit-slider-thumb {
-      -webkit-appearance: none;
-      width: 20px;
-      height: 20px;
-      border-radius: 50%;
-      background: var(--accent-primary);
-      cursor: pointer;
-      box-shadow: 0 2px 6px rgba(2, 132, 199, 0.4);
+    .service-card h3 {
+      font-size: 17px;
+      font-weight: 800;
+      line-height: 1.3;
+      margin-bottom: 8px;
     }
 
-    .calc-results {
-      background: #0f172a;
-      color: #ffffff;
-      border-radius: 16px;
-      padding: 2rem;
+    .service-wedge {
+      font-size: 12.5px;
+      font-weight: 600;
+      color: var(--emerald-bright);
+      margin-bottom: 10px;
+    }
+
+    .service-pain {
+      font-size: 12.5px;
+      color: var(--text-muted);
+      margin-bottom: 16px;
+      line-height: 1.5;
+    }
+
+    .service-pricing-box {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      background: var(--bg-code);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 8px;
+      padding: 12px;
+      margin-bottom: 14px;
+    }
+
+    .service-deliverables {
+      list-style: none;
+      margin-bottom: 16px;
+      font-size: 12px;
+      color: var(--text-secondary);
       display: flex;
       flex-direction: column;
-      gap: 1.5rem;
-      text-align: center;
-      box-shadow: var(--shadow-lg);
+      gap: 6px;
     }
 
-    .metric-box h4 {
-      font-size: 0.78rem;
+    /* Pipeline Architecture */
+    .pipeline-stages {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 18px;
+    }
+
+    .stage-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 22px;
+      position: relative;
+    }
+
+    .stage-num {
+      font-size: 11px;
+      font-weight: 800;
       text-transform: uppercase;
       letter-spacing: 0.08em;
-      color: var(--text-muted);
-      margin-bottom: 0.35rem;
+      color: var(--cobalt-bright);
+      margin-bottom: 8px;
     }
 
-    .metric-box .number {
-      font-size: 2.5rem;
+    .stage-card h3 {
+      font-size: 16px;
       font-weight: 800;
-      letter-spacing: -0.03em;
-      color: #38bdf8;
-      font-family: var(--font-mono);
+      margin-bottom: 10px;
     }
 
-    /* Currency Toggle Group */
-    .currency-toggle-group {
-      display: inline-flex;
-      background: #f1f5f9;
-      padding: 0.2rem;
-      border-radius: 10px;
-      gap: 0.25rem;
-      border: 1px solid var(--border-subtle);
-    }
-
-    .currency-btn {
-      padding: 0.25rem 0.65rem;
-      border-radius: 7px;
-      font-size: 0.75rem;
-      font-weight: 700;
-      border: none;
-      background: transparent;
-      color: var(--text-tertiary);
-      cursor: pointer;
-      transition: all 0.2s;
-    }
-
-    .currency-btn.active {
-      background: #ffffff;
-      color: var(--accent-primary);
-      box-shadow: 0 1px 3px rgba(0,0,0,0.08);
-    }
-
-    /* Toast Notification System */
-    .toast-container {
-      position: fixed;
-      bottom: 24px;
-      right: 24px;
-      z-index: 2000;
+    .stage-agents {
       display: flex;
       flex-direction: column;
-      gap: 0.5rem;
-      pointer-events: none;
+      gap: 6px;
+      font-size: 12.5px;
+      color: var(--text-muted);
     }
 
-    .toast-msg {
-      background: #0f172a;
-      color: #ffffff;
-      padding: 0.75rem 1.25rem;
-      border-radius: 10px;
-      font-size: 0.85rem;
+    .stage-agent-chip {
+      background: var(--bg-code);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      padding: 6px 10px;
+      border-radius: 6px;
+      color: var(--text-secondary);
       font-weight: 600;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.25);
-      border-left: 4px solid #10b981;
-      display: flex;
-      align-items: center;
-      gap: 0.65rem;
-      animation: toastSlideIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-      pointer-events: auto;
     }
 
-    @keyframes toastSlideIn {
-      from { transform: translateX(50px); opacity: 0; }
-      to { transform: translateX(0); opacity: 1; }
+    /* Multi-Currency ROI Calculator */
+    .roi-shell {
+      background: linear-gradient(150deg, #0d1527, #080c17);
+      border: 1px solid rgba(16, 185, 129, 0.35);
+      border-radius: var(--radius-lg);
+      padding: 32px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 32px;
+      box-shadow: var(--shadow-glow);
+    }
+
+    .currency-toggle {
+      display: inline-flex;
+      background: var(--bg-code);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 4px;
+      gap: 4px;
+      margin-bottom: 18px;
+    }
+
+    .curr-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      font-family: inherit;
+      font-size: 12.5px;
+      font-weight: 700;
+      padding: 7px 14px;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    .curr-btn.active {
+      background: var(--emerald);
+      color: #ffffff;
+    }
+
+    .form-group {
+      margin-bottom: 16px;
+    }
+
+    .form-group label {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12.5px;
+      font-weight: 700;
+      color: var(--text-secondary);
+      margin-bottom: 6px;
+    }
+
+    .form-control {
+      width: 100%;
+      background: var(--bg-code);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: #ffffff;
+      font-family: inherit;
+      font-size: 14px;
+      padding: 11px 14px;
+      outline: none;
+    }
+
+    .form-control:focus {
+      border-color: var(--emerald);
+    }
+
+    .roi-output-panel {
+      background: var(--bg-code);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: var(--radius-md);
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 18px;
+    }
+
+    .roi-kpis {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+    }
+
+    .roi-kpi-box {
+      background: rgba(15, 21, 39, 0.9);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 14px;
+    }
+
+    .roi-bar-track {
+      height: 10px;
+      background: rgba(255, 255, 255, 0.07);
+      border-radius: 999px;
+      overflow: hidden;
+      margin-top: 6px;
+    }
+
+    .roi-bar-fill {
+      height: 100%;
+      border-radius: 999px;
+      transition: width 0.25s ease;
+    }
+
+    /* Global & European Markets Strip */
+    .regions-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 18px;
+    }
+
+    .region-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 20px;
+    }
+
+    .country-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 12px;
+    }
+
+    .country-chip {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      background: var(--bg-code);
+      border: 1px solid rgba(255, 255, 255, 0.07);
+      padding: 3px 8px;
+      border-radius: 5px;
+    }
+
+    /* FAQ & Booking CTA */
+    .faq-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .faq-item {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 20px;
+    }
+
+    .faq-item h4 {
+      font-size: 15px;
+      font-weight: 700;
+      margin-bottom: 8px;
+      color: #ffffff;
+    }
+
+    .faq-item p {
+      font-size: 13px;
+      color: var(--text-muted);
+      line-height: 1.55;
+    }
+
+    .cta-banner {
+      background: linear-gradient(135deg, #0b1c36 0%, #09201a 100%);
+      border: 1px solid rgba(16, 185, 129, 0.35);
+      border-radius: var(--radius-lg);
+      padding: 44px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 24px;
     }
 
     /* Footer */
-    footer {
-      border-top: 1px solid var(--border-subtle);
-      background: #ffffff;
-      padding: 3rem 2.5rem 2rem 2.5rem;
-      color: var(--text-secondary);
-      font-size: 0.86rem;
+    .footer {
+      background: #04060a;
+      border-top: 1px solid var(--border);
+      padding: 56px 0 32px;
+      margin-top: 32px;
     }
 
-    .footer-content {
-      max-width: 1200px;
-      margin: 0 auto;
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 1.4fr 1fr 1fr 1fr;
+      gap: 32px;
+      margin-bottom: 36px;
+    }
+
+    .footer h5 {
+      font-size: 12px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-main);
+      margin-bottom: 14px;
+    }
+
+    .footer ul {
+      list-style: none;
       display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 1.5rem;
-      border-bottom: 1px solid var(--border-subtle);
-      padding-bottom: 2rem;
+      flex-direction: column;
+      gap: 9px;
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    .footer ul a:hover {
+      color: var(--emerald-bright);
     }
 
     .footer-bottom {
-      max-width: 1200px;
-      margin: 1.5rem auto 0 auto;
-      display: flex;
-      justify-content: space-between;
-      color: var(--text-tertiary);
-      font-size: 0.78rem;
-    }
-
-    /* ========================================================================= */
-    /* INTERACTIVE WEBSITE TRAINING SYSTEM, HUD & SPOTLIGHT                      */
-    /* ========================================================================= */
-    /* Top Site Training Announcement Banner */
-    .site-training-banner {
-      background: #ffffff;
-      border-bottom: 1px solid #bae6fd;
-      padding: 0.65rem 2rem;
-      font-size: 0.84rem;
-      color: var(--text-secondary);
-      position: sticky;
-      top: 0;
-      z-index: 60;
-      box-shadow: 0 1px 4px rgba(2, 132, 199, 0.08);
-      transition: all 0.3s ease;
-    }
-
-    .banner-inner {
-      max-width: 1280px;
-      margin: 0 auto;
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+      padding-top: 22px;
       display: flex;
       justify-content: space-between;
       align-items: center;
       flex-wrap: wrap;
-      gap: 0.75rem;
+      gap: 12px;
+      font-size: 12.5px;
+      color: var(--text-dim);
     }
 
-    .banner-tag {
-      display: flex;
-      align-items: center;
-      gap: 0.65rem;
-      font-weight: 600;
-    }
-
-    .banner-beacon {
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      background: #0284c7;
-      box-shadow: 0 0 8px #0284c7;
-      animation: pulse 1.8s infinite;
-    }
-
-    .banner-controls {
-      display: flex;
-      align-items: center;
-      gap: 0.65rem;
-    }
-
-    .btn-banner-action {
-      background: var(--accent-gradient);
-      color: #ffffff;
-      border: none;
-      padding: 0.4rem 0.95rem;
-      border-radius: 8px;
-      font-size: 0.78rem;
-      font-weight: 700;
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      gap: 0.4rem;
-      transition: all 0.2s;
-      box-shadow: 0 2px 6px rgba(2, 132, 199, 0.25);
-    }
-
-    .btn-banner-action:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 4px 10px rgba(2, 132, 199, 0.35);
-    }
-
-    .btn-banner-academy {
-      background: #eff6ff;
-      border: 1px solid #bae6fd;
-      color: #0369a1;
-      padding: 0.4rem 0.95rem;
-      border-radius: 8px;
-      font-size: 0.78rem;
-      font-weight: 700;
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      gap: 0.4rem;
-      transition: all 0.2s;
-    }
-
-    .btn-banner-academy:hover {
-      background: #e0f2fe;
-    }
-
-    .banner-close-btn {
-      background: none;
-      border: none;
-      font-size: 1.25rem;
-      cursor: pointer;
-      color: var(--text-tertiary);
-      padding: 0 0.35rem;
-      line-height: 1;
-    }
-
-    /* Floating Training Controller HUD */
-    .training-hud {
-      position: fixed;
-      bottom: 24px;
-      left: 50%;
-      transform: translateX(-50%);
-      z-index: 1040;
-      background: rgba(255, 255, 255, 0.98);
-      backdrop-filter: blur(20px);
-      border: 1px solid #bae6fd;
-      box-shadow: 0 20px 40px -10px rgba(15, 23, 42, 0.22), 0 0 0 1px rgba(2, 132, 199, 0.12);
-      border-radius: 9999px;
-      padding: 0.55rem 0.95rem;
+    /* Cal.com Modal */
+    .modal-backdrop {
       display: none;
-      align-items: center;
-      gap: 0.75rem;
-      max-width: 95vw;
-      animation: hudSlideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-
-    @keyframes hudSlideUp {
-      from { opacity: 0; transform: translate(-50%, 20px) scale(0.96); }
-      to { opacity: 1; transform: translate(-50%, 0) scale(1); }
-    }
-
-    .training-hud.active {
-      display: flex;
-    }
-
-    .hud-status {
-      display: flex;
-      align-items: center;
-      gap: 0.45rem;
-      padding-left: 0.4rem;
-      padding-right: 0.65rem;
-      border-right: 1px solid #e2e8f0;
-      font-size: 0.78rem;
-      font-weight: 750;
-      color: #0369a1;
-      white-space: nowrap;
-    }
-
-    .hud-step-pills {
-      display: flex;
-      align-items: center;
-      gap: 0.35rem;
-    }
-
-    .hud-pill {
-      width: 28px;
-      height: 28px;
-      border-radius: 50%;
-      border: 1px solid #cbd5e1;
-      background: #ffffff;
-      color: var(--text-secondary);
-      font-size: 0.75rem;
-      font-weight: 700;
-      display: flex;
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      background: rgba(3, 6, 14, 0.85);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
       align-items: center;
       justify-content: center;
-      cursor: pointer;
-      transition: all 0.2s;
+      padding: 20px;
     }
 
-    .hud-pill:hover {
-      border-color: #0284c7;
-      color: #0284c7;
-    }
-
-    .hud-pill.active {
-      background: var(--accent-gradient);
-      border-color: #0284c7;
-      color: #ffffff;
-      box-shadow: 0 2px 8px rgba(2, 132, 199, 0.35);
-    }
-
-    .hud-btn {
-      padding: 0.42rem 0.8rem;
-      border-radius: 9999px;
-      font-size: 0.76rem;
-      font-weight: 700;
-      border: 1px solid #cbd5e1;
-      background: #f8fafc;
-      color: var(--text-secondary);
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      gap: 0.35rem;
-      transition: all 0.18s;
-      white-space: nowrap;
-    }
-
-    .hud-btn:hover {
-      background: #f1f5f9;
-      color: var(--text-primary);
-    }
-
-    .hud-btn-action {
-      background: #0284c7;
-      color: #ffffff;
-      border-color: #0284c7;
-      box-shadow: 0 2px 8px rgba(2, 132, 199, 0.28);
-    }
-
-    .hud-btn-action:hover {
-      background: #0369a1;
-      color: #ffffff;
-    }
-
-    .hud-btn-toggle.active {
-      background: #ecfdf5;
-      color: #065f46;
-      border-color: #a7f3d0;
-    }
-
-    /* Tour Backdrop & Card */
-    .tour-backdrop {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      background: rgba(15, 23, 42, 0.55);
-      backdrop-filter: blur(4px);
-      z-index: 1000;
-      display: none;
-      opacity: 0;
-      transition: opacity 0.3s ease;
-      pointer-events: auto;
-    }
-
-    .tour-backdrop.active {
-      display: block;
-      opacity: 1;
-    }
-
-    .tour-spotlight-highlight {
-      position: relative;
-      z-index: 1010 !important;
-      box-shadow: 0 0 0 4px #0284c7, 0 14px 40px rgba(2, 132, 199, 0.38) !important;
-      border-radius: 16px;
-      background: #ffffff !important;
-      transition: all 0.3s ease;
-    }
-
-    .tour-card {
-      position: fixed;
-      z-index: 1025;
-      background: #ffffff;
-      border: 1px solid #bae6fd;
-      border-radius: 18px;
-      padding: 1.5rem;
-      max-width: 480px;
-      width: 90vw;
-      box-shadow: var(--shadow-modal);
-      display: none;
-      animation: tourCardPop 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-
-    @keyframes tourCardPop {
-      from { opacity: 0; transform: translateY(12px) scale(0.96); }
-      to { opacity: 1; transform: translateY(0) scale(1); }
-    }
-
-    .tour-card-header {
+    .modal-backdrop.open {
       display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 0.75rem;
     }
 
-    .tour-badge {
-      font-size: 0.7rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      font-family: var(--font-mono);
-      background: #e0f2fe;
-      color: #0369a1;
-      padding: 0.25rem 0.65rem;
-      border-radius: 9999px;
-    }
-
-    .tour-close-btn {
-      background: none;
-      border: none;
-      font-size: 1.25rem;
-      cursor: pointer;
-      color: var(--text-tertiary);
-      padding: 0 0.25rem;
-    }
-
-    .tour-card h3 {
-      font-size: 1.2rem;
-      font-weight: 800;
-      color: var(--text-primary);
-      margin-bottom: 0.5rem;
-      line-height: 1.25;
-    }
-
-    .tour-card p.desc {
-      font-size: 0.88rem;
-      color: var(--text-secondary);
-      line-height: 1.55;
-      margin-bottom: 0.85rem;
-    }
-
-    .tour-detail-grid {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 0.55rem;
-      margin-bottom: 1rem;
-    }
-
-    .tour-detail-box {
-      background: #f8fafc;
-      border: 1px solid var(--border-subtle);
-      border-radius: 10px;
-      padding: 0.65rem 0.85rem;
-      font-size: 0.8rem;
-      line-height: 1.45;
-    }
-
-    .tour-detail-box.pitch {
-      background: #eff6ff;
-      border-color: #bfdbfe;
-      color: #1e40af;
-    }
-
-    .tour-detail-box.tip {
-      background: #f0fdf4;
-      border-color: #bbf7d0;
-      color: #166534;
-    }
-
-    .tour-action-row {
-      margin-bottom: 1.15rem;
-    }
-
-    .tour-live-action-btn {
+    .modal-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-strong);
+      border-radius: var(--radius-lg);
       width: 100%;
-      background: #f0fdf4;
-      border: 1px dashed #22c55e;
-      color: #15803d;
-      font-weight: 750;
-      font-size: 0.82rem;
-      padding: 0.65rem 1rem;
-      border-radius: 10px;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 0.5rem;
-      transition: all 0.2s;
-    }
-
-    .tour-live-action-btn:hover {
-      background: #dcfce7;
-      border-style: solid;
-      transform: translateY(-1px);
-    }
-
-    .tour-footer {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      border-top: 1px solid #f1f5f9;
-      padding-top: 0.85rem;
-    }
-
-    .tour-steps-count {
-      font-size: 0.75rem;
-      font-family: var(--font-mono);
-      color: var(--text-muted);
-      font-weight: 600;
-    }
-
-    .tour-btn-group {
-      display: flex;
-      gap: 0.45rem;
-    }
-
-    /* Cal.com Interactive Booking Modal */
-    .cal-modal-backdrop {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      background: rgba(15, 23, 42, 0.65);
-      backdrop-filter: blur(8px);
-      z-index: 1060;
-      display: none;
-      align-items: center;
-      justify-content: center;
-      padding: 1.5rem;
-    }
-
-    .cal-modal-backdrop.active {
-      display: flex;
-      animation: fadeInModal 0.25s ease-out;
-    }
-
-    .cal-modal-card {
-      background: #ffffff;
-      border: 1px solid var(--border-subtle);
-      border-radius: 20px;
-      width: 100%;
-      max-width: 960px;
-      height: 85vh;
-      display: flex;
-      flex-direction: column;
-      box-shadow: var(--shadow-modal);
-      overflow: hidden;
-    }
-
-    .cal-modal-header {
-      padding: 1rem 1.75rem;
-      border-bottom: 1px solid var(--border-subtle);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      background: #f8fafc;
-    }
-
-    .cal-modal-title {
-      display: flex;
-      align-items: center;
-      gap: 0.65rem;
-      font-size: 0.95rem;
-      font-weight: 750;
-      color: var(--text-primary);
-    }
-
-    .cal-modal-body {
-      flex: 1;
-      width: 100%;
-      background: #ffffff;
-    }
-
-    .cal-embed-frame {
-      width: 100%;
-      height: 100%;
-      border: none;
-    }
-
-    /* ========================================================================= */
-    /* FULL TRAINING ACADEMY MODAL                                               */
-    /* ========================================================================= */
-    .academy-backdrop {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      background: rgba(15, 23, 42, 0.6);
-      backdrop-filter: blur(6px);
-      z-index: 1050;
-      display: none;
-      align-items: center;
-      justify-content: center;
-      padding: 1.5rem;
-    }
-
-    .academy-backdrop.active {
-      display: flex;
-      animation: fadeInModal 0.2s ease-out;
-    }
-
-    .academy-card {
-      background: #ffffff;
-      border: 1px solid var(--border-subtle);
-      border-radius: 20px;
-      max-width: 860px;
-      width: 100%;
-      max-height: 85vh;
-      box-shadow: var(--shadow-modal);
+      max-width: 820px;
+      max-height: 90vh;
       display: flex;
       flex-direction: column;
       overflow: hidden;
+      box-shadow: 0 30px 70px rgba(0, 0, 0, 0.9);
     }
 
-    .academy-header {
-      padding: 1.25rem 1.75rem;
-      border-bottom: 1px solid var(--border-subtle);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      background: #f8fafc;
-    }
-
-    .academy-header h2 {
-      font-size: 1.2rem;
-      font-weight: 800;
-      color: var(--text-primary);
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
-
-    .academy-nav {
-      display: flex;
-      border-bottom: 1px solid var(--border-subtle);
-      background: #ffffff;
-      padding: 0 1.25rem;
-      overflow-x: auto;
-    }
-
-    .academy-tab {
-      padding: 0.85rem 1.15rem;
-      font-size: 0.84rem;
-      font-weight: 700;
-      color: var(--text-tertiary);
-      background: none;
-      border: none;
-      border-bottom: 2px solid transparent;
-      cursor: pointer;
-      white-space: nowrap;
-      transition: all 0.2s;
-    }
-
-    .academy-tab.active {
-      color: var(--accent-primary);
-      border-bottom-color: var(--accent-primary);
-    }
-
-    .academy-body {
-      padding: 1.75rem;
-      overflow-y: auto;
-      flex: 1;
-      line-height: 1.65;
-      font-size: 0.9rem;
-      color: var(--text-secondary);
-    }
-
-    .academy-body h3 {
-      font-size: 1.1rem;
-      font-weight: 800;
-      color: var(--text-primary);
-      margin-bottom: 0.6rem;
-    }
-
-    .academy-body h4 {
-      font-size: 0.95rem;
-      font-weight: 700;
-      color: var(--text-primary);
-      margin: 1.1rem 0 0.35rem 0;
-    }
-
-    .academy-box {
-      background: #f8fafc;
-      border: 1px solid var(--border-subtle);
-      border-radius: 10px;
-      padding: 1rem 1.25rem;
-      margin: 0.85rem 0;
-    }
-
-    .academy-code {
-      font-family: var(--font-mono);
-      font-size: 0.8rem;
-      background: #0f172a;
-      color: #38bdf8;
-      padding: 0.85rem 1rem;
-      border-radius: 8px;
-      margin: 0.65rem 0;
-      overflow-x: auto;
-    }
-
-    /* Responsive */
-    @media (max-width: 860px) {
-      nav {
-        padding: 0.75rem 1.25rem;
+    /* Responsive Breakpoints */
+    @media (max-width: 1100px) {
+      .hero-grid,
+      .roi-shell {
+        grid-template-columns: 1fr;
       }
-      .nav-links {
+
+      .pillars-grid,
+      .pipeline-stages,
+      .regions-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .services-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .footer-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 768px) {
+      .nav-links,
+      .nav-actions,
+      .nav-status-pill {
         display: none;
       }
-      .hero h1 {
-        font-size: 2.3rem;
+
+      .mobile-menu-btn {
+        display: inline-flex;
       }
-      .calculator-card {
+
+      .hero {
+        padding: 44px 0 36px;
+      }
+
+      .metrics-grid,
+      .pillars-grid,
+      .services-grid,
+      .pipeline-stages,
+      .regions-grid,
+      .faq-grid,
+      .footer-grid {
         grid-template-columns: 1fr;
-        padding: 1.5rem;
-        gap: 2rem;
       }
-      .preview-frame {
-        height: 520px;
+
+      .preview-tabs {
+        grid-template-columns: repeat(2, 1fr);
       }
-      .tour-card {
-        max-width: 95vw;
-        padding: 1.15rem;
+
+      .roi-shell,
+      .cta-banner {
+        padding: 24px 18px;
       }
     }
   </style>
 </head>
 <body>
 
-  <div class="ambient-bg"></div>
-
-  <!-- Top Site Training Announcement Banner -->
-  <div class="site-training-banner" id="siteTrainingBanner">
-    <div class="banner-inner">
-      <div class="banner-tag">
-        <span class="banner-beacon"></span>
-        <span><strong>Live Website Training Mode:</strong> Learn how every tool works &amp; how to close global enterprise deals.</span>
-      </div>
-      <div class="banner-controls">
-        <button class="btn-banner-action" onclick="startWebsiteTour(true)">
-          <span>▶ Start Guided Walkthrough</span>
-        </button>
-        <button class="btn-banner-academy" onclick="openAcademyModal()">
-          <span>📖 Full Sales Academy &amp; Scripts</span>
-        </button>
-        <button class="banner-close-btn" onclick="dismissTrainingBanner()" title="Dismiss">&times;</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- Corporate Nav -->
-  <nav id="main-nav">
-    <a href="#" class="brand">
-      <div class="brand-icon">
-        <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path></svg>
-      </div>
-      <div>
-        <div class="brand-title">Zenthra Systems</div>
-        <div class="brand-tag">Operations &amp; AI Engineering</div>
-      </div>
-    </a>
-
-    <ul class="nav-links">
-      <li><a href="#solutions">Solutions</a></li>
-      <li><a href="#calculator">ROI Estimator</a></li>
-      <li><a href="#chat-assistant">Live AI Agent</a></li>
-      <li>
-        <a href="poster_studio.html" target="_blank" class="btn btn-secondary" style="padding: 0.38rem 0.85rem; font-size: 0.82rem; border-color: #bae6fd; color: #0284c7;">
-          <span>🎨 Poster Studio</span>
-        </a>
-      </li>
-      <li>
-        <button class="btn btn-tour" onclick="startWebsiteTour()" style="padding: 0.38rem 0.85rem; font-size: 0.82rem;">
-          <span>🚀 Interactive Training</span>
-        </button>
-      </li>
-      <li>
-        <button class="btn btn-secondary" onclick="openAcademyModal()" style="padding: 0.38rem 0.85rem; font-size: 0.82rem;">
-          <span>🎓 Sales Academy</span>
-        </button>
-      </li>
-    </ul>
-
-    <div class="nav-cta">
-      <a href="console.html" class="btn btn-primary" style="background: linear-gradient(135deg, #059669, #0284c7); font-weight: 700; color: white; padding: 0.45rem 1rem; font-size: 0.85rem; text-decoration: none; display: inline-flex; align-items: center; gap: 6px;">
-        <span>⚡ Live Console</span>
+  <!-- STICKY NAVIGATION -->
+  <header class="navbar">
+    <div class="container nav-inner">
+      <a href="index.html" class="brand">
+        <div class="brand-mark">Z</div>
+        <div>
+          <span>Zenthra Systems</span>
+          <span class="brand-sub">Revenue &amp; AI Operations</span>
+        </div>
       </a>
-      <button onclick="openCalModal()" class="btn btn-secondary">
-        <span>📅 Test Cal.com</span>
-      </button>
-      <a href="https://cal.com/zenthra-systems-dyuqpi/30min" target="_blank" rel="noopener noreferrer" class="btn btn-primary" id="nav-book-btn">
-        <span>Book Discovery Call</span>
-      </a>
-    </div>
-  </nav>
 
-  <!-- Hero Section -->
-  <header class="hero" id="hero-section">
-    <div class="status-pill" id="header-status-pill">
-      <div class="status-dot"></div>
-      <span id="header-status-text">Enterprise SLA Active · Production Cluster Online (99.98%)</span>
-    </div>
+      <nav class="nav-links" aria-label="Primary Navigation">
+        <a href="#platform">Platform</a>
+        <a href="#services">12 Service Suites</a>
+        <a href="#architecture">12 Agents</a>
+        <a href="#roi-calculator">ROI Calculator</a>
+        <a href="#markets">Global Markets</a>
+      </nav>
 
-    <h1>
-      Autonomous AI Agents &amp;<br>
-      <span class="gradient-text">Enterprise n8n Workflow Systems</span>
-    </h1>
+      <div class="nav-actions">
+        <span class="nav-status-pill">
+          <span class="pulse-dot"></span>
+          <span id="nav-live-stat">12 Agents Active</span>
+        </span>
+        <button class="btn btn-ghost" onclick="openBookingModal()">Book Architecture Call</button>
+        <a href="console.html" class="btn btn-emerald">Launch Live Console →</a>
+      </div>
 
-    <p class="subtitle">
-      Zenthra Systems architects high-throughput workflow pipelines, RAG-powered vector search hubs, and custom data engineering systems. Eliminate manual operations and scale with 24/7 reliability.
-    </p>
-
-    <div style="display: flex; justify-content: center; align-items: center; margin-top: 1rem; margin-bottom: 1.5rem;">
-      <a href="https://github.com/n8n-io/n8n" target="_blank" rel="noopener noreferrer" style="display: inline-flex; align-items: center; gap: 0.45rem; font-size: 0.82rem; font-weight: 700; color: #ea4b71; background: #fff1f2; border: 1px solid #fecdd3; padding: 0.35rem 0.95rem; border-radius: 9999px; text-decoration: none; box-shadow: var(--shadow-sm); transition: transform 0.2s;">
-        <span>⚡ Built on n8n Workflow Automation Platform</span>
-        <span style="font-size: 0.75rem;">↗</span>
-      </a>
+      <button class="mobile-menu-btn" onclick="toggleMobileNav()" aria-label="Open Navigation Menu">☰</button>
     </div>
 
-    <div class="hero-actions">
-      <a href="console.html" class="btn btn-primary" style="padding: 0.8rem 1.6rem; font-size: 0.95rem; background: linear-gradient(135deg, #059669, #0284c7); text-decoration: none; display: inline-flex; align-items: center; gap: 8px;">
-        <span>⚡ Launch Live Operations Console</span>
-      </a>
-      <button class="btn btn-primary" onclick="startWebsiteTour(true)" style="padding: 0.8rem 1.6rem; font-size: 0.95rem;">
-        <span>🚀 Start Interactive Guided Training</span>
-      </button>
-
-      <button class="btn btn-secondary" onclick="openAcademyModal()" style="padding: 0.8rem 1.6rem; font-size: 0.95rem; border-color: #0284c7; color: #0284c7;">
-        <span>🎓 Full Operational Academy</span>
-      </button>
-
-      <button onclick="openCalModal()" class="btn btn-secondary" style="padding: 0.8rem 1.6rem; font-size: 0.95rem;">
-        <span>📅 Schedule 30-Min Call ↗</span>
-      </button>
-    </div>
-
-    <div class="global-trust-bar">
-      <div class="trust-item"><span>🌐</span> Global Clients: USA, UK, Europe, Australia &amp; UAE</div>
-      <div class="trust-item"><span>💳</span> Multi-Currency: USD ($), EUR (€), GBP (£)</div>
-      <div class="trust-item"><span>⚡</span> 100% IP Transfer &amp; 30-Day Warranty</div>
-      <div class="trust-item"><span>🔒</span> Zero-Data Retention &amp; GDPR Aligned</div>
+    <div id="mobile-nav-drawer" class="mobile-drawer">
+      <a href="#platform" class="mobile-link" onclick="toggleMobileNav()">Platform Capabilities</a>
+      <a href="#services" class="mobile-link" onclick="toggleMobileNav()">12 Enterprise Service Suites</a>
+      <a href="#architecture" class="mobile-link" onclick="toggleMobileNav()">12-Agent Revenue Pipeline</a>
+      <a href="#roi-calculator" class="mobile-link" onclick="toggleMobileNav()">Model 1 ROI Calculator</a>
+      <a href="#markets" class="mobile-link" onclick="toggleMobileNav()">Europe &amp; Global Markets</a>
+      <div style="display: flex; flex-direction: column; gap: 10px; margin-top: 8px;">
+        <button class="btn btn-ghost" onclick="openBookingModal(); toggleMobileNav();">📅 Book Architecture Call</button>
+        <a href="console.html" class="btn btn-emerald">🚀 Launch Live Console →</a>
+      </div>
     </div>
   </header>
 
-  <!-- Live AI Assistant Showcase Frame -->
-  <section class="chat-preview-section" id="chat-assistant">
-    <div class="preview-card" id="chat-preview-card">
-      <div class="preview-header">
-        <div class="preview-title">
-          <span>🤖</span>
-          <span>Zenthra Autonomous Operations Console — Live Interactive Concierge</span>
+  <!-- HERO SECTION -->
+  <section class="hero">
+    <div class="container hero-grid">
+      <div>
+        <div class="hero-eyebrow">
+          <span>⚡</span>
+          <span>12-Agent Revenue Engine &bull; Full European &amp; Global Coverage</span>
         </div>
-        <div class="preview-actions">
-          <button class="btn btn-tour" onclick="simulateClientDemo()" style="padding: 0.35rem 0.75rem; font-size: 0.76rem;">
-            <span>⚡ Run Live Qualification Simulation</span>
-          </button>
-          <a href="embed/chat-widget.html" target="_blank" class="btn btn-secondary" style="padding: 0.35rem 0.75rem; font-size: 0.76rem;">
-            Open Fullscreen ↗
-          </a>
+        <h1>
+          Autonomous Lead Discovery, <span class="gradient-accent">Fixed-Sprint AI Systems</span> &amp; Verified Outreach
+        </h1>
+        <p class="hero-desc">
+          Zenthra Systems unifies real-website Google Maps intelligence, value-anchored 10-day engineering sprints, Microsoft Power BI analytics, and private Enterprise RAG into one command center built for predictable B2B pipeline velocity.
+        </p>
+
+        <div class="hero-cta-row">
+          <a href="console.html" class="btn btn-emerald">🚀 Launch Live Console →</a>
+          <a href="#roi-calculator" class="btn btn-cobalt">📈 Calculate Model 1 ROI</a>
+          <button class="btn btn-ghost" onclick="openBookingModal()">📅 Book 30-Min Sprint Review</button>
+        </div>
+
+        <div class="hero-trust-row">
+          <span>✅ Real-Website Lead Extraction</span>
+          <span>✅ 44 European &amp; Global Markets</span>
+          <span>✅ 25–35 Day Average Client Payback</span>
+          <span>✅ Zero-Friction Direct Mail Hub</span>
         </div>
       </div>
-      <iframe src="embed/chat-widget.html" id="chatIframe" class="preview-frame" title="Zenthra Systems Autonomous Agent"></iframe>
+
+      <!-- INTERACTIVE LIVE CONSOLE SWITCHER -->
+      <div class="console-preview" id="hero-preview-widget">
+        <div class="preview-chrome">
+          <div style="display: flex; align-items: center; gap: 10px;">
+            <div class="chrome-dots">
+              <span style="background: #ef4444;"></span>
+              <span style="background: #f59e0b;"></span>
+              <span style="background: #10b981;"></span>
+            </div>
+            <span class="mono" style="font-size: 11px; color: var(--text-muted);">zenthra-console.live / operational-mesh</span>
+          </div>
+          <span class="service-badge" style="font-size: 10px;">Interactive Preview</span>
+        </div>
+
+        <div class="preview-tabs">
+          <button class="preview-tab-btn active" id="ptab-maps" onclick="switchPreviewTab('maps')">🗺️ Maps Scraper</button>
+          <button class="preview-tab-btn" id="ptab-model1" onclick="switchPreviewTab('model1')">⚡ Model 1 Sprint</button>
+          <button class="preview-tab-btn" id="ptab-email" onclick="switchPreviewTab('email')">📬 1-Click Mail</button>
+          <button class="preview-tab-btn" id="ptab-demos" onclick="switchPreviewTab('demos')">🧠 AI &amp; BI Demos</button>
+        </div>
+
+        <div class="preview-body" id="hero-preview-body">
+          <!-- Populated dynamically by switchPreviewTab() -->
+        </div>
+      </div>
     </div>
   </section>
 
-  <!-- ROI / Savings Calculator -->
-  <section class="section-container" id="calculator">
-    <div class="section-header">
-      <span class="section-tag">Quantifiable Impact</span>
-      <h2>Calculate Your Automation ROI</h2>
+  <!-- LIVE METRICS STRIP -->
+  <section class="metrics-strip">
+    <div class="container metrics-grid">
+      <div class="metric-cell">
+        <div class="metric-val" id="stat-pipeline-usd">$307,400+</div>
+        <div class="metric-lbl">Tracked B2B Pipeline &amp; Active Opportunities</div>
+      </div>
+      <div class="metric-cell">
+        <div class="metric-val" id="stat-contacts-ready">50+ Verified</div>
+        <div class="metric-lbl">MX-Verified Decision Makers Ready for 1-Click Dispatch</div>
+      </div>
+      <div class="metric-cell">
+        <div class="metric-val" id="stat-services-count">12 Suites</div>
+        <div class="metric-lbl">Productized Enterprise AI, Data, Web &amp; Security Sprints</div>
+      </div>
+      <div class="metric-cell">
+        <div class="metric-val">10 Business Days</div>
+        <div class="metric-lbl">Fixed Sprint Delivery Window (73.8% Close Advantage)</div>
+      </div>
     </div>
+  </section>
 
-    <div class="calculator-card" id="calculator-card-el">
-      <div class="calc-controls">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; flex-wrap: wrap; gap: 0.5rem;">
-          <span style="font-size: 0.78rem; font-weight: 750; color: var(--text-tertiary); text-transform: uppercase; letter-spacing: 0.05em;">Invoicing Currency:</span>
-          <div class="currency-toggle-group">
-            <button class="currency-btn active" id="currBtnUSD" onclick="setCurrency('USD', '$')">$ USD</button>
-            <button class="currency-btn" id="currBtnEUR" onclick="setCurrency('EUR', '€')">€ EUR</button>
-            <button class="currency-btn" id="currBtnGBP" onclick="setCurrency('GBP', '£')">£ GBP</button>
+  <!-- 4 ARCHITECTURE PILLARS -->
+  <section id="platform" class="section">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-kicker">Why Enterprise Operators Switch to Zenthra</span>
+        <h2 class="section-title">From Raw Map Signal to Closed Sprint — In One Unified Operating System</h2>
+        <p class="section-sub">
+          Traditional agencies sell disconnected retainer hours while sales teams drown in unverified spreadsheets. Zenthra replaces fractured tooling with four tightly coupled operational pillars.
+        </p>
+      </div>
+
+      <div class="pillars-grid">
+        <article class="pillar-card">
+          <div>
+            <div class="pillar-icon">🗺️</div>
+            <h3>Google Maps + Real Website Discovery</h3>
+            <p>
+              Search any niche across North America, the UK, all European Union markets, UAE, and APAC. Extract real corporate domains, SSL checks, two verified executive contacts, and automated weakness diagnostics.
+            </p>
+          </div>
+          <a href="console.html#maps-tab" class="pillar-link">Open Google Maps Engine →</a>
+        </article>
+
+        <article class="pillar-card">
+          <div>
+            <div class="pillar-icon">⚡</div>
+            <h3>Model 1 Value-Anchored Sprints</h3>
+            <p>
+              Stop pitching opaque hourly estimates. Automatically quantify monthly operational drag ($6k–$15k/mo), price a fixed 10-day sprint around a 25–35 day payback horizon, and assemble a board-ready SOW in one click.
+            </p>
+          </div>
+          <a href="console.html#model1-tab" class="pillar-link">Launch Model 1 Sprint Engine →</a>
+        </article>
+
+        <article class="pillar-card">
+          <div>
+            <div class="pillar-icon">🧠</div>
+            <h3>Private RAG, Intake &amp; Power BI Demos</h3>
+            <p>
+              Let buyers experience working systems before signing: test zero-hallucination citation RAG search, 24/7 AI lead qualification chat, Executive DAX Power BI dashboards, and optical invoice parsers live in-browser.
+            </p>
+          </div>
+          <a href="console.html#demo-tab" class="pillar-link">Explore 4 Live Prototypes →</a>
+        </article>
+
+        <article class="pillar-card">
+          <div>
+            <div class="pillar-icon">📬</div>
+            <h3>Human-Gated SDR &amp; 1-Click SMTP</h3>
+            <p>
+              Every cold pitch and tailored proposal flows through an auditable SDR approval gate or 1-Click Verified Mail Directory synced with CRM deal staging and outbound delivery telemetry.
+            </p>
+          </div>
+          <a href="console.html#emailable-tab" class="pillar-link">Open Verified Outreach Hub →</a>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- 12 EXTENDED SERVICE SUITES SHOWCASE -->
+  <section id="services" class="section section-dark">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-kicker">Productized Engineering Catalog</span>
+        <h2 class="section-title">12 High-Margin Enterprise Service Suites</h2>
+        <p class="section-sub">
+          Filter by capability track below. Every offering comes with transparent fixed sprint fees, post-launch retainer vectors, executive deliverables, and verified prospects inside the console.
+        </p>
+      </div>
+
+      <div class="service-filters" role="tablist" aria-label="Filter Service Offerings">
+        <button class="filter-pill active" onclick="filterServices('ALL', this)">All Suites (12)</button>
+        <button class="filter-pill" onclick="filterServices('Build', this)">AI &amp; Product Build (3)</button>
+        <button class="filter-pill" onclick="filterServices('Automate', this)">Agents, Voice &amp; Messaging (3)</button>
+        <button class="filter-pill" onclick="filterServices('Scale', this)">Data, Power BI &amp; Growth (4)</button>
+        <button class="filter-pill" onclick="filterServices('Strategy', this)">Analysis &amp; Security (2)</button>
+      </div>
+
+      <div class="services-grid" id="landing-services-grid">
+        <!-- Populated dynamically from window.STATIC_EXTENDED_SERVICES -->
+      </div>
+    </div>
+  </section>
+
+  <!-- 12-AGENT PIPELINE ARCHITECTURE -->
+  <section id="architecture" class="section">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-kicker">Autonomous Multi-Agent Mesh</span>
+        <h2 class="section-title">How Our 12 Specialized Agents Turn Market Signals Into Revenue</h2>
+        <p class="section-sub">
+          Each operational stage executes deterministically with human-in-the-loop governance and real-time webhook synchronization.
+        </p>
+      </div>
+
+      <div class="pipeline-stages">
+        <div class="stage-card">
+          <div class="stage-num">Stage 01 &bull; Intelligence</div>
+          <h3>Geo-Discovery &amp; Deep Audit</h3>
+          <div class="stage-agents">
+            <div class="stage-agent-chip">Agent 1: Orchestrator Coordinator</div>
+            <div class="stage-agent-chip">Agent 2: Google Maps &amp; Domain Miner</div>
+            <div class="stage-agent-chip">Agent 3: Deep Stack &amp; Signal Researcher</div>
           </div>
         </div>
 
-        <div class="slider-group">
-          <label>
-            <span>Team Members Spending Time on Manual Ops:</span>
-            <span class="val" id="teamSizeVal">5 People</span>
-          </label>
-          <input type="range" id="teamSize" min="1" max="50" value="5" oninput="updateCalculator()">
+        <div class="stage-card">
+          <div class="stage-num">Stage 02 &bull; Qualification</div>
+          <h3>Fit Matching &amp; Outreach</h3>
+          <div class="stage-agents">
+            <div class="stage-agent-chip">Agent 4: 12-Suite Offer Matcher</div>
+            <div class="stage-agent-chip">Agent 5: ICP &amp; Budget Scorer</div>
+            <div class="stage-agent-chip">Agent 6: Weakness-Hooked Copywriter</div>
+          </div>
         </div>
 
-        <div class="slider-group">
-          <label>
-            <span>Hours Spent per Person / Week (Data entry, routing, emails):</span>
-            <span class="val" id="hoursVal">12 Hours</span>
-          </label>
-          <input type="range" id="hoursSpent" min="2" max="30" value="12" oninput="updateCalculator()">
+        <div class="stage-card">
+          <div class="stage-num">Stage 03 &bull; Conversion</div>
+          <h3>Inbox Triage &amp; Contracting</h3>
+          <div class="stage-agents">
+            <div class="stage-agent-chip">Agent 7: Human-Gate SDR Queue</div>
+            <div class="stage-agent-chip">Agent 8: Inbound Reply Classifier</div>
+            <div class="stage-agent-chip">Agent 9–10: Booking &amp; SOW Architect</div>
+          </div>
         </div>
 
-        <div class="slider-group">
-          <label>
-            <span>Average Fully-Loaded Hourly Cost ($/hr):</span>
-            <span class="val" id="rateVal">$45 / hr</span>
-          </label>
-          <input type="range" id="hourlyRate" min="25" max="150" value="45" oninput="updateCalculator()">
+        <div class="stage-card">
+          <div class="stage-num">Stage 04 &bull; Governance</div>
+          <h3>CRM &amp; Power BI Telemetry</h3>
+          <div class="stage-agents">
+            <div class="stage-agent-chip">Agent 11: Real-Time CRM Synchronizer</div>
+            <div class="stage-agent-chip">Agent 12: Revenue &amp; Margin Analytics</div>
+            <div class="stage-agent-chip" style="border-color: rgba(16, 185, 129, 0.3); color: var(--emerald-bright);">
+              <a href="console.html#agents-tab">Inspect All 12 Agents Live →</a>
+            </div>
+          </div>
         </div>
-      </div>
-
-      <div class="calc-results">
-        <div class="metric-box">
-          <h4>Annual Hours Reclaimed</h4>
-          <div class="number" id="annualHours">2,808 hrs</div>
-        </div>
-        <div class="metric-box">
-          <h4>Estimated Annual Cost Savings</h4>
-          <div class="number" id="annualSavings" style="color: #4ade80;">$126,360</div>
-        </div>
-        <a href="https://cal.com/zenthra-systems-dyuqpi/30min" target="_blank" rel="noopener noreferrer" class="btn btn-primary" style="margin-top: 0.5rem;">
-          Schedule an ROI Strategy Call
-        </a>
       </div>
     </div>
   </section>
 
-  <!-- Core Capabilities Section -->
-  <section class="section-container" id="solutions">
-    <div class="section-header">
-      <span class="section-tag">Engineering Focus</span>
-      <h2>Built for Mission-Critical Production</h2>
-    </div>
-
-    <div class="cards-grid" id="capabilities-grid">
-      <div class="feature-card" style="position: relative;">
-        <div style="position: absolute; top: 1.25rem; right: 1.25rem;">
-          <a href="https://github.com/n8n-io/n8n" target="_blank" rel="noopener noreferrer" style="display: inline-flex; align-items: center; gap: 0.35rem; font-size: 0.72rem; font-weight: 700; color: #ea4b71; background: #fff1f2; border: 1px solid #fecdd3; padding: 0.2rem 0.55rem; border-radius: 9999px; text-decoration: none;">
-            <span>🐙 n8n Core</span>
-            <span>↗</span>
-          </a>
-        </div>
-        <div class="card-icon-wrap">⚡</div>
-        <h3>n8n Workflow Engineering</h3>
-        <p>Enterprise orchestration powered by the open <a href="https://github.com/n8n-io/n8n" target="_blank" rel="noopener noreferrer" style="color: #ea4b71; font-weight: 700; text-decoration: underline;">n8n workflow engine</a>. Connecting HubSpot, Slack, Meta Lead Ads, Stripe, and PostgreSQL with sub-second event handling.</p>
-        <ul>
-          <li>Sub-30s lead triage &amp; deduplication</li>
-          <li>Resilient error fallbacks &amp; retry queues</li>
-          <li>Self-hosted Docker &amp; Cloud deployments</li>
-        </ul>
+  <!-- MULTI-CURRENCY MODEL 1 ROI CALCULATOR -->
+  <section id="roi-calculator" class="section section-dark">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-kicker">Interactive Model 1 Commercial Simulator</span>
+        <h2 class="section-title">Multi-Currency Sprint ROI &amp; Payback Calculator</h2>
+        <p class="section-sub">
+          Model exact client payback windows and Year-1 net operational recovery across USD, EUR, and GBP markets before generating a Statement of Work in the live console.
+        </p>
       </div>
 
-      <div class="feature-card">
-        <div class="card-icon-wrap">🧠</div>
-        <h3>Supabase pgvector RAG</h3>
-        <p>Semantically searchable vector knowledge bases powered by PostgreSQL HNSW indexing, hybrid cosine search, and automated doc ingestion.</p>
-        <ul>
-          <li>Autonomous documentation discovery</li>
-          <li>Strict similarity cutoffs (no hallucinations)</li>
-          <li>Continuous vector synchronization</li>
-        </ul>
-      </div>
-
-      <div class="feature-card">
-        <div class="card-icon-wrap">🧾</div>
-        <h3>Autonomous Document Vision</h3>
-        <p>Multi-page PDF extraction and 2-way vendor reconciliation using GPT-4o vision and structured GL accounting schemas.</p>
-        <ul>
-          <li>Line-item PO &amp; invoice matching</li>
-          <li>Confidence scoring &amp; fraud detection</li>
-          <li>Direct ERP / QuickBooks exports</li>
-        </ul>
-      </div>
-
-      <div class="feature-card">
-        <div class="card-icon-wrap">📊</div>
-        <h3>Cyclistic BI &amp; Data Pipelines</h3>
-        <p>Scalable analytics pipelines transforming millions of records into actionable BigQuery tables and executive Looker dashboards.</p>
-        <ul>
-          <li>Automated hourly / daily ETL ingestion</li>
-          <li>Data cleaning &amp; geospatial segmentation</li>
-          <li>99.9% pipeline uptime SLAs</li>
-        </ul>
-      </div>
-    </div>
-  </section>
-
-  <!-- Footer -->
-  <footer>
-    <div class="footer-content">
-      <div class="brand">
-        <div class="brand-icon">
-          <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path></svg>
-        </div>
+      <div class="roi-shell">
         <div>
-          <div class="brand-title">Zenthra Systems</div>
-          <div class="brand-tag">Enterprise Automation &amp; Engineering</div>
+          <div style="font-size: 12px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px;">
+            Display Currency
+          </div>
+          <div class="currency-toggle" role="group" aria-label="Currency Selector">
+            <button class="curr-btn active" onclick="setCalcCurrency('USD', this)">$ USD</button>
+            <button class="curr-btn" onclick="setCalcCurrency('EUR', this)">€ EUR</button>
+            <button class="curr-btn" onclick="setCalcCurrency('GBP', this)">£ GBP</button>
+          </div>
+
+          <div class="form-group">
+            <label for="calc-track">Engineering Sprint Track</label>
+            <select id="calc-track" class="form-control" onchange="applyCalcTrackPreset()">
+              <option value="pbi">Service 5: Microsoft Power BI Executive KPI Sprint ($12,500 USD)</option>
+              <option value="auto">Service 2: AI Agents &amp; Intake Automation Audit ($9,500 USD)</option>
+              <option value="rag">Service 1: Private Enterprise RAG Architecture PoC ($18,500 USD)</option>
+              <option value="web">Service 3: High-Conversion Web &amp; Portal Rebuild ($11,500 USD)</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="calc-loss-slider">
+              <span>Estimated Monthly Operational Leakage</span>
+              <span id="calc-loss-label" class="mono" style="color: var(--emerald-bright);">$9,000 / mo</span>
+            </label>
+            <input type="range" id="calc-loss-slider" min="3000" max="30000" step="500" value="9000" style="width: 100%; accent-color: #10b981;" oninput="syncLossFromSlider()">
+          </div>
+
+          <div class="form-group" style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+            <div>
+              <label for="calc-loss-usd">Monthly Leakage (USD Base)</label>
+              <input type="number" id="calc-loss-usd" class="form-control" value="9000" min="1000" step="500" oninput="updateROICalculator()">
+            </div>
+            <div>
+              <label for="calc-fee-usd">Fixed Sprint Fee (USD Base)</label>
+              <input type="number" id="calc-fee-usd" class="form-control" value="12500" min="2500" step="500" oninput="updateROICalculator()">
+            </div>
+          </div>
+        </div>
+
+        <div class="roi-output-panel">
+          <div>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;">
+              <span style="font-size: 13px; font-weight: 800; color: var(--cyan); text-transform: uppercase; letter-spacing: 0.05em;">
+                Projected Client Value Economics
+              </span>
+              <span class="service-badge" style="border-color: var(--emerald); color: var(--emerald-bright);">10-Day Delivery</span>
+            </div>
+
+            <div class="roi-kpis">
+              <div class="roi-kpi-box">
+                <div class="mini-box-label">Payback Horizon</div>
+                <div class="mini-box-val" id="roi-payback-days" style="color: var(--emerald-bright);">42 Days</div>
+              </div>
+              <div class="roi-kpi-box">
+                <div class="mini-box-label">Year-1 ROI Multiple</div>
+                <div class="mini-box-val" id="roi-multiple" style="color: var(--cyan);">7.6x ROI</div>
+              </div>
+              <div class="roi-kpi-box">
+                <div class="mini-box-label">Fixed Sprint Investment</div>
+                <div class="mini-box-val" id="roi-sprint-fee">$12,500</div>
+              </div>
+              <div class="roi-kpi-box">
+                <div class="mini-box-label">Year-1 Net Client Gain</div>
+                <div class="mini-box-val" id="roi-net-gain" style="color: var(--emerald-bright);">$95,500</div>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <div style="display: flex; justify-content: space-between; font-size: 12px; color: var(--text-muted); margin-bottom: 4px;">
+              <span>Sprint Investment vs. Annual Leakage Prevented</span>
+              <span id="roi-pct-text" class="mono" style="color: var(--emerald-bright);">764% ROI</span>
+            </div>
+            <div style="margin-bottom: 10px;">
+              <div class="roi-bar-track"><div id="bar-cost" class="roi-bar-fill" style="width: 14%; background: #3b82f6;"></div></div>
+              <div class="roi-bar-track"><div id="bar-gain" class="roi-bar-fill" style="width: 86%; background: linear-gradient(90deg, #059669, #34d399);"></div></div>
+            </div>
+            <a href="console.html#model1-tab" class="btn btn-emerald" style="width: 100%; padding: 12px;">
+              ⚡ Generate Full SOW &amp; Proposal in Live Console →
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- EUROPEAN & GLOBAL MARKET COVERAGE -->
+  <section id="markets" class="section">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-kicker">Full European &amp; International Territory Engine</span>
+        <h2 class="section-title">Regionally Calibrated Lead Discovery Across 44 Countries</h2>
+        <p class="section-sub">
+          Pricing rationality, agency benchmarks, currency calibration, and city-by-city discovery filters across Europe, North America, MENA, and APAC.
+        </p>
+      </div>
+
+      <div class="regions-grid">
+        <div class="region-card">
+          <div style="font-size: 13px; font-weight: 800; color: var(--emerald-bright); margin-bottom: 6px;">🇪🇺 Western &amp; DACH Europe</div>
+          <p style="font-size: 12.5px; color: var(--text-muted);">High-compliance ERP, manufacturing, logistics, and fintech clusters calibrated in EUR &amp; CHF.</p>
+          <div class="country-chips">
+            <span class="country-chip">🇩🇪 Germany</span>
+            <span class="country-chip">🇫🇷 France</span>
+            <span class="country-chip">🇳🇱 Netherlands</span>
+            <span class="country-chip">🇨🇭 Switzerland</span>
+            <span class="country-chip">🇧🇪 Belgium</span>
+            <span class="country-chip">🇦🇹 Austria</span>
+            <span class="country-chip">🇱🇺 Luxembourg</span>
+          </div>
+        </div>
+
+        <div class="region-card">
+          <div style="font-size: 13px; font-weight: 800; color: var(--cyan); margin-bottom: 6px;">🇪🇺 Nordic, Southern &amp; CEE Europe</div>
+          <p style="font-size: 12.5px; color: var(--text-muted);">Complete pan-European city coverage for freight forwarders, healthcare clinics, SaaS, and industrial exporters.</p>
+          <div class="country-chips">
+            <span class="country-chip">🇸🇪 Sweden</span>
+            <span class="country-chip">🇩🇰 Denmark</span>
+            <span class="country-chip">🇳🇴 Norway</span>
+            <span class="country-chip">🇫🇮 Finland</span>
+            <span class="country-chip">🇪🇸 Spain</span>
+            <span class="country-chip">🇮🇹 Italy</span>
+            <span class="country-chip">🇵🇹 Portugal</span>
+            <span class="country-chip">🇵🇱 Poland</span>
+            <span class="country-chip">🇨🇿 Czechia</span>
+            <span class="country-chip">🇮🇪 Ireland</span>
+          </div>
+        </div>
+
+        <div class="region-card">
+          <div style="font-size: 13px; font-weight: 800; color: var(--cobalt-bright); margin-bottom: 6px;">🇺🇸 🇬🇧 🇨🇦 UK &amp; North America</div>
+          <p style="font-size: 12.5px; color: var(--text-muted);">Tier-1 enterprise pricing benchmarks ($10k–$18.5k sprints) targeting CFOs, COOs, and Managing Partners.</p>
+          <div class="country-chips">
+            <span class="country-chip">🇺🇸 United States</span>
+            <span class="country-chip">🇬🇧 United Kingdom</span>
+            <span class="country-chip">🇨🇦 Canada</span>
+            <span class="country-chip">🇦🇺 Australia</span>
+            <span class="country-chip">🇳🇿 New Zealand</span>
+          </div>
+        </div>
+
+        <div class="region-card">
+          <div style="font-size: 13px; font-weight: 800; color: var(--amber); margin-bottom: 6px;">🇦🇪 🇸🇬 🇧🇩 MENA &amp; APAC Hubs</div>
+          <p style="font-size: 12.5px; color: var(--text-muted);">Targeted real-estate, RMG apparel export, cold chain, and maritime corridors across Dubai, Singapore &amp; Dhaka.</p>
+          <div class="country-chips">
+            <span class="country-chip">🇦🇪 UAE (Dubai)</span>
+            <span class="country-chip">🇸🇦 Saudi Arabia</span>
+            <span class="country-chip">🇸🇬 Singapore</span>
+            <span class="country-chip">🇧🇩 Bangladesh</span>
+            <span class="country-chip">🇯🇵 Japan</span>
+          </div>
         </div>
       </div>
 
-      <div>
-        <p>Inquiries: <a href="mailto:connect.zenthra@gmail.com" style="color: var(--accent-primary); font-weight: 700; text-decoration: none;">connect.zenthra@gmail.com</a></p>
+      <div style="margin-top: 24px; text-align: center;">
+        <a href="console.html#maps-tab" class="btn btn-cobalt">🗺️ Launch Pan-European &amp; Global Maps Discovery →</a>
       </div>
     </div>
+  </section>
 
-    <div class="footer-bottom">
-      <span>&copy; 2026 Zenthra Systems. All rights reserved.</span>
-      <span>Powered by <a href="https://github.com/n8n-io/n8n" target="_blank" rel="noopener noreferrer" style="color: #ea4b71; font-weight: 700; text-decoration: none;">n8n Core</a> (Fair-code Engine) · Supabase pgvector · GPT-4o Architecture</span>
+  <!-- EXECUTIVE FAQ & BOOKING CTA -->
+  <section class="section section-dark">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-kicker">Procurement &amp; Technical Governance</span>
+        <h2 class="section-title">Built for Rapid Deployment Without Agency Bloat</h2>
+      </div>
+
+      <div class="faq-grid" style="margin-bottom: 48px;">
+        <div class="faq-item">
+          <h4>How does Google Maps Real-Website Discovery work?</h4>
+          <p>Inside the Live Console, entering any business niche and European or global city returns realistic, domain-verified companies complete with corporate URLs, SSL checks, dual executive contacts (CEO/CFO &amp; COO/VP), and weakness-hooked cold pitches ready to send or export to CSV.</p>
+        </div>
+        <div class="faq-item">
+          <h4>What happens during a 10-Day Model 1 Value Sprint?</h4>
+          <p>Days 1–2 connect read-only data/API sources and lock the Kimball data schema or RAG corpus. Days 3–7 engineer the core workflow, AI agent, or Power BI dashboard. Days 8–10 complete security hardening, team handoff, runbooks, and full production cutover.</p>
+        </div>
+        <div class="faq-item">
+          <h4>How is private enterprise data protected in RAG deployments?</h4>
+          <p>All Enterprise RAG architectures deploy inside your isolated cloud VPC with zero third-party LLM training retention, strict role-based document ACLs, and verifiable chunk-level citations.</p>
+        </div>
+        <div class="faq-item">
+          <h4>Can I test everything directly before booking a call?</h4>
+          <p>Yes. Click "Launch Live Console" at any time to run Google Maps Discovery, test the 4 interactive AI &amp; Power BI prototypes, preview 1-Click Verified Outreach emails, and generate custom SOW contracts.</p>
+        </div>
+      </div>
+
+      <div class="cta-banner">
+        <div>
+          <span class="section-kicker" style="margin-bottom: 6px;">Ready for Production Velocity?</span>
+          <h2 style="font-size: 28px; font-weight: 900; margin-bottom: 8px;">Start Prospecting &amp; Deploying Enterprise Sprints Today</h2>
+          <p style="font-size: 14.5px; color: var(--text-secondary); max-width: 620px;">
+            Open the Live Operations &amp; SDR Console right now or schedule a 30-minute technical architecture session with the Zenthra Systems engineering desk.
+          </p>
+        </div>
+        <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+          <button class="btn btn-ghost" onclick="openBookingModal()">📅 Schedule 30-Min Architecture Call</button>
+          <a href="console.html" class="btn btn-emerald">🚀 Launch Live Console →</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- EXECUTIVE FOOTER -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <div class="brand" style="margin-bottom: 12px;">
+            <div class="brand-mark">Z</div>
+            <div>
+              <span>Zenthra Systems</span>
+              <span class="brand-sub">Autonomous Revenue Engine</span>
+            </div>
+          </div>
+          <p style="font-size: 13px; color: var(--text-muted); max-width: 310px; line-height: 1.6;">
+            Enterprise AI automation, Microsoft Power BI star-schema analytics, private RAG engineering, and multi-market lead acquisition.
+          </p>
+          <div class="mono" style="font-size: 12px; color: var(--cyan); margin-top: 12px;">
+            Desk: connect.zenthra@gmail.com
+          </div>
+        </div>
+
+        <div>
+          <h5>Console Workspaces</h5>
+          <ul>
+            <li><a href="console.html#overview-tab">Executive Overview &amp; KPIs</a></li>
+            <li><a href="console.html#maps-tab">Google Maps Geo-Discovery</a></li>
+            <li><a href="console.html#emailable-tab">Who Can I Email? (1-Click Hub)</a></li>
+            <li><a href="console.html#model1-tab">Model 1 Value Sprint Engine</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h5>Live Interactive Demos</h5>
+          <ul>
+            <li><a href="console.html#demo-tab">Demo 1: Enterprise RAG Search</a></li>
+            <li><a href="console.html#demo-tab">Demo 2: AI Intake Qualification</a></li>
+            <li><a href="console.html#demo-tab">Demo 3: Power BI DAX Cockpit</a></li>
+            <li><a href="console.html#demo-tab">Demo 4: Optical Document Parser</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h5>Governance &amp; Advisory</h5>
+          <ul>
+            <li><a href="console.html#services-tab">12 Extended Service Suites</a></li>
+            <li><a href="console.html#agents-tab">12-Agent Architecture Mesh</a></li>
+            <li><a href="console.html#mail-api-tab">SMTP &amp; Outbound Delivery Logs</a></li>
+            <li><a href="https://cal.com/zenthra-systems-dyuqpi/30min" target="_blank" rel="noopener">Book Sprint Architecture Review ↗</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <span>&copy; 2026 Zenthra Systems Solutions. All rights reserved.</span>
+        <span>Built for high-velocity B2B revenue teams &bull; <a href="console.html" style="color: var(--emerald-bright); font-weight: 700;">Open Live Console →</a></span>
+      </div>
     </div>
   </footer>
 
-  <!-- ======================================================================= -->
-  <!-- FLOATING TRAINING CONTROLLER HUD                                        -->
-  <!-- ======================================================================= -->
-  <div class="training-hud" id="trainingHUD">
-    <div class="hud-status">
-      <span class="banner-beacon"></span>
-      <span id="hudStatusText">Guided Training</span>
-    </div>
-    <div class="hud-step-pills" id="hudStepPills">
-      <button class="hud-pill active" onclick="jumpToTourStep(0)" title="Step 1: Production SLA Beacon">1</button>
-      <button class="hud-pill" onclick="jumpToTourStep(1)" title="Step 2: ROI Calculator">2</button>
-      <button class="hud-pill" onclick="jumpToTourStep(2)" title="Step 3: AI Specialist & RAG">3</button>
-      <button class="hud-pill" onclick="jumpToTourStep(3)" title="Step 4: Enterprise Deliverables">4</button>
-      <button class="hud-pill" onclick="jumpToTourStep(4)" title="Step 5: Cal.com Booking Flow">5</button>
-      <button class="hud-pill" onclick="jumpToTourStep(5)" title="Step 6: Sales & Outbound Academy">6</button>
-    </div>
-    <button class="hud-btn" id="hudPrevBtn" onclick="prevTourStep()">← Back</button>
-    <button class="hud-btn" id="hudNextBtn" onclick="nextTourStep()">Next →</button>
-    <button class="hud-btn hud-btn-action" id="hudActionBtn" onclick="triggerCurrentDemoAction()">⚡ Demo</button>
-    <button class="hud-btn hud-btn-toggle" id="hudAutoPlayBtn" onclick="toggleAutoPlay()">▶ Auto-Play</button>
-    <button class="hud-btn hud-btn-toggle" id="hudVoiceBtn" onclick="toggleVoiceNarration()">🔊 Voice: Off</button>
-    <button class="banner-close-btn" onclick="stopWebsiteTour()" title="Exit Training">&times;</button>
-  </div>
-
-  <!-- ======================================================================= -->
-  <!-- SPOTLIGHT TOUR BACKDROP & CARD                                          -->
-  <!-- ======================================================================= -->
-  <div class="tour-backdrop" id="tourBackdrop" onclick="handleTourBackdropClick(event)"></div>
-
-  <div class="tour-card" id="tourCard">
-    <div class="tour-card-header">
-      <span class="tour-badge" id="tourBadge">Step 1 of 6 · System Overview</span>
-      <button class="tour-close-btn" onclick="stopWebsiteTour()">&times;</button>
-    </div>
-    <h3 id="tourTitle">Welcome to Zenthra Systems</h3>
-    <p class="desc" id="tourDesc">Description text goes here.</p>
-
-    <div class="tour-detail-grid">
-      <div class="tour-detail-box pitch" id="tourPitchBox">
-        <strong>🎯 Sales Discovery Framework:</strong> <span id="tourPitch">Pitch notes</span>
-      </div>
-      <div class="tour-detail-box tip" id="tourTipBox">
-        <strong>💡 Pro-Tip for Closing Clients:</strong> <span id="tourTip">Tip notes</span>
-      </div>
-    </div>
-
-    <div class="tour-action-row">
-      <button class="tour-live-action-btn" id="tourActionBtn" onclick="triggerCurrentDemoAction()">
-        <span id="tourActionIcon">⚡</span>
-        <span id="tourActionText">Run Live Demo Simulation</span>
-      </button>
-    </div>
-
-    <div class="tour-footer">
-      <span class="tour-steps-count" id="tourCount">1 / 6</span>
-      <div class="tour-btn-group">
-        <button class="btn btn-secondary" id="tourPrevBtn" onclick="prevTourStep()" style="padding: 0.35rem 0.75rem; font-size: 0.78rem;">← Back</button>
-        <button class="btn btn-primary" id="tourNextBtn" onclick="nextTourStep()" style="padding: 0.35rem 0.85rem; font-size: 0.78rem;">Next Step →</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- ======================================================================= -->
-  <!-- CAL.COM INTERACTIVE BOOKING MODAL                                       -->
-  <!-- ======================================================================= -->
-  <div class="cal-modal-backdrop" id="calModal" onclick="handleCalModalBackdropClick(event)">
-    <div class="cal-modal-card">
-      <div class="cal-modal-header">
-        <div class="cal-modal-title">
-          <span>📅</span>
-          <span>Zenthra Systems — 30-Minute Architecture Discovery (Cal.com Live)</span>
+  <!-- CAL.COM BOOKING MODAL -->
+  <div id="booking-modal" class="modal-backdrop" onclick="if(event.target===this) closeBookingModal()">
+    <div class="modal-card">
+      <div style="display: flex; justify-content: space-between; align-items: center; padding: 16px 22px; background: #080d1a; border-bottom: 1px solid var(--border);">
+        <div>
+          <div style="font-size: 16px; font-weight: 800; color: #ffffff;">📅 Schedule 30-Min Enterprise Architecture Call</div>
+          <div style="font-size: 12px; color: var(--text-muted);">Direct calendar sync via Cal.com &bull; Zenthra Systems Engineering</div>
         </div>
-        <div style="display: flex; align-items: center; gap: 0.65rem;">
-          <a href="https://cal.com/zenthra-systems-dyuqpi/30min" target="_blank" rel="noopener noreferrer" class="btn btn-secondary" style="padding: 0.35rem 0.75rem; font-size: 0.78rem;">
-            Open in New Window ↗
-          </a>
-          <button class="tour-close-btn" onclick="closeCalModal()">&times;</button>
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <a href="https://cal.com/zenthra-systems-dyuqpi/30min" target="_blank" rel="noopener" class="btn btn-cobalt" style="padding: 7px 12px; font-size: 12px;">Open in New Tab ↗</a>
+          <button class="btn btn-ghost" style="padding: 6px 12px;" onclick="closeBookingModal()">✕</button>
         </div>
       </div>
-      <div class="cal-modal-body">
-        <iframe src="https://cal.com/zenthra-systems-dyuqpi/30min" class="cal-embed-frame" title="Cal.com Booking Flow"></iframe>
+      <div style="padding: 20px; overflow-y: auto;">
+        <div style="background: var(--bg-code); border: 1px solid var(--border); border-radius: 10px; padding: 14px; margin-bottom: 14px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+          <div style="font-size: 13px; color: var(--text-secondary);">
+            Want to review your automated lead audit live? Launch our interactive console side-by-side or pick a time below.
+          </div>
+          <a href="console.html" class="btn btn-emerald" style="padding: 8px 14px; font-size: 12px;">Launch Live Console →</a>
+        </div>
+        <iframe id="cal-iframe" title="Zenthra Systems Cal.com Booking" src="about:blank" style="width: 100%; height: 500px; border: 1px solid var(--border); border-radius: 10px; background: #ffffff;"></iframe>
       </div>
     </div>
   </div>
 
-  <!-- ======================================================================= -->
-  <!-- FULL TRAINING ACADEMY MODAL                                             -->
-  <!-- ======================================================================= -->
-  <div class="academy-backdrop" id="academyModal" onclick="handleAcademyBackdropClick(event)">
-    <div class="academy-card">
-      <div class="academy-header">
-        <h2><span>🎓</span> Zenthra Systems — Operational Academy &amp; Closing Playbook</h2>
-        <button class="tour-close-btn" onclick="closeAcademyModal()">&times;</button>
-      </div>
-
-      <div class="academy-nav">
-        <button class="academy-tab active" onclick="switchAcademyTab('overview')">1. Architecture &amp; System Flow</button>
-        <button class="academy-tab" onclick="switchAcademyTab('sales')">2. Live Discovery Calls (3-Step Close)</button>
-        <button class="academy-tab" onclick="switchAcademyTab('rag')">3. AI Agent &amp; Supabase RAG</button>
-        <button class="academy-tab" onclick="switchAcademyTab('outbound')">4. Outbound Lead Generation</button>
-        <button class="academy-tab" onclick="switchAcademyTab('pricing')">5. Sprints, Retainers &amp; Invoicing</button>
-        <button class="academy-tab" onclick="switchAcademyTab('social')">6. Social Media &amp; Poster Engine</button>
-        <button class="academy-tab" onclick="switchAcademyTab('simulations')">7. Live Simulations &amp; Outbound</button>
-      </div>
-
-      <div class="academy-body" id="academyBody">
-        <!-- Rendered dynamically -->
-      </div>
-    </div>
-  </div>
+  <!-- BUNDLED STATIC DATA -->
+  <script src="./data/platform-data.js"></script>
+  <script src="./data/extended-services.js"></script>
+  <script src="./data/emailable-contacts.js"></script>
 
   <script>
-    // =========================================================================
-    // ROI & SAVINGS CALCULATOR LOGIC (MULTI-CURRENCY SUPPORT)
-    // =========================================================================
-    let currentCurrencySymbol = '$';
-    let currentCurrencyCode = 'USD';
-
-    function setCurrency(code, symbol) {
-      currentCurrencyCode = code;
-      currentCurrencySymbol = symbol;
-      document.querySelectorAll('.currency-btn').forEach(btn => btn.classList.remove('active'));
-      const activeBtn = document.getElementById('currBtn' + code);
-      if (activeBtn) activeBtn.classList.add('active');
-      updateCalculator();
-      showToast(`Switched currency to ${code} (${symbol})`);
+    // Mobile Nav Toggle
+    function toggleMobileNav() {
+      const drawer = document.getElementById('mobile-nav-drawer');
+      if (drawer) drawer.classList.toggle('open');
     }
 
-    function updateCalculator() {
-      const team = parseInt(document.getElementById('teamSize').value, 10);
-      const hours = parseInt(document.getElementById('hoursSpent').value, 10);
-      const rate = parseInt(document.getElementById('hourlyRate').value, 10);
-
-      document.getElementById('teamSizeVal').textContent = `${team} ${team === 1 ? 'Person' : 'People'}`;
-      document.getElementById('hoursVal').textContent = `${hours} Hours`;
-      document.getElementById('rateVal').textContent = `${currentCurrencySymbol}${rate} / hr`;
-
-      const weeklyHoursSaved = team * hours * 0.90;
-      const annualHoursSaved = Math.round(weeklyHoursSaved * 52);
-      const annualDollarsSaved = Math.round(annualHoursSaved * rate);
-
-      document.getElementById('annualHours').textContent = annualHoursSaved.toLocaleString() + ' hrs';
-      document.getElementById('annualSavings').textContent = currentCurrencySymbol + annualDollarsSaved.toLocaleString();
-    }
-
-    function showToast(message) {
-      let container = document.getElementById('toastContainer');
-      if (!container) {
-        container = document.createElement('div');
-        container.id = 'toastContainer';
-        container.className = 'toast-container';
-        document.body.appendChild(container);
+    // Cal.com Booking Modal
+    function openBookingModal() {
+      const modal = document.getElementById('booking-modal');
+      const iframe = document.getElementById('cal-iframe');
+      if (iframe && iframe.src === 'about:blank') {
+        iframe.src = 'https://cal.com/zenthra-systems-dyuqpi/30min';
       }
-      const toast = document.createElement('div');
-      toast.className = 'toast-msg';
-      toast.innerHTML = `<span>✓</span> <span>${message}</span>`;
-      container.appendChild(toast);
-      setTimeout(() => {
-        toast.style.opacity = '0';
-        toast.style.transform = 'translateY(10px)';
-        toast.style.transition = 'all 0.3s ease';
-        setTimeout(() => toast.remove(), 300);
-      }, 2600);
+      if (modal) modal.classList.add('open');
     }
 
-    function copyToClipboard(text, label = "Text") {
-      navigator.clipboard.writeText(text).then(() => {
-        showToast(`Copied ${label} to clipboard!`);
-      }).catch(() => {
-        showToast("Copied to clipboard!");
-      });
+    function closeBookingModal() {
+      const modal = document.getElementById('booking-modal');
+      if (modal) modal.classList.remove('open');
     }
 
-    // =========================================================================
-    // FULL INTERACTIVE TRAINING MASTERCLASS CONTROLLER
-    // =========================================================================
-    const TOUR_STEPS = [
-      {
-        targetId: 'header-status-pill',
-        badge: 'Module 1 of 6 · System Trust & SLA',
-        title: 'The 24/7 Operations Hub & Trust Architecture',
-        desc: 'This website is your global client acquisition headquarters. The glowing status beacon signals active cloud cluster health, sub-second latency, and enterprise SLA reliability to prospective clients worldwide.',
-        pitch: 'When presenting to decision-makers, direct their attention to this beacon to reassure them of 99.9% uptime, data privacy, and immediate automated execution.',
-        tip: 'Enterprise buyers require trust before tech. Highlighting 24/7 uptime and zero-data retention eliminates security objections instantly.',
-        actionIcon: '⚡',
-        actionText: 'Simulate Cluster Ping & SLA Health',
-        actionType: 'pingCluster',
-        speech: 'Step one: Welcome to Zenthra Systems. This website functions as your global operations hub, featuring real-time cluster monitoring that establishes trust with international enterprise buyers.'
+    // Hero Interactive Preview Switcher
+    const PREVIEW_SCENES = {
+      maps: {
+        title: '🗺️ Google Maps Discovery & Real Website Verification',
+        subtitle: 'Berlin, Germany &bull; Logistics &amp; Cold-Chain Carriers (44 Markets)',
+        kpis: [
+          { label: 'Verified Websites Found', val: '100% Real Domains', color: '#34d399' },
+          { label: 'Avg Monthly Client Drag', val: '$14,200 / mo', color: '#fbbf24' }
+        ],
+        rows: [
+          { left: '<strong>NordicLogix GmbH</strong> &bull; nordiclogix-freight.de', right: '<span class="service-badge">Tier A &bull; 96/100</span>' },
+          { left: '<strong>RheinPort Cold Chain AG</strong> &bull; rheinport-cargo.de', right: '<span class="service-badge">CFO + COO Emails ✓</span>' },
+          { left: '<strong>Hanseatic Intermodal</strong> &bull; hanseatic-shipping.eu', right: '<span class="service-badge">SSL Verified ↗</span>' }
+        ],
+        ctaText: 'Open Google Maps Engine in Console →',
+        ctaHref: 'console.html#maps-tab'
       },
-      {
-        targetId: 'calculator-card-el',
-        badge: 'Module 2 of 6 · Value Demonstration',
-        title: 'Interactive Automation ROI & Savings Calculator',
-        desc: 'Allows enterprise prospects to drag team size, repetitive hours, and labor costs to instantly calculate their annual financial leakage and automated savings.',
-        pitch: 'During discovery calls, share your screen and adjust these sliders live with the prospect. When they see $120,000+ in annual leakage, your $4,500 sprint fee becomes an obvious 10x ROI.',
-        tip: 'Never quote price before value. Always anchor your fee against the six-figure savings calculated right here.',
-        actionIcon: '📈',
-        actionText: 'Animate Live $379,000+ ROI Calculation',
-        actionType: 'animateCalculator',
-        speech: 'Step two: The interactive ROI Calculator. On discovery calls, manipulate these sliders live to prove six-figure annual savings, eliminating price resistance.'
+      model1: {
+        title: '⚡ Model 1: Value-Anchored 10-Day Sprint',
+        subtitle: 'Anchor fixed pricing directly against quantified labor & revenue loss',
+        kpis: [
+          { label: 'Payback Horizon', val: '26 Days', color: '#34d399' },
+          { label: 'Projected Year-1 ROI', val: '912% ($98,000 Net)', color: '#38bdf8' }
+        ],
+        rows: [
+          { left: '<strong>Step 1:</strong> Audit ERP / spreadsheet latency drag', right: '<span class="service-badge">-$9,000/mo Leak</span>' },
+          { left: '<strong>Step 2:</strong> Generate Markdown Statement of Work', right: '<span class="service-badge">Auto SOW Ready ✓</span>' },
+          { left: '<strong>Step 3:</strong> Dispatch tailored proposal &amp; stage CRM', right: '<span class="service-badge">10-Day Sprint</span>' }
+        ],
+        ctaText: 'Run Model 1 Sprint Builder →',
+        ctaHref: 'console.html#model1-tab'
       },
-      {
-        targetId: 'chat-preview-card',
-        badge: 'Module 3 of 6 · Inbound Concierge',
-        title: 'Live AI Operations Specialist & Vector RAG',
-        desc: 'Prospects can converse with our AI Specialist or click Quick Scope to qualify their stack in 30 seconds. The agent queries 12 indexed Supabase pgvector records with strict cosine similarity cutoffs.',
-        pitch: 'Demonstrate how the AI autonomously handles lead qualification, verifies technical compatibility, and logs complete discovery memos directly to your CRM.',
-        tip: 'Show prospective clients that our AI never hallucinates because every answer is strictly grounded in our Supabase vector embeddings.',
-        actionIcon: '🤖',
-        actionText: 'Dispatch Live Scoping Query to AI Agent',
-        actionType: 'promptAI',
-        speech: 'Step three: The Live AI Specialist. Powered by Supabase pgvector, it answers complex architectural queries and logs qualified leads into your CRM 24 hours a day.'
+      email: {
+        title: '📬 Who Can I Email? — Verified Outreach Directory',
+        subtitle: 'Instant 1-Click Dispatch, Custom Preview Modal &amp; Audit Trail',
+        kpis: [
+          { label: 'MX-Verified Readiness', val: '50+ Contacts Ready', color: '#34d399' },
+          { label: 'Pipeline Potential', val: '$455,000+ USD', color: '#60a5fa' }
+        ],
+        rows: [
+          { left: '<strong>Marcus Vance</strong> (CFO) &bull; Apex Global Logistics', right: '<span class="service-badge">🟢 Ready to Email</span>' },
+          { left: '<strong>Elena Rostova</strong> (COO) &bull; Meridian Capital UK', right: '<span class="service-badge">🟢 Ready to Email</span>' },
+          { left: '<strong>Henrik Lindqvist</strong> (CTO) &bull; Svea FinTech AB', right: '<span class="service-badge">🛡️ SMTP Verified</span>' }
+        ],
+        ctaText: 'Open 1-Click Mail Directory →',
+        ctaHref: 'console.html#emailable-tab'
       },
-      {
-        targetId: 'capabilities-grid',
-        badge: 'Module 4 of 6 · Turnkey Deliverables',
-        title: 'Four High-Yield Production Deliverables',
-        desc: 'Zenthra Systems sells 4 core turnkey solutions: Sub-30s Lead Routing, Supabase pgvector RAG Knowledge Hubs, Autonomous Invoice AI, and Cyclistic BI Pipelines.',
-        pitch: 'Deliver these as fixed 2-week Automation Sprints ($3,500 to $6,500 USD) with 100% IP transfer, then transition clients to monthly retainers ($1,500 to $2,500/mo).',
-        tip: 'Avoid selling open-ended consulting hours. Package clear, outcome-focused deliverables with a 30-day warranty to close contracts faster.',
-        actionIcon: '✨',
-        actionText: 'Highlight Sprints & Price Points',
-        actionType: 'highlightServices',
-        speech: 'Step four: High-Yield Deliverables. Package your services as fixed-price two-week sprints, followed by continuous monthly retainers.'
-      },
-      {
-        targetId: 'nav-book-btn',
-        badge: 'Module 5 of 6 · Autonomous Booking',
-        title: 'One-Click Cal.com Meeting Scheduling Flow',
-        desc: 'Eliminates friction and back-and-forth email scheduling. Prospects select a 30-minute discovery slot, generating Google Meet invitations and syncing with your calendar.',
-        pitch: 'All outbound marketing campaigns and website calls-to-action route directly to https://cal.com/zenthra-systems-dyuqpi/30min.',
-        tip: 'When a meeting is scheduled via Cal.com, the prospect is 300% more likely to show up compared to manual email links.',
-        actionIcon: '📅',
-        actionText: 'Test Live Cal.com Booking Experience',
-        actionType: 'openCalModal',
-        speech: 'Step five: Frictionless Scheduling. Integrated Cal.com booking allows international clients to secure discovery calls directly on your calendar.'
-      },
-      {
-        targetId: 'hero-section',
-        badge: 'Module 6 of 6 · Closing Playbook',
-        title: 'Outbound Client Engine & Discovery Scripts',
-        desc: 'How Zenthra Systems acquires clients across USA, UK, Europe, Australia, and UAE using daily automated Apollo scraping, GPT-4o personalization, and multi-currency invoicing.',
-        pitch: 'Use our 3-step closing framework on the 30-minute call to close 50% deposit upfront via Stripe or Wise before writing a single line of code.',
-        tip: 'Always secure a 50% upfront deposit before commencing any two-week sprint.',
-        actionIcon: '🎓',
-        actionText: 'Open Full Sales Academy & Discovery Script',
-        actionType: 'openAcademyModal',
-        speech: 'Step six: Global Outbound and Closing. Launch the automated Apollo pipeline to generate clients worldwide, and use our three-step closing script to lock in deals.'
+      demos: {
+        title: '🧠 4 Live Working Prototypes Inside Console',
+        subtitle: 'Prove engineering capability live before signing any contract',
+        kpis: [
+          { label: 'Enterprise RAG Citation', val: '36ms Retrieval', color: '#34d399' },
+          { label: 'Optical Vision Parser', val: '98.4% Accuracy', color: '#a78bfa' }
+        ],
+        rows: [
+          { left: '<strong>Demo 1:</strong> Private RAG Knowledge &amp; SOP Search', right: '<span class="service-badge">Source Cited ✓</span>' },
+          { left: '<strong>Demo 2:</strong> 24/7 AI Customer Qualification Bot', right: '<span class="service-badge">CRM Auto-Sync</span>' },
+          { left: '<strong>Demo 3 &amp; 4:</strong> Power BI DAX &amp; Bill of Lading OCR', right: '<span class="service-badge">Live Sandbox</span>' }
+        ],
+        ctaText: 'Launch All 4 Live AI Demos →',
+        ctaHref: 'console.html#demo-tab'
       }
-    ];
-
-    let currentTourStep = 0;
-    let isAutoPlay = false;
-    let autoPlayTimer = null;
-    let isVoiceEnabled = false;
-
-    // Start Training Mode
-    function startWebsiteTour(autoStart = false) {
-      currentTourStep = 0;
-      document.getElementById('tourBackdrop').classList.add('active');
-      document.getElementById('trainingHUD').classList.add('active');
-      showTourStep(0);
-
-      if (autoStart) {
-        toggleAutoPlay(true);
-      }
-    }
-
-    // Stop Training Mode
-    function stopWebsiteTour() {
-      if (isAutoPlay) toggleAutoPlay(false);
-      if (isVoiceEnabled && 'speechSynthesis' in window) window.speechSynthesis.cancel();
-      document.getElementById('tourBackdrop').classList.remove('active');
-      document.getElementById('trainingHUD').classList.remove('active');
-      document.getElementById('tourCard').style.display = 'none';
-      clearSpotlight();
-    }
-
-    function clearSpotlight() {
-      document.querySelectorAll('.tour-spotlight-highlight').forEach(el => {
-        el.classList.remove('tour-spotlight-highlight');
-      });
-    }
-
-    // Show specific step
-    function showTourStep(index) {
-      clearSpotlight();
-      currentTourStep = index;
-      const step = TOUR_STEPS[index];
-      const target = document.getElementById(step.targetId);
-
-      if (target) {
-        target.classList.add('tour-spotlight-highlight');
-        target.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      }
-
-      // Update Card
-      const card = document.getElementById('tourCard');
-      document.getElementById('tourBadge').textContent = step.badge;
-      document.getElementById('tourTitle').textContent = step.title;
-      document.getElementById('tourDesc').textContent = step.desc;
-      document.getElementById('tourPitch').textContent = step.pitch;
-      document.getElementById('tourTip').textContent = step.tip;
-      document.getElementById('tourActionIcon').textContent = step.actionIcon;
-      document.getElementById('tourActionText').textContent = step.actionText;
-      document.getElementById('tourCount').textContent = `${index + 1} / ${TOUR_STEPS.length}`;
-
-      // Navigation button states
-      const prevBtn = document.getElementById('tourPrevBtn');
-      const nextBtn = document.getElementById('tourNextBtn');
-      if (prevBtn) prevBtn.style.visibility = index === 0 ? 'hidden' : 'visible';
-      if (nextBtn) nextBtn.textContent = index === TOUR_STEPS.length - 1 ? 'Finish Tour ✓' : 'Next Step →';
-
-      // Update HUD Pills
-      document.querySelectorAll('.hud-pill').forEach((pill, idx) => {
-        pill.classList.toggle('active', idx === index);
-      });
-
-      // Voice Narration
-      if (isVoiceEnabled && step.speech) {
-        speakStep(step.speech);
-      }
-
-      // Position Card smartly
-      card.style.display = 'block';
-      setTimeout(() => {
-        if (target) {
-          const rect = target.getBoundingClientRect();
-          const cardWidth = card.offsetWidth;
-          const cardHeight = card.offsetHeight;
-
-          let top = rect.bottom + 15;
-          let left = rect.left + (rect.width / 2) - (cardWidth / 2);
-
-          // Boundary checks
-          if (top + cardHeight > window.innerHeight - 20) {
-            top = Math.max(20, rect.top - cardHeight - 15);
-          }
-          if (left < 20) left = 20;
-          if (left + cardWidth > window.innerWidth - 20) left = window.innerWidth - cardWidth - 20;
-
-          card.style.top = `${top}px`;
-          card.style.left = `${left}px`;
-        }
-      }, 350);
-    }
-
-    function nextTourStep() {
-      if (currentTourStep < TOUR_STEPS.length - 1) {
-        currentTourStep++;
-        showTourStep(currentTourStep);
-      } else {
-        stopWebsiteTour();
-      }
-    }
-
-    function prevTourStep() {
-      if (currentTourStep > 0) {
-        currentTourStep--;
-        showTourStep(currentTourStep);
-      }
-    }
-
-    function jumpToTourStep(index) {
-      if (index >= 0 && index < TOUR_STEPS.length) {
-        showTourStep(index);
-      }
-    }
-
-    function handleTourBackdropClick(e) {
-      if (e.target.id === 'tourBackdrop') {
-        stopWebsiteTour();
-      }
-    }
-
-    // Auto-Play Feature
-    function toggleAutoPlay(forcedState = null) {
-      isAutoPlay = forcedState !== null ? forcedState : !isAutoPlay;
-      const btn = document.getElementById('hudAutoPlayBtn');
-
-      if (isAutoPlay) {
-        btn.classList.add('active');
-        btn.textContent = '⏸ Pause Tour';
-        runAutoPlayLoop();
-      } else {
-        btn.classList.remove('active');
-        btn.textContent = '▶ Auto-Play';
-        clearTimeout(autoPlayTimer);
-      }
-    }
-
-    function runAutoPlayLoop() {
-      clearTimeout(autoPlayTimer);
-      if (!isAutoPlay) return;
-
-      autoPlayTimer = setTimeout(() => {
-        if (!isAutoPlay) return;
-        if (currentTourStep < TOUR_STEPS.length - 1) {
-          nextTourStep();
-          runAutoPlayLoop();
-        } else {
-          toggleAutoPlay(false);
-        }
-      }, 8500);
-    }
-
-    // Voice Narration
-    function toggleVoiceNarration() {
-      isVoiceEnabled = !isVoiceEnabled;
-      const btn = document.getElementById('hudVoiceBtn');
-
-      if (isVoiceEnabled) {
-        btn.classList.add('active');
-        btn.textContent = '🔊 Voice: ON';
-        if (TOUR_STEPS[currentTourStep]?.speech) {
-          speakStep(TOUR_STEPS[currentTourStep].speech);
-        }
-      } else {
-        btn.classList.remove('active');
-        btn.textContent = '🔊 Voice: Off';
-        if ('speechSynthesis' in window) window.speechSynthesis.cancel();
-      }
-    }
-
-    function speakStep(text) {
-      if (!('speechSynthesis' in window)) return;
-      window.speechSynthesis.cancel();
-      const utterance = new SpeechSynthesisUtterance(text);
-      utterance.rate = 1.0;
-      utterance.pitch = 1.0;
-      utterance.lang = 'en-US';
-      window.speechSynthesis.speak(utterance);
-    }
-
-    // =========================================================================
-    // INTERACTIVE LIVE DEMO ACTION DISPATCHER
-    // =========================================================================
-    function triggerCurrentDemoAction() {
-      const step = TOUR_STEPS[currentTourStep];
-      if (!step) return;
-
-      switch (step.actionType) {
-        case 'pingCluster':
-          pingClusterDemo();
-          break;
-        case 'animateCalculator':
-          animateCalculatorDemo();
-          break;
-        case 'promptAI':
-          promptAIDemo();
-          break;
-        case 'highlightServices':
-          highlightServicesDemo();
-          break;
-        case 'openCalModal':
-          openCalModal();
-          break;
-        case 'openAcademyModal':
-          openAcademyModal();
-          break;
-        default:
-          alert("Demo simulation complete for this module.");
-      }
-    }
-
-    // Demo 1: Cluster Health Simulation
-    function pingClusterDemo() {
-      const statusPill = document.getElementById('header-status-pill');
-      const text = document.getElementById('header-status-text');
-      text.textContent = '⚡ Pinging n8n Cloud Cluster & Supabase pgvector...';
-
-      setTimeout(() => {
-        text.textContent = '✓ Cluster Online · Latency: 112ms · 99.98% SLA Active';
-        statusPill.style.borderColor = '#10b981';
-      }, 700);
-    }
-
-    // Demo 2: Animated Sliders & $379k Savings Demonstration
-    function animateCalculatorDemo() {
-      const calcCard = document.getElementById('calculator-card-el');
-      calcCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
-
-      const teamInput = document.getElementById('teamSize');
-      const hoursInput = document.getElementById('hoursSpent');
-      const rateInput = document.getElementById('hourlyRate');
-
-      let currentTeam = parseInt(teamInput.value, 10);
-      let currentHours = parseInt(hoursInput.value, 10);
-      let currentRate = parseInt(rateInput.value, 10);
-
-      const targetTeam = 14;
-      const targetHours = 24;
-      const targetRate = 65;
-
-      const timer = setInterval(() => {
-        let changed = false;
-        if (currentTeam < targetTeam) { currentTeam++; teamInput.value = currentTeam; changed = true; }
-        if (currentHours < targetHours) { currentHours += 2; hoursInput.value = currentHours; changed = true; }
-        if (currentRate < targetRate) { currentRate += 5; rateInput.value = currentRate; changed = true; }
-
-        updateCalculator();
-
-        if (!changed) {
-          clearInterval(timer);
-          const savingsEl = document.getElementById('annualSavings');
-          savingsEl.style.transform = 'scale(1.15)';
-          savingsEl.style.transition = 'all 0.3s ease';
-          setTimeout(() => savingsEl.style.transform = 'scale(1)', 400);
-        }
-      }, 80);
-    }
-
-    // Demo 3: Inbound AI Scoper Inquiry
-    function promptAIDemo() {
-      const chatCard = document.getElementById('chat-preview-card');
-      chatCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
-
-      const iframe = document.getElementById('chatIframe');
-      if (iframe && iframe.contentWindow) {
-        iframe.contentWindow.postMessage({
-          action: 'sendPrompt',
-          text: 'What are the deliverables and pricing for an enterprise n8n workflow sprint?'
-        }, '*');
-      }
-    }
-
-    // Demo 4: Service Deliverables Spotlight
-    function highlightServicesDemo() {
-      const grid = document.getElementById('capabilities-grid');
-      grid.scrollIntoView({ behavior: 'smooth', block: 'center' });
-
-      const cards = grid.querySelectorAll('.feature-card');
-      cards.forEach((c, idx) => {
-        setTimeout(() => {
-          c.style.transform = 'translateY(-6px)';
-          c.style.borderColor = '#0284c7';
-          c.style.boxShadow = '0 12px 24px rgba(2, 132, 199, 0.2)';
-          setTimeout(() => {
-            c.style.transform = '';
-            c.style.borderColor = '';
-            c.style.boxShadow = '';
-          }, 1200);
-        }, idx * 250);
-      });
-    }
-
-    // =========================================================================
-    // CAL.COM INTERACTIVE MODAL CONTROLLER
-    // =========================================================================
-    function openCalModal() {
-      document.getElementById('calModal').classList.add('active');
-    }
-
-    function closeCalModal() {
-      document.getElementById('calModal').classList.remove('active');
-    }
-
-    function handleCalModalBackdropClick(e) {
-      if (e.target.id === 'calModal') {
-        closeCalModal();
-      }
-    }
-
-    // =========================================================================
-    // FULL OPERATIONAL ACADEMY & CLOSING PLAYBOOK
-    // =========================================================================
-    const ACADEMY_CONTENT = {
-      overview: `
-        <h3>1. End-to-End System Architecture</h3>
-        <p>Zenthra Systems operates an autonomous, two-way client acquisition and execution loop:</p>
-        <div class="academy-box">
-          <strong>1. Outbound Acquisition:</strong> n8n Cloud runs daily Apollo B2B searches for companies hiring for operations, GPT-4o personalizes a 3-sentence diagnostic email, and Gmail dispatches it.<br>
-          <strong>2. Inbound Reception:</strong> Prospects land on this website, calculate their ROI ($126k+), or converse with the AI Specialist.<br>
-          <strong>3. Vector RAG Qualification:</strong> Inquiries are checked against 12 Supabase pgvector records (Cyclistic BI, Invoicing, Lead Triage).<br>
-          <strong>4. Calendar Booking:</strong> Qualified prospects receive a direct Cal.com link (https://cal.com/zenthra-systems-dyuqpi/30min).
-        </div>
-      `,
-      sales: `
-        <h3>2. How to Run a High-Converting Sales Discovery Call</h3>
-        <p>When an enterprise client books a 30-minute discovery call on Cal.com, follow this 3-step closing framework:</p>
-        <div class="academy-box">
-          <h4>Phase 1: Diagnosis (Minutes 0–10)</h4>
-          <p>"Thanks for syncing. I saw your notes regarding [Pain Point, e.g. lead routing]. Walk me through how your team currently handles this manually, and where the biggest breakdown happens?"</p>
-          
-          <h4>Phase 2: Screen-Share Proof (Minutes 10–20)</h4>
-          <p>Open this website on screen-share. Show the ROI Calculator projecting their savings. Show the n8n architecture diagram demonstrating sub-30 second event processing.</p>
-          
-          <h4>Phase 3: The 2-Week Sprint Close (Minutes 20–30)</h4>
-          <p>"We deliver this as a turnkey 2-week Automation Sprint for a flat $4,500 USD. We build directly in your accounts with zero vendor lock-in and a 30-day warranty. Shall we lock in Monday for kickoff?"</p>
-        </div>
-      `,
-      rag: `
-        <h3>3. AI Specialist & Supabase pgvector Mechanics</h3>
-        <p>The AI Agent (Zenthra-Ops-01) running in n8n Cloud connects directly to Supabase:</p>
-        <div class="academy-box">
-          <p>• <strong>Vector Model:</strong> 1536-dimension embeddings using OpenAI <code>text-embedding-3-small</code>.</p>
-          <p>• <strong>Search Mechanism:</strong> Cosine distance similarity using PostgreSQL HNSW indexing with strict threshold cutoffs.</p>
-          <p>• <strong>Lead Logging:</strong> When qualified, the agent runs <code>save_qualified_lead</code> to persist full contact and technical discovery memos.</p>
-        </div>
-      `,
-      outbound: `
-        <h3>4. Running the Outbound Prospecting Engine</h3>
-        <p>How to generate 2 to 4 qualified discovery calls every week automatically:</p>
-        <div class="academy-box">
-          <p>1. Open n8n Cloud and ensure <code>workflows/outbound_client_acquisition_pipeline.json</code> is set to <strong>Active</strong>.</p>
-          <p>2. The workflow executes Monday through Friday at 09:00 AM.</p>
-          <p>3. To generate custom pitches for specific sectors anytime, run from terminal:</p>
-          <div class="academy-code">powershell -ExecutionPolicy Bypass -File tools/generate_global_campaigns.ps1 -Vertical agency</div>
-        </div>
-      `,
-      pricing: `
-        <h3>5. Deliverables, Pricing & Multi-Currency Invoicing</h3>
-        <p>Standard enterprise price points and deliverables:</p>
-        <div class="academy-box">
-          <p>• <strong>Automation Sprint (MVP) — $3,500 to $6,500:</strong> 2 to 3 weeks turnaround. Solves an isolated bottleneck (e.g. Meta Ads to HubSpot + Slack triage).</p>
-          <p>• <strong>Full Pipeline Architecture — $7,500 to $15,000:</strong> 4 to 6 weeks turnaround. End-to-end data pipeline or multi-agent system.</p>
-          <p>• <strong>Monthly Retainer — $1,500 to $2,500 / mo:</strong> Continuous workflow maintenance, DLQ monitoring, 99.9% uptime SLA.</p>
-          <p>• <strong>Billing:</strong> Invoicing in USD ($), EUR (€), GBP (£) via Stripe or Wise with 50% upfront deposit.</p>
-        </div>
-      `,
-      social: `
-        <h3>6. Autonomous Social Media & Inbound DM Engine</h3>
-        <p>A multi-network content machine generating B2B leads across LinkedIn, X (Twitter), and Instagram:</p>
-        <div class="academy-box">
-          <h4>Phase 1: Automated 1080x1350 Poster Generation</h4>
-          <p>Generate high-end dark tech minimalist graphics optimized for mobile social feeds:</p>
-          <div class="academy-code">node poster-generator.js</div>
-          <p>Or open the interactive browser studio: <a href="poster_studio.html" target="_blank" style="color: #0284c7; font-weight: 700; text-decoration: underline;">Launch Poster Studio (1-Click PNG Download) ↗</a></p>
-          
-          <h4>Phase 2: Production n8n Workflow</h4>
-          <p>Import <code>workflows/zenthra_social_automation.json</code> into n8n. Runs every Mon/Wed/Fri at 13:00 GMT, prompts GPT-4o with Zenthra Systems' elite voice, and dispatches across networks.</p>
-
-          <h4>Phase 3: Unified Cross-Network Publishing (Ayrshare)</h4>
-          <p>One single API POST publishes to your LinkedIn Company Page, X handle, Instagram Pro, and Facebook simultaneously without broken OAuth tokens.</p>
-
-          <h4>Phase 4: 24/7 Inbound DM Lead Triage</h4>
-          <p>When leads comment or message keywords like <code>WEBSITE</code>, <code>AUDIT</code>, <code>AI</code>, or <code>SCALE</code>, ManyChat / webhook instantly responds under 15s and directs them to <a href="https://cal.com/zenthra-systems-dyuqpi/30min" target="_blank" style="color: #0284c7; font-weight: 700;">https://cal.com/zenthra-systems-dyuqpi/30min</a>.</p>
-        </div>
-      `,
-      simulations: `
-        <h3>7. Live Enterprise Client Simulations & Outbound Campaign</h3>
-        <p>Real-time telemetry from enterprise inquiries tested against your live n8n AI cluster and outbound dispatch logs:</p>
-        
-        <div class="academy-box" style="margin-bottom: 1rem;">
-          <h4>🎯 Verified Live Simulation Audit (All 3 Passed · 200 OK)</h4>
-          <div style="display: grid; gap: 0.75rem; margin-top: 0.75rem;">
-            <div style="background: #ffffff; border: 1px solid #bae6fd; padding: 0.85rem; border-radius: 10px;">
-              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.35rem;">
-                <strong>🚢 TransEuropa Freight & Customs BV (Rotterdam, NL)</strong>
-                <span style="font-family: var(--font-mono); font-size: 0.75rem; color: #059669; background: #ecfdf5; padding: 2px 8px; border-radius: 4px;">Latency: 5,539ms · Status: 200 OK</span>
-              </div>
-              <p style="font-size: 0.82rem; color: var(--text-secondary); margin-bottom: 0.35rem;"><strong>Inquiry:</strong> Automated vision extraction for 250+ daily EUR.1 customs declarations and bills of lading into TMS.</p>
-              <p style="font-size: 0.82rem; color: #0369a1;"><strong>AI Qualification:</strong> Structured 3-tier delivery phases (Discovery 1-2w, Dev 3-6w, Optimization 1-2w) & requested current TMS stack.</p>
-            </div>
-
-            <div style="background: #ffffff; border: 1px solid #bae6fd; padding: 0.85rem; border-radius: 10px;">
-              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.35rem;">
-                <strong>⚡ CloudScale Global SaaS (Austin, TX, USA)</strong>
-                <span style="font-family: var(--font-mono); font-size: 0.75rem; color: #059669; background: #ecfdf5; padding: 2px 8px; border-radius: 4px;">Latency: 3,526ms · Status: 200 OK</span>
-              </div>
-              <p style="font-size: 0.82rem; color: var(--text-secondary); margin-bottom: 0.35rem;"><strong>Inquiry:</strong> Sub-30s lead triage for 800+ monthly demo leads, Zapier tax elimination ($900/mo overages), HubSpot + Slack routing.</p>
-              <p style="font-size: 0.82rem; color: #0369a1;"><strong>AI Qualification:</strong> Structured 4-pillar architecture (Webhook capture, enrichment, AI scoring, instant Slack ping) & calculated $187k/yr savings.</p>
-            </div>
-
-            <div style="background: #ffffff; border: 1px solid #bae6fd; padding: 0.85rem; border-radius: 10px;">
-              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.35rem;">
-                <strong>💼 Sterling &amp; Vance Wealth Partners (London, UK)</strong>
-                <span style="font-family: var(--font-mono); font-size: 0.75rem; color: #059669; background: #ecfdf5; padding: 2px 8px; border-radius: 4px;">Latency: 5,332ms · Status: 200 OK</span>
-              </div>
-              <p style="font-size: 0.82rem; color: var(--text-secondary); margin-bottom: 0.35rem;"><strong>Inquiry:</strong> Private Supabase pgvector knowledge base for 50 wealth managers with strict GDPR data sovereignty.</p>
-              <p style="font-size: 0.82rem; color: #0369a1;"><strong>AI Qualification:</strong> Verified private isolated vectors, role-based access control, zero public LLM training, and Cal.com executive handoff.</p>
-            </div>
-          </div>
-        </div>
-
-        <div class="academy-box">
-          <h4>🚀 Active Outbound Campaigns &amp; Lead Manifest (6 Verticals)</h4>
-          <p style="font-size: 0.84rem; color: var(--text-secondary); margin-bottom: 0.5rem;">The outbound campaign dispatcher has generated hyper-personalized technical architectures for 6 global enterprises:</p>
-          <ul style="font-size: 0.82rem; line-height: 1.6; color: var(--text-secondary); margin-left: 1.25rem;">
-            <li><strong>Nexus Freight (Chicago, USA):</strong> $96,687/yr labor savings (EDI/TMS vision automation)</li>
-            <li><strong>CloudScale Global (Austin, USA):</strong> $187,850/yr labor savings (Sub-30s HubSpot lead triage)</li>
-            <li><strong>Sterling &amp; Vance Wealth (London, UK):</strong> £167,960/yr labor savings (Private GDPR Supabase pgvector)</li>
-            <li><strong>Bavaria Precision Parts (Munich, Germany):</strong> €215,475/yr labor savings (Autonomous Vision Invoicing &amp; SAP sync)</li>
-            <li><strong>Pacific HealthBridge (Singapore):</strong> $72,930/yr labor savings (24/7 WhatsApp triage agent)</li>
-            <li><strong>Apex OmniCommerce (Sydney, Australia):</strong> $139,230/yr labor savings (Real-time 3PL/Shopify inventory guard)</li>
-          </ul>
-          <p style="margin-top: 0.85rem; font-size: 0.82rem;">To re-dispatch campaigns with custom parameters anytime:</p>
-          <div class="academy-code">powershell -ExecutionPolicy Bypass -File tools/dispatch_outbound_campaign.ps1</div>
-        </div>
-      `
     };
 
-    function openAcademyModal() {
-      document.getElementById('academyModal').classList.add('active');
-      switchAcademyTab('overview');
-    }
-
-    function closeAcademyModal() {
-      document.getElementById('academyModal').classList.remove('active');
-    }
-
-    function handleAcademyBackdropClick(e) {
-      if (e.target.id === 'academyModal') {
-        closeAcademyModal();
-      }
-    }
-
-    function switchAcademyTab(tabKey) {
-      document.querySelectorAll('.academy-tab').forEach((tab, idx) => {
-        const keys = ['overview', 'sales', 'rag', 'outbound', 'pricing', 'social', 'simulations'];
-        tab.classList.toggle('active', keys[idx] === tabKey);
+    function switchPreviewTab(key) {
+      ['maps', 'model1', 'email', 'demos'].forEach(k => {
+        const el = document.getElementById('ptab-' + k);
+        if (el) el.classList.toggle('active', k === key);
       });
-      document.getElementById('academyBody').innerHTML = ACADEMY_CONTENT[tabKey] || '';
+      const scene = PREVIEW_SCENES[key] || PREVIEW_SCENES.maps;
+      const body = document.getElementById('hero-preview-body');
+      if (!body) return;
+
+      body.innerHTML = `
+        <div>
+          <div style="font-size: 15px; font-weight: 800; color: #f8fafc; margin-bottom: 4px;">${scene.title}</div>
+          <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 14px;">${scene.subtitle}</div>
+          <div class="preview-kpi-mini-grid" style="margin-bottom: 14px;">
+            ${scene.kpis.map(k => `
+              <div class="mini-box">
+                <div class="mini-box-label">${k.label}</div>
+                <div class="mini-box-val" style="color: ${k.color};">${k.val}</div>
+              </div>
+            `).join('')}
+          </div>
+          <div class="preview-list">
+            ${scene.rows.map(r => `
+              <div class="preview-row">
+                <span style="color: var(--text-secondary);">${r.left}</span>
+                <span>${r.right}</span>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+        <a href="${scene.ctaHref}" class="btn btn-emerald" style="width: 100%; font-size: 13px; padding: 10px 14px;">
+          ${scene.ctaText}
+        </a>
+      `;
     }
 
-    function dismissTrainingBanner() {
-      const banner = document.getElementById('siteTrainingBanner');
-      if (banner) banner.style.display = 'none';
-    }
+    // 12 Service Suites Showcase
+    function renderLandingServices(filterKey) {
+      const grid = document.getElementById('landing-services-grid');
+      if (!grid) return;
+      const services = window.STATIC_EXTENDED_SERVICES || [];
+      const list = services.filter(s => {
+        if (!filterKey || filterKey === 'ALL') return true;
+        if (filterKey === 'Strategy') return s.category === 'Plan' || s.category === 'Security';
+        return s.category === filterKey;
+      });
 
-    // Startup initialization
-    document.addEventListener('DOMContentLoaded', () => {
-      updateCalculator();
-
-      // Check URL parameters to auto-launch training
-      const params = new URLSearchParams(window.location.search);
-      if (params.get('train') === 'true' || params.get('tour') === 'true' || params.get('tour') === '1') {
-        setTimeout(() => startWebsiteTour(true), 600);
+      if (!list.length) {
+        grid.innerHTML = '<div style="grid-column: 1 / -1; text-align: center; padding: 30px; color: var(--text-muted);">Service catalog loading...</div>';
+        return;
       }
+
+      grid.innerHTML = list.map(s => {
+        const num = String(s.num || s.service_number || 1).padStart(2, '0');
+        const price = Number(s.basePriceUSD || s.sprint_price_usd || 10000).toLocaleString();
+        const retainer = Number(s.retainerUSD || s.monthly_retainer_usd || 2800).toLocaleString();
+        const deliv = (s.deliverables || s.key_deliverables || []).slice(0, 3);
+        const targetTab = num === '01' || num === '05' ? 'console.html#demo-tab' : 'console.html#services-tab';
+
+        return `
+          <article class="service-card">
+            <div>
+              <div class="service-top-meta">
+                <span class="service-badge">Suite #${num} &bull; ${s.badge || s.category}</span>
+                <span style="font-size: 11px; color: var(--emerald-bright); font-weight: 700;">${s.roiMultiple || '10x ROI'}</span>
+              </div>
+              <h3>${s.name}</h3>
+              <div class="service-wedge">⚡ Wedge: ${s.wedge || s.headline}</div>
+              <p class="service-pain">${s.pain || ''}</p>
+            </div>
+
+            <div>
+              <div class="service-pricing-box">
+                <div>
+                  <div class="mini-box-label">Fixed Sprint</div>
+                  <div style="font-size: 18px; font-weight: 900; color: var(--emerald-bright);">$${price}</div>
+                  <div style="font-size: 10.5px; color: var(--text-dim);">${s.timeline || '10 Business Days'}</div>
+                </div>
+                <div>
+                  <div class="mini-box-label">Retainer Vector</div>
+                  <div style="font-size: 18px; font-weight: 900; color: var(--cobalt-bright);">$${retainer}<span style="font-size: 11px; color: var(--text-dim);">/mo</span></div>
+                  <div style="font-size: 10.5px; color: var(--text-dim);">${(s.targetBuyer || '').split(',')[0] || 'Executive'}</div>
+                </div>
+              </div>
+
+              <ul class="service-deliverables">
+                ${deliv.map(d => `<li><span style="color: var(--emerald-bright); font-weight: 700;">✓</span> ${d}</li>`).join('')}
+              </ul>
+
+              <a href="${targetTab}" class="btn btn-ghost" style="width: 100%; font-size: 12.5px; padding: 9px 14px;">
+                Launch Suite in Live Console →
+              </a>
+            </div>
+          </article>
+        `;
+      }).join('');
+    }
+
+    function filterServices(filterKey, btnEl) {
+      document.querySelectorAll('.service-filters .filter-pill').forEach(p => p.classList.remove('active'));
+      if (btnEl) btnEl.classList.add('active');
+      renderLandingServices(filterKey);
+    }
+
+    // Multi-Currency Model 1 ROI Calculator
+    let calcCurrency = 'USD';
+    const CURRENCY_META = {
+      USD: { symbol: '$', rate: 1.0 },
+      EUR: { symbol: '€', rate: 0.92 },
+      GBP: { symbol: '£', rate: 0.79 }
+    };
+
+    const TRACK_PRESETS = {
+      pbi: { fee: 12500, loss: 9000 },
+      auto: { fee: 9500, loss: 8500 },
+      rag: { fee: 18500, loss: 14500 },
+      web: { fee: 11500, loss: 9500 }
+    };
+
+    function setCalcCurrency(code, btnEl) {
+      calcCurrency = code;
+      document.querySelectorAll('.currency-toggle .curr-btn').forEach(b => b.classList.remove('active'));
+      if (btnEl) btnEl.classList.add('active');
+      updateROICalculator();
+    }
+
+    function applyCalcTrackPreset() {
+      const track = document.getElementById('calc-track')?.value || 'pbi';
+      const p = TRACK_PRESETS[track] || TRACK_PRESETS.pbi;
+      document.getElementById('calc-fee-usd').value = p.fee;
+      document.getElementById('calc-loss-usd').value = p.loss;
+      document.getElementById('calc-loss-slider').value = p.loss;
+      updateROICalculator();
+    }
+
+    function syncLossFromSlider() {
+      const val = document.getElementById('calc-loss-slider')?.value || 9000;
+      document.getElementById('calc-loss-usd').value = val;
+      updateROICalculator();
+    }
+
+    function fmtMoney(usdVal) {
+      const m = CURRENCY_META[calcCurrency] || CURRENCY_META.USD;
+      const converted = Math.round((Number(usdVal) || 0) * m.rate);
+      return `${m.symbol}${converted.toLocaleString()}`;
+    }
+
+    function updateROICalculator() {
+      const lossUSD = Math.max(1000, parseFloat(document.getElementById('calc-loss-usd')?.value) || 9000);
+      const feeUSD = Math.max(2000, parseFloat(document.getElementById('calc-fee-usd')?.value) || 12500);
+      const slider = document.getElementById('calc-loss-slider');
+      if (slider && lossUSD >= 3000 && lossUSD <= 30000) slider.value = lossUSD;
+
+      const dailyLoss = Math.max(1, lossUSD / 30);
+      const paybackDays = Math.max(5, Math.round(feeUSD / dailyLoss));
+      const annualRecovery = lossUSD * 12;
+      const netGain = Math.max(0, annualRecovery - feeUSD);
+      const roiPct = Math.round((netGain / feeUSD) * 100);
+      const roiMult = (annualRecovery / feeUSD).toFixed(1);
+
+      document.getElementById('calc-loss-label').textContent = `${fmtMoney(lossUSD)} / mo`;
+      document.getElementById('roi-payback-days').textContent = `${paybackDays} Days`;
+      document.getElementById('roi-multiple').textContent = `${roiMult}x ROI`;
+      document.getElementById('roi-sprint-fee').textContent = fmtMoney(feeUSD);
+      document.getElementById('roi-net-gain').textContent = fmtMoney(netGain);
+      document.getElementById('roi-pct-text').textContent = `${roiPct.toLocaleString()}% Year-1 ROI`;
+
+      const totalScale = feeUSD + annualRecovery;
+      const costPct = Math.max(8, Math.min(85, Math.round((feeUSD / totalScale) * 100)));
+      const gainPct = Math.max(15, 100 - costPct);
+      document.getElementById('bar-cost').style.width = `${costPct}%`;
+      document.getElementById('bar-gain').style.width = `${gainPct}%`;
+    }
+
+    // Hydrate Live Telemetry Strip from Bundled Data
+    function hydrateLiveTelemetry() {
+      if (window.STATIC_PLATFORM_DATA && window.STATIC_PLATFORM_DATA.kpis) {
+        const pipe = Number(window.STATIC_PLATFORM_DATA.kpis.totalPipelineUSD) || 307400;
+        const pipeEl = document.getElementById('stat-pipeline-usd');
+        if (pipeEl) pipeEl.textContent = `$${pipe.toLocaleString()}+`;
+      }
+      if (Array.isArray(window.STATIC_EMAILABLE_CONTACTS) && window.STATIC_EMAILABLE_CONTACTS.length > 0) {
+        const contactsEl = document.getElementById('stat-contacts-ready');
+        if (contactsEl) contactsEl.textContent = `${window.STATIC_EMAILABLE_CONTACTS.length} Verified`;
+      }
+      if (Array.isArray(window.STATIC_EXTENDED_SERVICES) && window.STATIC_EXTENDED_SERVICES.length > 0) {
+        const svcEl = document.getElementById('stat-services-count');
+        if (svcEl) svcEl.textContent = `${window.STATIC_EXTENDED_SERVICES.length} Suites`;
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      switchPreviewTab('maps');
+      renderLandingServices('ALL');
+      updateROICalculator();
+      hydrateLiveTelemetry();
     });
   </script>
 </body>

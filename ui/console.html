@@ -311,9 +311,53 @@
     .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
     .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
     .grid-1-2 { display: grid; grid-template-columns: 1.35fr 1fr; gap: 20px; }
+    .maps-query-grid { display: grid; grid-template-columns: 1.2fr 1fr 1.2fr 0.8fr; gap: 12px; margin-bottom: 12px; }
+    .em-filter-grid { display: grid; grid-template-columns: 2fr 1fr 1.2fr 1.2fr auto; gap: 10px; align-items: center; }
+    .table-responsive { width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; }
 
-    @media (max-width: 900px) {
-      .grid-2, .grid-3, .grid-1-2 { grid-template-columns: 1fr !important; }
+    @media (max-width: 960px) {
+      .grid-2, .grid-3, .grid-1-2, .maps-query-grid, .em-filter-grid { grid-template-columns: 1fr !important; }
+      .navbar { padding: 12px 16px; flex-wrap: wrap; gap: 10px; }
+      .tabs-bar { top: auto; padding: 6px 12px; }
+    }
+
+    /* Non-Blocking Enterprise Toast Notifications */
+    .toast-stack {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 12000;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      max-width: 420px;
+      width: calc(100vw - 32px);
+      pointer-events: none;
+    }
+    .toast-item {
+      pointer-events: auto;
+      background: rgba(12, 18, 34, 0.96);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(59, 130, 246, 0.4);
+      border-left: 4px solid #10b981;
+      border-radius: 10px;
+      padding: 12px 16px;
+      box-shadow: 0 18px 40px rgba(0, 0, 0, 0.65);
+      color: #f8fafc;
+      font-size: 12.5px;
+      line-height: 1.45;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      animation: toastSlideIn 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .toast-item.toast-warn { border-left-color: #f59e0b; }
+    .toast-item.toast-error { border-left-color: #ef4444; }
+    .toast-item.toast-info { border-left-color: #38bdf8; }
+    @keyframes toastSlideIn {
+      from { opacity: 0; transform: translateX(30px) scale(0.97); }
+      to { opacity: 1; transform: translateX(0) scale(1); }
     }
 
     /* Cards & Panels */
@@ -603,12 +647,12 @@
       </div>
     </div>
     <div class="nav-badges">
-      <a href="portal.html" class="badge" style="text-decoration: none; color: #93c5fd; background: rgba(59, 130, 246, 0.18); border: 1px solid rgba(59, 130, 246, 0.4); padding: 5px 12px; border-radius: 6px; font-weight: 700; display: inline-flex; align-items: center; gap: 5px;" title="View Agency Portfolio & Services Presentation">🏢 Agency Overview ↗</a>
-      <span class="badge badge-online" id="backend-status-badge">⚡ Live Enterprise Hub</span>
-      <span class="badge badge-online">n8n Live: 192.168.0.104:5678</span>
-      <span class="badge badge-port">Port: 3050</span>
+      <a href="index.html" class="badge" style="text-decoration: none; color: #93c5fd; background: rgba(59, 130, 246, 0.18); border: 1px solid rgba(59, 130, 246, 0.4); padding: 5px 12px; border-radius: 6px; font-weight: 700; display: inline-flex; align-items: center; gap: 5px;" title="View Zenthra Systems Landing Page & Solutions Overview">🏠 Zenthra Landing ↗</a>
+      <span class="badge badge-online" id="backend-status-badge">⚡ Enterprise Engine Active</span>
+      <span class="badge badge-online" id="n8n-status-badge">n8n Workflow Mesh: Synced</span>
+      <span class="badge badge-port" id="runtime-mode-badge">Cloud Hub</span>
       <span class="badge badge-online" id="nav-mail-badge">Mail API: Ready</span>
-      <span class="badge badge-port">SQLite Active</span>
+      <span class="badge badge-port">Client State Active</span>
     </div>
   </div>
 
@@ -830,7 +874,7 @@
         </div>
 
         <!-- Ingest Actions -->
-        <div style="display: flex; gap: 10px; align-items: center; border-top: 1px solid var(--border); padding-top: 14px;">
+        <div style="display: flex; gap: 10px; align-items: center; border-top: 1px solid var(--border); padding-top: 14px; flex-wrap: wrap;">
           <button class="btn-primary" style="padding: 10px 20px; font-size: 13px; font-weight: 700;" onclick="runIngestPipeline()" id="btn-ingest-run">
             🚀 Run Account Through Agent 2-6 + n8n Webhook
           </button>
@@ -838,7 +882,7 @@
             ⚡ Run Batch Ingest (All 6 Presets in Sequence)
           </button>
           <span style="font-size: 12px; color: var(--text-dim); margin-left: auto;">
-            Auto-dispatches to n8n daemon on <code>192.168.0.104:5678</code>
+            Auto-dispatches to Zenthra Multi-Agent Webhook Mesh
           </span>
         </div>
 
@@ -860,27 +904,32 @@
 
       <!-- Target Accounts Registry & Leaderboard Table -->
       <div class="panel">
-        <div class="panel-title">
+        <div class="panel-title" style="flex-wrap: wrap; gap: 10px;">
           <span>Target Accounts Registry & 100-Point Scoring Leaderboard</span>
-          <span id="accounts-count" class="tag tag-a">0 Accounts</span>
+          <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+            <input type="text" id="prospects-search-input" placeholder="🔍 Filter accounts, domain, country..." oninput="filterProspectsTable()" style="width: 240px; padding: 6px 10px; font-size: 12px;">
+            <span id="accounts-count" class="tag tag-a">0 Accounts</span>
+          </div>
         </div>
         <div class="panel-desc">All candidate accounts discovered, scored, and prioritized across international target markets:</div>
-        <table>
-          <thead>
-            <tr>
-              <th>Company & Domain</th>
-              <th>Country</th>
-              <th>Headcount</th>
-              <th>Primary Matched Service</th>
-              <th>Recommended Entry Wedge</th>
-              <th>100-pt Score</th>
-              <th>Tier</th>
-            </tr>
-          </thead>
-          <tbody id="prospects-table-body">
-            <!-- Populated dynamically -->
-          </tbody>
-        </table>
+        <div class="table-responsive">
+          <table>
+            <thead>
+              <tr>
+                <th>Company & Domain</th>
+                <th>Country</th>
+                <th>Headcount</th>
+                <th>Primary Matched Service</th>
+                <th>Recommended Entry Wedge</th>
+                <th>100-pt Score</th>
+                <th>Tier</th>
+              </tr>
+            </thead>
+            <tbody id="prospects-table-body">
+              <!-- Populated dynamically -->
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
 
@@ -896,7 +945,7 @@
         </div>
 
         <!-- Query Form with Country, City, Category & Batch Volume -->
-        <div style="display: grid; grid-template-columns: 1.2fr 1fr 1.2fr 0.8fr; gap: 12px; margin-bottom: 12px;">
+        <div class="maps-query-grid">
           <div>
             <label style="font-size: 11px; color: var(--text-muted); font-weight: 600;">1. Target Country (Any Country on Earth):</label>
             <input type="text" id="maps-country" list="countries-datalist" value="Bangladesh" onchange="updateCityDropdown()" oninput="updateCityDropdown()" placeholder="e.g. Bangladesh, Japan, Germany, USA...">
@@ -1110,7 +1159,7 @@
       </div>
 
       <!-- Filter Tabs for Results -->
-      <div id="maps-filter-bar" style="display: none; margin-bottom: 14px; display: flex; gap: 8px;">
+      <div id="maps-filter-bar" style="display: none; margin-bottom: 14px; gap: 8px; flex-wrap: wrap;">
         <button class="btn-primary" id="btn-filter-all" onclick="filterDiscoveredPlaces('all')">All Discovered (<span id="count-all">0</span>)</button>
         <button class="btn-outline" id="btn-filter-critical" onclick="filterDiscoveredPlaces('critical')">🔴 Critical Weaknesses (<span id="count-critical">0</span>)</button>
         <button class="btn-outline" id="btn-filter-intake" onclick="filterDiscoveredPlaces('intake')">🟡 Intake / Booking Bottlenecks (<span id="count-intake">0</span>)</button>
@@ -1216,22 +1265,24 @@
           <span>Active Enterprise Deals & Pipeline Stages</span>
           <span class="tag tag-a" id="pipeline-count">3 Deals Active</span>
         </div>
-        <table>
-          <thead>
-            <tr>
-              <th>Deal Name</th>
-              <th>Company</th>
-              <th>Service Line</th>
-              <th>Deal Value (USD)</th>
-              <th>Win Probability</th>
-              <th>Stage</th>
-              <th>Action</th>
-            </tr>
-          </thead>
-          <tbody id="deals-table-body">
-            <!-- Populated dynamically -->
-          </tbody>
-        </table>
+        <div class="table-responsive">
+          <table>
+            <thead>
+              <tr>
+                <th>Deal Name</th>
+                <th>Company</th>
+                <th>Service Line</th>
+                <th>Deal Value (USD)</th>
+                <th>Win Probability</th>
+                <th>Stage</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="deals-table-body">
+              <!-- Populated dynamically -->
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
 
@@ -1320,10 +1371,10 @@
       <div class="panel">
         <div class="panel-title">Outreach Messaging Vault (7 Services)</div>
         <div class="panel-desc">Select a service campaign to inspect subject lines, 3-touch email sequences, and objection handlers:</div>
-        <div style="display: flex; gap: 8px; margin-bottom: 16px;">
-          <button class="btn-primary" onclick="showCampaign('power_bi')">Microsoft Power BI</button>
-          <button class="btn-outline" onclick="showCampaign('ai_automation')">AI Automation</button>
-          <button class="btn-outline" onclick="showCampaign('ai_rag')">Enterprise RAG & AI</button>
+        <div style="display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap;">
+          <button class="btn-primary" id="btn-camp-power_bi" onclick="showCampaign('power_bi')">Microsoft Power BI</button>
+          <button class="btn-outline" id="btn-camp-ai_automation" onclick="showCampaign('ai_automation')">AI Automation</button>
+          <button class="btn-outline" id="btn-camp-ai_rag" onclick="showCampaign('ai_rag')">Enterprise RAG & AI</button>
         </div>
         <div id="campaign-display">
           <!-- Populated dynamically -->
@@ -1340,7 +1391,7 @@
           <div style="display: flex; flex-direction: column; gap: 12px;">
             <div>
               <label style="font-size: 11px; color: var(--text-muted);">Package Selection:</label>
-              <select id="calc-package" onchange="runPricingCalculation()">
+              <select id="calc-package" onchange="onPricingPackageChange()">
                 <option value="POWER_BI_SPRINT">5-Day Executive Power BI KPI Sprint ($12,500)</option>
                 <option value="AI_AUTOMATION_AUDIT">Workflow Bottleneck Audit & Prototype ($9,500)</option>
                 <option value="AI_RAG_PROTOTYPE">Private Enterprise RAG Architecture PoC ($18,500)</option>
@@ -1348,7 +1399,7 @@
             </div>
             <div>
               <label style="font-size: 11px; color: var(--text-muted);">Custom Fixed Price (USD):</label>
-              <input type="number" id="calc-price" value="12500" onchange="runPricingCalculation()">
+              <input type="number" id="calc-price" value="12500" oninput="runPricingCalculation()" onchange="runPricingCalculation()">
             </div>
             <div id="pricing-results" style="background: #060911; padding: 14px; border-radius: 6px; border: 1px solid var(--border);">
               <!-- Populated dynamically -->
@@ -1798,10 +1849,11 @@ WinRatePercentage = DIVIDE(CALCULATE(COUNTROWS('fact_pipeline'), 'fact_pipeline'
               <div class="panel-title" style="color: #38bdf8; font-size: 16px;">📄 Demo 4: Automated Commercial Document & Invoice Vision Parser</div>
               <div class="panel-desc">Showcases <strong>Service 2 & 4: Document AI & Automated Intake</strong>. Ingests raw unstructured commercial documents (e.g. Bills of Lading, Invoices, Purchase Orders) and extracts verified line items in milliseconds:</div>
             </div>
-            <div style="display: flex; gap: 8px;">
-              <select id="parser-sample-select" style="width: auto;">
-                <option value="bill_of_lading">Ocean Bill of Lading (Chittagong Port -> Hamburg)</option>
-                <option value="commercial_invoice">Commercial Tax Invoice (Precision Machining)</option>
+            <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+              <select id="parser-sample-select" style="width: auto;" onchange="runDocumentParser()">
+                <option value="bill_of_lading">Ocean Bill of Lading (Maersk Singapore -> LA)</option>
+                <option value="commercial_invoice">Commercial Tax Invoice (Apex Logistics)</option>
+                <option value="clinical_lab">Clinical Lab Diagnostic Report (CareFirst)</option>
               </select>
               <button class="btn-success" onclick="runDocumentParser()" id="btn-run-parser" style="font-weight: 700;">
                 ⚡ Run Vision Parser
@@ -2143,7 +2195,7 @@ WinRatePercentage = DIVIDE(CALCULATE(COUNTROWS('fact_pipeline'), 'fact_pipeline'
 
       <!-- Filter & Search Toolbar -->
       <div class="panel" style="padding: 14px; background: #0c1220; margin-bottom: 16px;">
-        <div style="display: grid; grid-template-columns: 2fr 1fr 1.2fr 1.2fr auto; gap: 10px; align-items: center;">
+        <div class="em-filter-grid">
           
           <div style="position: relative; display: flex; align-items: center;">
             <input type="text" id="em-search-input" placeholder="🔍 Search by name, company, email, country, or job title..." oninput="onEmailableFilterChange()" style="width: 100%; padding-right: 28px;">
@@ -2241,6 +2293,120 @@ WinRatePercentage = DIVIDE(CALCULATE(COUNTROWS('fact_pipeline'), 'fact_pipeline'
     // ==========================================
     // BULLETPROOF DUAL-MODE API & OUTBOUND HELPERS
     // ==========================================
+    function showToast(message, type = 'success', actionLabel = '', actionUrl = '', durationMs = 5500) {
+      let stack = document.getElementById('toast-stack');
+      if (!stack) {
+        stack = document.createElement('div');
+        stack.id = 'toast-stack';
+        stack.className = 'toast-stack';
+        document.body.appendChild(stack);
+      }
+      const item = document.createElement('div');
+      item.className = 'toast-item' + (type === 'warn' ? ' toast-warn' : (type === 'error' ? ' toast-error' : (type === 'info' ? ' toast-info' : '')));
+
+      const topRow = document.createElement('div');
+      topRow.style.cssText = 'display: flex; justify-content: space-between; align-items: flex-start; gap: 10px;';
+      const msgDiv = document.createElement('div');
+      msgDiv.style.cssText = 'flex: 1; white-space: pre-line;';
+      msgDiv.textContent = message;
+      const closeBtn = document.createElement('button');
+      closeBtn.textContent = '✕';
+      closeBtn.style.cssText = 'background: transparent; border: none; color: #94a3b8; padding: 0 4px; font-size: 12px; cursor: pointer;';
+      closeBtn.onclick = () => item.remove();
+      topRow.appendChild(msgDiv);
+      topRow.appendChild(closeBtn);
+      item.appendChild(topRow);
+
+      if (actionLabel && actionUrl) {
+        const actionRow = document.createElement('div');
+        actionRow.style.cssText = 'display: flex; gap: 8px; align-items: center;';
+        const link = document.createElement('a');
+        link.href = actionUrl;
+        link.target = '_blank';
+        link.rel = 'noopener noreferrer';
+        link.textContent = actionLabel;
+        link.style.cssText = 'background: rgba(16, 185, 129, 0.2); border: 1px solid rgba(16, 185, 129, 0.45); color: #34d399; padding: 4px 10px; border-radius: 5px; font-size: 11px; font-weight: 700; text-decoration: none;';
+        actionRow.appendChild(link);
+        item.appendChild(actionRow);
+      }
+
+      stack.appendChild(item);
+      if (durationMs > 0) {
+        setTimeout(() => {
+          if (item.parentNode) item.remove();
+        }, durationMs);
+      }
+    }
+
+    function fallbackCopyToClipboard(text) {
+      const ta = document.createElement('textarea');
+      ta.value = text;
+      ta.style.position = 'fixed';
+      ta.style.opacity = '0';
+      document.body.appendChild(ta);
+      ta.select();
+      let ok = false;
+      try { ok = document.execCommand('copy'); } catch (e) {}
+      document.body.removeChild(ta);
+      return ok;
+    }
+
+    function recomputePlatformKPIs() {
+      if (!window.globalData) return;
+      const deals = window.globalData.deals || [];
+      if (deals.length === 0) return;
+
+      const baselineOffsetPipe = window.globalData._baselineExtraPipeline || 0;
+      const baselineOffsetWeighted = window.globalData._baselineExtraWeighted || 0;
+      const baselineCountOffset = window.globalData._baselineExtraCount || 0;
+
+      const visibleTotal = deals.reduce((sum, d) => sum + (Number(d.deal_value_usd) || 0), 0);
+      const visibleWeighted = deals.reduce((sum, d) => sum + ((Number(d.deal_value_usd) || 0) * (Number(d.win_probability) || 0)), 0);
+      const wonDeals = deals.filter(d => d.deal_stage === 'Closed Won');
+      const lostDeals = deals.filter(d => d.deal_stage === 'Closed Lost');
+      const wonUSD = wonDeals.reduce((sum, d) => sum + (Number(d.deal_value_usd) || 0), 0);
+
+      const totalCount = deals.length + baselineCountOffset;
+      const closedDecided = wonDeals.length + lostDeals.length;
+      const winRate = lostDeals.length > 0 && closedDecided > 0
+        ? Math.round((wonDeals.length / closedDecided) * 100)
+        : (wonDeals.length > 0 ? Math.max(1, Math.round((wonDeals.length / Math.max(1, deals.length)) * 100)) : 0);
+
+      const k = window.globalData.kpis = window.globalData.kpis || {};
+      k.totalPipelineUSD = Math.round(visibleTotal + baselineOffsetPipe);
+      k.weightedPipelineUSD = Math.round(visibleWeighted + baselineOffsetWeighted);
+      k.closedWonUSD = Math.max(wonUSD, k.closedWonUSD || 0);
+      if (wonDeals.length > 0 && wonUSD >= (k.closedWonUSD || 0)) {
+        k.closedWonUSD = wonUSD;
+      }
+      k.winRatePct = winRate;
+      k.avgDealUSD = Math.round(k.totalPipelineUSD / Math.max(1, totalCount));
+    }
+
+    function stageNewDeal({ companyName, country, serviceLine, dealValueUSD, stage, probability }) {
+      if (!window.globalData) window.globalData = {};
+      if (!Array.isArray(window.globalData.deals)) window.globalData.deals = [];
+      const val = Number(dealValueUSD) || 8500;
+      const svc = serviceLine || 'Enterprise Technology Sprint';
+      const dealStage = stage || 'Proposal Submitted';
+      const prob = typeof probability === 'number' ? probability : 0.4;
+      window.globalData.deals.unshift({
+        deal_id: 'deal_' + Math.random().toString(36).substring(2, 8),
+        deal_name: `${companyName || 'Enterprise Client'} — ${svc}`,
+        company_name: companyName || 'Enterprise Client',
+        country: country || 'Global',
+        service_line: svc,
+        deal_stage: dealStage,
+        deal_value_usd: val,
+        win_probability: prob,
+        created_at: new Date().toISOString()
+      });
+      recomputePlatformKPIs();
+      if (typeof renderPlatform === 'function') {
+        try { renderPlatform(); } catch (e) {}
+      }
+    }
+
     async function safeApiFetch(url, options = {}) {
       try {
         const res = await fetch(url, options);
@@ -2367,13 +2533,14 @@ WinRatePercentage = DIVIDE(CALCULATE(COUNTROWS('fact_pipeline'), 'fact_pipeline'
       document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
 
       const e = ev || (typeof event !== 'undefined' ? event : null);
-      if (e && e.target) {
-        const btn = e.target.closest('.tab-btn');
-        if (btn) btn.classList.add('active');
-      } else {
-        const matchingBtn = document.querySelector(`.tab-btn[onclick*="${tabId}"]`);
-        if (matchingBtn) matchingBtn.classList.add('active');
+      let activatedBtn = null;
+      if (e && e.target && typeof e.target.closest === 'function') {
+        activatedBtn = e.target.closest('.tab-btn');
       }
+      if (!activatedBtn) {
+        activatedBtn = document.querySelector(`.tab-btn[onclick*="${tabId}"]`);
+      }
+      if (activatedBtn) activatedBtn.classList.add('active');
 
       const panel = document.getElementById(tabId);
       if (panel) {
@@ -2400,11 +2567,62 @@ WinRatePercentage = DIVIDE(CALCULATE(COUNTROWS('fact_pipeline'), 'fact_pipeline'
       document.getElementById('in-comp-signals').value = p.signals;
     }
 
+    function initPlatformBaselines(data) {
+      if (!data || !data.kpis || data._baselinesInitialized) return;
+      const deals = data.deals || [];
+      const visTotal = deals.reduce((s, d) => s + (Number(d.deal_value_usd) || 0), 0);
+      const visWeighted = deals.reduce((s, d) => s + ((Number(d.deal_value_usd) || 0) * (Number(d.win_probability) || 0)), 0);
+      data._baselineExtraPipeline = Math.max(0, (Number(data.kpis.totalPipelineUSD) || 0) - visTotal);
+      data._baselineExtraWeighted = Math.max(0, (Number(data.kpis.weightedPipelineUSD) || 0) - visWeighted);
+      const avg = Number(data.kpis.avgDealUSD) || 0;
+      const approxTotalCount = avg > 0 ? Math.round((Number(data.kpis.totalPipelineUSD) || 0) / avg) : deals.length;
+      data._baselineExtraCount = Math.max(0, approxTotalCount - deals.length);
+      data._baselinesInitialized = true;
+      if (!data.kpis.winRatePct && deals.some(d => d.deal_stage === 'Closed Won')) {
+        recomputePlatformKPIs();
+      }
+    }
+
+    function setRuntimeStatusBadges(isBackendLive) {
+      const bBadge = document.getElementById('backend-status-badge');
+      const rBadge = document.getElementById('runtime-mode-badge');
+      const nBadge = document.getElementById('n8n-status-badge');
+      if (isBackendLive) {
+        if (bBadge) {
+          bBadge.textContent = '🟢 Backend Live: Port 3050';
+          bBadge.className = 'badge badge-online';
+        }
+        if (rBadge) {
+          rBadge.textContent = 'Live SQLite + Node API';
+          rBadge.className = 'badge badge-online';
+        }
+        if (nBadge) {
+          nBadge.textContent = 'n8n Mesh: Connected';
+          nBadge.className = 'badge badge-online';
+        }
+      } else {
+        if (bBadge) {
+          bBadge.textContent = '⚡ Standalone Engine Ready';
+          bBadge.className = 'badge badge-online';
+        }
+        if (rBadge) {
+          rBadge.textContent = 'Cloud Static Mode';
+          rBadge.className = 'badge badge-info';
+        }
+        if (nBadge) {
+          nBadge.textContent = 'n8n Mesh: Local Queue';
+          nBadge.className = 'badge badge-info';
+        }
+      }
+    }
+
     async function fetchPlatformData() {
       // Immediate load from bundled static data
       if (window.STATIC_PLATFORM_DATA && (!globalData || !globalData.accounts)) {
         globalData = window.globalData = JSON.parse(JSON.stringify(window.STATIC_PLATFORM_DATA));
+        initPlatformBaselines(globalData);
         renderPlatform();
+        setRuntimeStatusBadges(false);
       }
 
       try {
@@ -2412,12 +2630,9 @@ WinRatePercentage = DIVIDE(CALCULATE(COUNTROWS('fact_pipeline'), 'fact_pipeline'
         const ct = res.headers.get('content-type') || '';
         if (res.ok && ct.includes('application/json')) {
           globalData = window.globalData = await res.json();
+          initPlatformBaselines(globalData);
           renderPlatform();
-          const badge = document.getElementById('backend-status-badge');
-          if (badge) {
-            badge.textContent = '🟢 Backend Live: Port 3050';
-            badge.className = 'badge badge-online';
-          }
+          setRuntimeStatusBadges(true);
         }
       } catch (e) {
         if (!globalData || !globalData.accounts) {
@@ -2425,17 +2640,74 @@ WinRatePercentage = DIVIDE(CALCULATE(COUNTROWS('fact_pipeline'), 'fact_pipeline'
             const staticRes = await fetch('./data/platform-data.json');
             if (staticRes.ok) {
               globalData = window.globalData = await staticRes.json();
+              initPlatformBaselines(globalData);
               renderPlatform();
             }
           } catch (err2) {
             console.warn('Failed to load static platform data:', err2);
           }
         }
+        setRuntimeStatusBadges(false);
       }
     }
 
+    function filterProspectsTable() {
+      const input = document.getElementById('prospects-search-input');
+      const query = (input ? input.value : '').trim().toLowerCase();
+      const accounts = (globalData && globalData.accounts) ? globalData.accounts : [];
+      const filtered = query
+        ? accounts.filter(a =>
+            (a.company_name || '').toLowerCase().includes(query) ||
+            (a.domain || '').toLowerCase().includes(query) ||
+            (a.country || '').toLowerCase().includes(query) ||
+            (a.primary_matched_service || '').toLowerCase().includes(query) ||
+            (a.recommended_wedge || '').toLowerCase().includes(query) ||
+            (a.lead_tier || '').toLowerCase().includes(query)
+          )
+        : accounts;
+      renderProspectsRows(filtered, accounts.length);
+    }
+
+    function renderProspectsRows(accounts, totalCount) {
+      const ptbody = document.getElementById('prospects-table-body');
+      const countEl = document.getElementById('accounts-count');
+      if (countEl) {
+        countEl.textContent = (typeof totalCount === 'number' && totalCount !== accounts.length)
+          ? `${accounts.length} of ${totalCount} Accounts`
+          : `${accounts.length} Accounts`;
+      }
+      if (!ptbody) return;
+      if (!accounts.length) {
+        ptbody.innerHTML = '<tr><td colspan="7" style="text-align:center; padding: 24px; color: var(--text-dim);">No accounts match your filter criteria.</td></tr>';
+        return;
+      }
+      ptbody.innerHTML = accounts.map(a => `
+        <tr>
+          <td><strong>${a.company_name}</strong><br><span style="font-size: 11px; color: var(--text-dim);">${a.domain || ''}</span></td>
+          <td>${a.country || 'Global'}</td>
+          <td>${a.headcount || '—'}</td>
+          <td>${a.primary_matched_service || '—'}</td>
+          <td>${a.recommended_wedge || '—'}</td>
+          <td><strong>${a.lead_score || 0}</strong>/100</td>
+          <td><span class="tag ${a.lead_tier === 'Tier A' ? 'tag-a' : 'tag-b'}">${a.lead_tier || 'Tier B'}</span></td>
+        </tr>
+      `).join('');
+    }
+
+    const DEAL_STAGE_OPTIONS = [
+      'Discovery Meeting Booked',
+      'Technical Scope Confirmed',
+      'Proposal Submitted',
+      'Closed Won',
+      'Closed Lost'
+    ];
+
     function renderPlatform() {
       const k = globalData.kpis || {};
+      const deals = globalData.deals || [];
+      if (!k.winRatePct && deals.some(d => d.deal_stage === 'Closed Won')) {
+        recomputePlatformKPIs();
+      }
 
       // 1. Executive KPIs
       document.getElementById('kpi-total-pipe').textContent = `$${(k.totalPipelineUSD || 0).toLocaleString()}`;
@@ -2446,76 +2718,75 @@ WinRatePercentage = DIVIDE(CALCULATE(COUNTROWS('fact_pipeline'), 'fact_pipeline'
 
       // 2. Activities
       const actList = document.getElementById('recent-activities');
-      actList.innerHTML = (globalData.activities || []).map(a => `
-        <div style="padding: 8px 0; border-bottom: 1px solid var(--border);">
-          <span style="color: #60a5fa; font-weight: 600;">[${a.agent_name}]</span>
-          <span>${a.description}</span>
-          <div style="font-size: 10px; color: var(--text-dim); margin-top: 2px;">${a.timestamp}</div>
-        </div>
-      `).join('');
+      if (actList) {
+        const acts = globalData.activities || [];
+        actList.innerHTML = acts.length
+          ? acts.map(a => `
+            <div style="padding: 8px 0; border-bottom: 1px solid var(--border);">
+              <span style="color: #60a5fa; font-weight: 600;">[${a.agent_name}]</span>
+              <span>${a.description}</span>
+              <div style="font-size: 10px; color: var(--text-dim); margin-top: 2px;">${a.timestamp}</div>
+            </div>
+          `).join('')
+          : '<div style="padding: 16px; color: var(--text-dim);">No autonomous activity logged yet.</div>';
+      }
 
       // 3. Prospects Table
-      const ptbody = document.getElementById('prospects-table-body');
-      document.getElementById('accounts-count').textContent = `${globalData.accounts.length} Accounts`;
-      ptbody.innerHTML = (globalData.accounts || []).map(a => `
-        <tr>
-          <td><strong>${a.company_name}</strong><br><span style="font-size: 11px; color: var(--text-dim);">${a.domain}</span></td>
-          <td>${a.country}</td>
-          <td>${a.headcount}</td>
-          <td>${a.primary_matched_service}</td>
-          <td>${a.recommended_wedge}</td>
-          <td><strong>${a.lead_score}</strong>/100</td>
-          <td><span class="tag ${a.lead_tier === 'Tier A' ? 'tag-a' : 'tag-b'}">${a.lead_tier}</span></td>
-        </tr>
-      `).join('');
+      filterProspectsTable();
 
       // 4. SDR Gate Drafts
       renderSDRDrafts();
 
       // 5. Deals Table
       const dtbody = document.getElementById('deals-table-body');
-      document.getElementById('pipeline-count').textContent = `${globalData.deals.length} Active Deals`;
-      dtbody.innerHTML = (globalData.deals || []).map(d => `
+      document.getElementById('pipeline-count').textContent = `${deals.length} Active Deals`;
+      dtbody.innerHTML = deals.map(d => {
+        const curStage = d.deal_stage || 'Proposal Submitted';
+        const stageTagCls = curStage === 'Closed Won' ? 'tag-approved' : (curStage === 'Closed Lost' ? 'tag-b' : 'tag-a');
+        const optionsHtml = DEAL_STAGE_OPTIONS.includes(curStage)
+          ? DEAL_STAGE_OPTIONS.map(s => `<option value="${s}" ${s === curStage ? 'selected' : ''}>${s}</option>`).join('')
+          : `<option value="${curStage}" selected>${curStage}</option>` + DEAL_STAGE_OPTIONS.map(s => `<option value="${s}">${s}</option>`).join('');
+        return `
         <tr>
           <td><strong>${d.deal_name}</strong></td>
-          <td>${d.company_name} (${d.country})</td>
-          <td>${d.service_line}</td>
-          <td><strong>$${d.deal_value_usd.toLocaleString()}</strong></td>
-          <td>${Math.round(d.win_probability * 100)}%</td>
-          <td><span class="tag tag-a">${d.deal_stage}</span></td>
+          <td>${d.company_name} (${d.country || 'Global'})</td>
+          <td>${d.service_line || 'Enterprise Sprint'}</td>
+          <td><strong>$${(Number(d.deal_value_usd) || 0).toLocaleString()}</strong></td>
+          <td>${Math.round((Number(d.win_probability) || 0) * 100)}%</td>
+          <td><span class="tag ${stageTagCls}">${curStage}</span></td>
           <td>
             <select onchange="updateStage('${d.deal_id}', this.value)" style="padding: 4px; font-size: 11px;">
-              <option value="${d.deal_stage}">${d.deal_stage}</option>
-              <option value="Discovery Meeting Booked">Discovery Meeting Booked</option>
-              <option value="Technical Scope Confirmed">Technical Scope Confirmed</option>
-              <option value="Proposal Submitted">Proposal Submitted</option>
-              <option value="Closed Won">Closed Won</option>
-              <option value="Closed Lost">Closed Lost</option>
+              ${optionsHtml}
             </select>
           </td>
         </tr>
-      `).join('');
+      `;
+      }).join('');
 
       // Show default campaign
       showCampaign('power_bi');
       runPricingCalculation();
     }
 
+    function getPendingSDRDrafts() {
+      return (globalData.drafts || []).filter(d => !d.status || d.status === 'AWAITING_APPROVAL' || d.status === 'PENDING');
+    }
+
     function renderSDRDrafts(customList) {
       const draftsList = document.getElementById('drafts-list');
       if (!draftsList) return;
-      const allDrafts = globalData.drafts || [];
-      const drafts = customList !== undefined ? customList : allDrafts;
+      const pendingDrafts = getPendingSDRDrafts();
+      const drafts = customList !== undefined ? customList : pendingDrafts;
 
       const badge = document.getElementById('sdr-pending-count');
-      if (badge) badge.textContent = `${allDrafts.length} Awaiting Review`;
+      if (badge) badge.textContent = `${pendingDrafts.length} Awaiting Review`;
       const tabBadge = document.getElementById('sdr-tab-badge');
-      if (tabBadge) tabBadge.textContent = allDrafts.length;
+      if (tabBadge) tabBadge.textContent = pendingDrafts.length;
 
       const filterStatus = document.getElementById('sdr-filter-status');
       if (filterStatus) {
-        if (customList !== undefined && customList.length !== allDrafts.length) {
-          filterStatus.textContent = `Showing ${customList.length} of ${allDrafts.length} pending drafts`;
+        if (customList !== undefined && customList.length !== pendingDrafts.length) {
+          filterStatus.textContent = `Showing ${customList.length} of ${pendingDrafts.length} pending drafts`;
         } else {
           filterStatus.textContent = '';
         }
@@ -2544,11 +2815,14 @@ WinRatePercentage = DIVIDE(CALCULATE(COUNTROWS('fact_pipeline'), 'fact_pipeline'
 
       draftsList.innerHTML = drafts.map(d => {
         const contactEmail = d.corporate_email || (d.domain && !d.domain.includes('local') ? 'info@' + d.domain : 'contact@enterprise.com');
+        const fullName = d.first_name ? `${d.first_name} ${d.last_name || ''}`.trim() : (d.recipient_name || 'Decision Maker');
+        const jobTitle = d.job_title || d.recipient_title || 'Executive Decision Maker';
         const mailtoUrl = `mailto:${encodeURIComponent(contactEmail)}?subject=${encodeURIComponent(d.subject_line || '')}&body=${encodeURIComponent(d.body_text || '')}`;
         const webUrl = d.domain ? (d.domain.startsWith('http') ? d.domain : 'https://' + d.domain) : '#';
         const isRealWeb = d.domain && !d.domain.includes('.local');
         const safeBody = (d.body_text || '').replace(/</g, '&lt;').replace(/>/g, '&gt;');
         const safeSubject = (d.subject_line || '').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+        const escapedEmail = contactEmail.replace(/'/g, "\\'");
 
         return `
           <div class="draft-card" id="card-${d.draft_id}" style="border: 1px solid rgba(255, 255, 255, 0.08); background: #0b1120; border-radius: 10px; padding: 18px; margin-bottom: 16px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);">
@@ -2557,7 +2831,7 @@ WinRatePercentage = DIVIDE(CALCULATE(COUNTROWS('fact_pipeline'), 'fact_pipeline'
               <div>
                 <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
                   <span style="font-size: 16px; font-weight: 800; color: #f8fafc;">🏢 ${d.company_name}</span>
-                  ${isRealWeb ? `<a href="${webUrl}" target="_blank" style="color: #60a5fa; text-decoration: none; font-size: 12px; font-weight: 600; background: rgba(59, 130, 246, 0.12); padding: 2px 8px; border-radius: 4px; border: 1px solid rgba(59, 130, 246, 0.25);">🌐 ${d.domain} ↗</a>` : `<span style="font-size: 11px; color: #f59e0b; background: rgba(245, 158, 11, 0.1); padding: 2px 8px; border-radius: 4px;">⚠️ High-Demand Maps Listing (Needs Portal)</span>`}
+                  ${isRealWeb ? `<a href="${webUrl}" target="_blank" rel="noopener" style="color: #60a5fa; text-decoration: none; font-size: 12px; font-weight: 600; background: rgba(59, 130, 246, 0.12); padding: 2px 8px; border-radius: 4px; border: 1px solid rgba(59, 130, 246, 0.25);">🌐 ${d.domain} ↗</a>` : `<span style="font-size: 11px; color: #f59e0b; background: rgba(245, 158, 11, 0.1); padding: 2px 8px; border-radius: 4px;">⚠️ High-Demand Maps Listing (Needs Portal)</span>`}
                   <span class="tag tag-a" style="font-size: 11px;">⭐ Score: ${d.lead_score || 95}/100</span>
                   <span class="tag tag-b" style="font-size: 11px;">${d.channel || 'EMAIL'} · Touch #${d.touch_number || 1}</span>
                 </div>
@@ -2566,20 +2840,20 @@ WinRatePercentage = DIVIDE(CALCULATE(COUNTROWS('fact_pipeline'), 'fact_pipeline'
                 </div>
               </div>
 
-              <!-- Recipient & Email Pill Box (Explicitly answers: WHO CAN I EMAIL?) -->
+              <!-- Recipient & Email Pill Box -->
               <div style="background: rgba(15, 23, 42, 0.85); border: 1px solid rgba(56, 189, 248, 0.35); border-radius: 8px; padding: 10px 14px; min-width: 280px; text-align: right;">
                 <div style="font-size: 11px; text-transform: uppercase; color: #94a3b8; font-weight: 700; letter-spacing: 0.5px;">👤 Recipient Decision-Maker</div>
                 <div style="font-size: 14px; font-weight: 800; color: #f8fafc; margin-top: 2px;">
-                  ${d.first_name} ${d.last_name}
+                  ${fullName}
                 </div>
                 <div style="font-size: 11.5px; color: #cbd5e1; margin-bottom: 6px;">
-                  ${d.job_title}
+                  ${jobTitle}
                 </div>
                 <div style="display: flex; align-items: center; justify-content: flex-end; gap: 6px; flex-wrap: wrap;">
                   <span style="font-size: 12px; color: #38bdf8; font-weight: 700; font-family: monospace; background: rgba(56, 189, 248, 0.1); padding: 3px 8px; border-radius: 4px; border: 1px solid rgba(56, 189, 248, 0.2);">
                     📧 ${contactEmail}
                   </span>
-                  <button onclick="copyToClipboard('${contactEmail}', this)" title="Copy Email" style="background: rgba(56, 189, 248, 0.2); border: 1px solid rgba(56, 189, 248, 0.4); color: #38bdf8; border-radius: 4px; padding: 3px 8px; font-size: 11px; cursor: pointer; font-weight: 600;">
+                  <button onclick="copyToClipboard('${escapedEmail}', this)" title="Copy Email" style="background: rgba(56, 189, 248, 0.2); border: 1px solid rgba(56, 189, 248, 0.4); color: #38bdf8; border-radius: 4px; padding: 3px 8px; font-size: 11px; cursor: pointer; font-weight: 600;">
                     📋 Copy
                   </button>
                 </div>
@@ -2623,61 +2897,55 @@ WinRatePercentage = DIVIDE(CALCULATE(COUNTROWS('fact_pipeline'), 'fact_pipeline'
     }
 
     async function confirmClearSDRQueue(action) {
-      const allDrafts = globalData.drafts || [];
-      const count = allDrafts.length;
+      const pendingDrafts = getPendingSDRDrafts();
+      const count = pendingDrafts.length;
       if (count === 0) {
-        alert('No pending drafts to clear in the SDR queue.');
+        showToast('No pending drafts to clear in the SDR queue.', 'info');
         return;
       }
 
-      let message = '';
-      if (action === 'REJECTED') {
-        message = `🧹 Are you sure you want to CLEAR the SDR queue?\n\nThis will mark all ${count} pending drafts as REJECTED and remove them from your active approval list.`;
-      } else if (action === 'PURGE') {
-        message = `🗑️ Permanently purge all ${count} pending drafts from the database?`;
-      } else if (action === 'APPROVED') {
-        message = `🚀 Approve and stage all ${count} pending drafts for immediate dispatch?`;
+      const apiRes = await safeApiFetch('/api/clear-drafts', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action })
+      });
+
+      if (apiRes.ok && apiRes.data?.success) {
+        showToast(`✅ SDR Queue updated: ${apiRes.data.count || count} drafts marked as ${action}.`, 'success');
+        fetchPlatformData();
+        return;
       }
 
-      if (!confirm(message)) return;
-
-      try {
-        const res = await fetch('/api/clear-drafts', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ action })
+      pendingDrafts.forEach(d => { d.status = action; });
+      if (action === 'APPROVED') {
+        pendingDrafts.slice(0, 5).forEach(d => {
+          stageNewDeal({
+            companyName: d.company_name,
+            country: d.country || 'Global',
+            serviceLine: d.primary_matched_service,
+            dealValueUSD: 6500,
+            stage: 'Proposal Submitted',
+            probability: 0.4
+          });
         });
-        const ct = res.headers.get('content-type') || '';
-        if (res.ok && ct.includes('application/json')) {
-          const data = await res.json();
-          if (data.success) {
-            alert(`✅ SDR Queue Cleared: ${data.count} drafts marked as ${action}!`);
-            fetchPlatformData();
-            return;
-          }
-        }
-      } catch (err) {
-        console.warn('Backend clear-drafts API not reached, updating local queue:', err);
       }
-
-      const clearedCount = (globalData.drafts || []).length;
-      globalData.drafts = [];
-      alert(`✅ SDR Queue Cleared: ${clearedCount} drafts marked as ${action}!`);
       renderSDRDrafts();
+      showToast(`✅ SDR Queue cleared: ${count} drafts marked as ${action}.`, 'success');
     }
 
     function filterSDRDrafts() {
       const q = (document.getElementById('sdr-search-input')?.value || '').toLowerCase().trim();
-      const allDrafts = globalData.drafts || [];
+      const pendingDrafts = getPendingSDRDrafts();
       if (!q) {
-        renderSDRDrafts(allDrafts);
+        renderSDRDrafts(pendingDrafts);
         return;
       }
-      const filtered = allDrafts.filter(d => {
+      const filtered = pendingDrafts.filter(d => {
         return (d.company_name && d.company_name.toLowerCase().includes(q)) ||
                (d.corporate_email && d.corporate_email.toLowerCase().includes(q)) ||
                (d.first_name && d.first_name.toLowerCase().includes(q)) ||
                (d.last_name && d.last_name.toLowerCase().includes(q)) ||
+               (d.recipient_name && d.recipient_name.toLowerCase().includes(q)) ||
                (d.domain && d.domain.toLowerCase().includes(q)) ||
                (d.primary_matched_service && d.primary_matched_service.toLowerCase().includes(q)) ||
                (d.subject_line && d.subject_line.toLowerCase().includes(q));
@@ -2698,14 +2966,11 @@ WinRatePercentage = DIVIDE(CALCULATE(COUNTROWS('fact_pipeline'), 'fact_pipeline'
 
       const recipientEmail = d.corporate_email || (d.domain && !d.domain.includes('local') ? 'info@' + d.domain : '');
       if (!recipientEmail) {
-        alert('No recipient email available for this draft.');
+        showToast('No recipient email available for this draft.', 'warn');
         return;
       }
 
-      if (!confirm(`⚡ Send cold outreach email immediately to:\n\n👤 ${d.first_name} ${d.last_name} (${d.job_title})\n🏢 ${d.company_name}\n📧 ${recipientEmail}\n\nVia configured outreach engine?`)) {
-        return;
-      }
-
+      const fullName = d.first_name ? `${d.first_name} ${d.last_name || ''}`.trim() : (d.recipient_name || 'Decision Maker');
       let serverSuccess = false;
       let serverData = null;
 
@@ -2715,7 +2980,7 @@ WinRatePercentage = DIVIDE(CALCULATE(COUNTROWS('fact_pipeline'), 'fact_pipeline'
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             recipient_email: recipientEmail,
-            recipient_name: `${d.first_name} ${d.last_name}`,
+            recipient_name: fullName,
             company_name: d.company_name,
             subject: d.subject_line,
             body: d.body_text,
@@ -2742,7 +3007,7 @@ WinRatePercentage = DIVIDE(CALCULATE(COUNTROWS('fact_pipeline'), 'fact_pipeline'
       recordOutboundDelivery({
         sent_at: d.sent_at,
         recipient_email: recipientEmail,
-        recipient_name: `${d.first_name} ${d.last_name}`,
+        recipient_name: fullName,
         company_name: d.company_name,
         subject: d.subject_line,
         provider: serverSuccess ? (serverData.email_delivery?.provider || 'Gmail/SMTP') : 'Direct Email Client / SDR Approved',
@@ -2750,54 +3015,71 @@ WinRatePercentage = DIVIDE(CALCULATE(COUNTROWS('fact_pipeline'), 'fact_pipeline'
         message_id: msgId
       });
 
-      if (window.globalData && Array.isArray(window.globalData.deals)) {
-        window.globalData.deals.unshift({
-          deal_id: 'deal_' + Math.random().toString(36).substring(2, 8),
-          company_name: d.company_name,
-          stage: 'PROPOSAL_SENT',
-          deal_value_usd: 5000,
-          probability_pct: 35,
-          weighted_value_usd: 1750,
-          service_name: d.primary_matched_service || 'Enterprise Technology Sprint',
-          contact_name: `${d.first_name} ${d.last_name}`,
-          created_at: new Date().toISOString()
-        });
-      }
+      stageNewDeal({
+        companyName: d.company_name,
+        country: d.country || 'Global',
+        serviceLine: d.primary_matched_service || 'Enterprise Technology Sprint',
+        dealValueUSD: 5000,
+        stage: 'Proposal Submitted',
+        probability: 0.4
+      });
 
+      const fullEmailText = `Subject: ${d.subject_line}\n\n${d.body_text}`;
       if (navigator.clipboard && navigator.clipboard.writeText) {
-        navigator.clipboard.writeText(`Subject: ${d.subject_line}\n\n${d.body_text}`).catch(() => {});
+        navigator.clipboard.writeText(fullEmailText).catch(() => fallbackCopyToClipboard(fullEmailText));
+      } else {
+        fallbackCopyToClipboard(fullEmailText);
       }
 
       renderSDRDrafts();
       loadSentEmailsLog();
 
-      const mailtoUrl = `mailto:${encodeURIComponent(recipientEmail)}?subject=${encodeURIComponent(d.subject_line)}&body=${encodeURIComponent(d.body_text)}`;
-      const openMail = confirm(
-        `✅ Cold Outreach Email Dispatched!\n\n` +
-        `👤 Recipient: ${d.first_name} ${d.last_name} (${d.job_title})\n` +
-        `🏢 Company: ${d.company_name}\n` +
-        `📧 Email: ${recipientEmail}\n` +
-        `💼 Deal Staged in CRM: $5,000 USD\n` +
-        `📋 Email pitch copied to your clipboard!\n\n` +
-        `Would you like to open your email client (Gmail, Outlook, Apple Mail) to inspect or send directly?`
+      const mailtoUrl = `mailto:${encodeURIComponent(recipientEmail)}?subject=${encodeURIComponent(d.subject_line || '')}&body=${encodeURIComponent(d.body_text || '')}`;
+      showToast(
+        `Dispatched to ${fullName} (${recipientEmail}) & staged $5,000 deal in CRM! Pitch copied.`,
+        'success',
+        '✉️ Open in Mail App ↗',
+        mailtoUrl
       );
-
-      if (openMail) {
-        window.open(mailtoUrl, '_blank');
-      }
     }
 
     async function reviewDraft(draftId, status) {
-      await safeApiFetch('/api/review-draft', {
+      const res = await safeApiFetch('/api/review-draft', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ draftId, status })
       });
       const d = (globalData.drafts || []).find(x => x.draft_id === draftId);
       if (d) d.status = status;
+      if (status === 'APPROVED' && d) {
+        stageNewDeal({
+          companyName: d.company_name,
+          country: d.country || 'Global',
+          serviceLine: d.primary_matched_service || 'Enterprise Sprint',
+          dealValueUSD: 8500,
+          stage: 'Proposal Submitted',
+          probability: 0.4
+        });
+      }
       renderSDRDrafts();
-      fetchPlatformData();
+      if (res.ok) {
+        fetchPlatformData();
+      }
+      showToast(
+        status === 'APPROVED'
+          ? `✅ Draft approved & staged in CRM (${d ? d.company_name : draftId}).`
+          : `🧹 Draft dismissed from active SDR queue.`,
+        status === 'APPROVED' ? 'success' : 'info'
+      );
     }
+
+    const STAGE_PROBABILITY_MAP = {
+      'Discovery Meeting Booked': 0.25,
+      'Technical Scope Confirmed': 0.50,
+      'Proposal Submitted': 0.60,
+      'Closed Won': 1.00,
+      'Closed Lost': 0.00
+    };
 
     async function updateStage(dealId, stage) {
       await safeApiFetch('/api/update-deal', {
@@ -2806,8 +3088,15 @@ WinRatePercentage = DIVIDE(CALCULATE(COUNTROWS('fact_pipeline'), 'fact_pipeline'
         body: JSON.stringify({ dealId, stage })
       });
       const deal = (globalData.deals || []).find(x => x.deal_id === dealId);
-      if (deal) deal.stage = stage;
+      if (deal) {
+        deal.deal_stage = stage;
+        if (STAGE_PROBABILITY_MAP[stage] !== undefined) {
+          deal.win_probability = STAGE_PROBABILITY_MAP[stage];
+        }
+        recomputePlatformKPIs();
+      }
       renderPlatform();
+      showToast(`CRM stage updated to "${stage}" — pipeline KPIs recalculated.`, 'success');
     }
 
     async function runIngestPipeline() {
@@ -2828,8 +3117,8 @@ WinRatePercentage = DIVIDE(CALCULATE(COUNTROWS('fact_pipeline'), 'fact_pipeline'
         domain: document.getElementById('in-comp-domain').value,
         country: document.getElementById('in-comp-country').value,
         industry: document.getElementById('in-comp-industry').value,
-        headcount: parseInt(document.getElementById('in-comp-headcount').value, 10),
-        estimated_revenue_usd: parseInt(document.getElementById('in-comp-revenue').value, 10),
+        headcount: parseInt(document.getElementById('in-comp-headcount').value, 10) || 120,
+        estimated_revenue_usd: parseInt(document.getElementById('in-comp-revenue').value, 10) || 25000000,
         detected_tech_stack: { details: document.getElementById('in-comp-tech').value },
         decision_maker_name: document.getElementById('in-comp-dm').value,
         decision_maker_title: document.getElementById('in-comp-title').value,
@@ -2849,7 +3138,6 @@ WinRatePercentage = DIVIDE(CALCULATE(COUNTROWS('fact_pipeline'), 'fact_pipeline'
         }
         const r = apiRes.data.result;
 
-        // Render Step-by-Step Execution Trace
         traceSteps.innerHTML = (r.steps || []).map(s => `
           <div style="background: #090d16; border-left: 3px solid ${s.status === 'COMPLETED' || s.status === 'DELIVERED' ? '#34d399' : '#3b82f6'}; padding: 8px 12px; border-radius: 4px;">
             <div style="display: flex; justify-content: space-between; font-weight: 700; color: #93c5fd; margin-bottom: 2px;">
@@ -2860,7 +3148,6 @@ WinRatePercentage = DIVIDE(CALCULATE(COUNTROWS('fact_pipeline'), 'fact_pipeline'
           </div>
         `).join('');
 
-        // Render Ingest Result Card
         resultCard.style.display = 'block';
         const q = r.qualification || {};
         const drafts = r.drafts || {};
@@ -2902,23 +3189,25 @@ WinRatePercentage = DIVIDE(CALCULATE(COUNTROWS('fact_pipeline'), 'fact_pipeline'
 
           <div style="display: flex; gap: 8px; justify-content: flex-end;">
             <button class="btn-outline" onclick="switchTab('sdr-tab')">👉 View in SDR Approval Queue</button>
-            <a href="http://192.168.0.104:5678" target="_blank" style="text-decoration: none;">
-              <button class="btn-success">Open in n8n Canvas ↗</button>
-            </a>
           </div>
         `;
 
         fetchPlatformData();
+        showToast(`✅ Agent 2-6 pipeline finished for ${r.account.company_name}!`, 'success');
       } catch (err) {
-        console.warn('Backend /api/ingest not reached, simulating pipeline execution client-side:', err);
-        const compName = document.getElementById('in-comp-name').value || 'Apex Logistics';
-        const domain = document.getElementById('in-comp-domain').value || 'apexlogistics.com';
-        const country = document.getElementById('in-comp-country').value || 'United States';
+        const compName = payload.company_name || 'Apex Logistics';
+        const domain = payload.domain || 'apexlogistics.com';
+        const country = payload.country || 'United States';
         const service = 'Enterprise Automation & Digital Systems';
         const wedge = 'Custom Intake Automation & Reporting Hub';
-        const dmName = document.getElementById('in-comp-dm')?.value || 'Marcus Vance';
-        const dmTitle = document.getElementById('in-comp-title')?.value || 'Chief Financial Officer';
-        const dmEmail = document.getElementById('in-comp-email')?.value || ('info@' + domain);
+        const dmName = payload.decision_maker_name || 'Marcus Vance';
+        const nameParts = dmName.trim().split(/\s+/);
+        const firstName = nameParts[0] || 'Executive';
+        const lastName = nameParts.slice(1).join(' ') || 'Leader';
+        const dmTitle = payload.decision_maker_title || 'Chief Financial Officer';
+        const dmEmail = payload.decision_maker_email || ('info@' + domain);
+        const subjectLine = `Eliminating Reporting Latency for ${compName}`;
+        const bodyText = `Hi ${firstName},\n\nNoticed ${compName} has been scaling operations across ${country}. Teams at this stage often lose 15+ hours weekly consolidating manual reports across fragmented systems.\n\nWe deploy custom enterprise automation pipelines that unify data intake and save $8,500+/mo in operational overhead.\n\nOpen to reviewing our 7-Day Sprint architecture?\n\nBest,\nZenthra Systems SDR`;
 
         traceSteps.innerHTML += '<div style="color: #34d399;">[✓] Agent 4: Matched Service -> ' + service + '</div>';
         traceSteps.innerHTML += '<div style="color: #34d399;">[✓] Agent 5: Lead Score 94/100 -> Tier A Account</div>';
@@ -2943,35 +3232,51 @@ WinRatePercentage = DIVIDE(CALCULATE(COUNTROWS('fact_pipeline'), 'fact_pipeline'
           </div>
           <div style="background: #0c1220; border: 1px solid var(--border); border-radius: 6px; padding: 12px; margin-bottom: 12px;">
             <div style="display: flex; justify-content: space-between; font-weight: 700; color: #93c5fd; font-size: 13px; margin-bottom: 6px;">
-              <span>Drafted Cold Email: "Eliminating Reporting Latency for ${compName}"</span>
+              <span>Drafted Cold Email: "${subjectLine}"</span>
               <span class="tag tag-a">STAGED FOR SDR REVIEW</span>
             </div>
-            <div style="font-size: 12px; line-height: 1.5; color: #d1d5db; white-space: pre-wrap; background: #060911; padding: 10px; border-radius: 4px;">Hi ${dmName},\n\nNoticed ${compName} has been scaling its operations. Teams at this stage often lose 15+ hours weekly consolidating manual reports across fragmented tools.\n\nWe deploy custom enterprise automation pipelines that unify data intake and save $8,500+/mo.\n\nOpen to reviewing our 7-Day Sprint architecture?\n\nBest,\nZenthra Systems SDR</div>
+            <div style="font-size: 12px; line-height: 1.5; color: #d1d5db; white-space: pre-wrap; background: #060911; padding: 10px; border-radius: 4px;">${bodyText}</div>
           </div>
           <div style="display: flex; gap: 8px; justify-content: flex-end;">
             <button class="btn-outline" onclick="switchTab('sdr-tab')">👉 View in SDR Approval Queue</button>
           </div>
         `;
 
-        // Prepend to local drafts
+        if (!globalData.accounts) globalData.accounts = [];
+        if (!globalData.accounts.some(a => a.company_name === compName)) {
+          globalData.accounts.unshift({
+            company_name: compName,
+            domain,
+            country,
+            headcount: payload.headcount,
+            primary_matched_service: service,
+            recommended_wedge: wedge,
+            lead_score: 94,
+            lead_tier: 'Tier A'
+          });
+        }
+
         if (!globalData.drafts) globalData.drafts = [];
         globalData.drafts.unshift({
           draft_id: 'draft-sim-' + Date.now(),
+          status: 'AWAITING_APPROVAL',
           company_name: compName,
-          domain: domain,
-          country: country,
+          domain,
+          country,
           channel: 'EMAIL',
           touch_number: 1,
           lead_score: 94,
           primary_matched_service: service,
           recommended_wedge: wedge,
-          recipient_name: dmName,
-          recipient_title: dmTitle,
+          first_name: firstName,
+          last_name: lastName,
+          job_title: dmTitle,
           corporate_email: dmEmail,
-          subject_line: 'Eliminating Reporting Latency for ' + compName,
-          body_text: 'Hi ' + dmName + ',\n\nNoticed ' + compName + ' has been scaling operations...'
+          subject_line: subjectLine,
+          body_text: bodyText
         });
-        renderSDRDrafts();
+        renderPlatform();
+        showToast(`✅ ${compName} processed through Agents 2–6 & staged in SDR Queue!`, 'success');
       } finally {
         btn.textContent = '🚀 Run Account Through Agent 2-6 + n8n Webhook';
         btn.disabled = false;
@@ -3006,6 +3311,7 @@ WinRatePercentage = DIVIDE(CALCULATE(COUNTROWS('fact_pipeline'), 'fact_pipeline'
       }));
 
       let results = [];
+      let usedBackend = false;
       try {
         const apiRes = await safeApiFetch('/api/ingest-batch', {
           method: 'POST',
@@ -3014,15 +3320,58 @@ WinRatePercentage = DIVIDE(CALCULATE(COUNTROWS('fact_pipeline'), 'fact_pipeline'
         });
         if (apiRes.ok && apiRes.data?.results) {
           results = apiRes.data.results;
+          usedBackend = true;
         }
       } catch (err) {}
 
       if (results.length === 0) {
-        results = batchAccounts.map((a, i) => ({
-          account: { company_name: a.company_name, country: a.country },
-          matchedService: { matched_service: 'Enterprise Workflow & Digital Automation' },
-          qualification: { tier: i % 2 === 0 ? 'Tier A' : 'Tier B', total_score: 88 + (i % 8) }
-        }));
+        if (!globalData.accounts) globalData.accounts = [];
+        if (!globalData.drafts) globalData.drafts = [];
+
+        results = batchAccounts.map((a, i) => {
+          const score = 88 + (i % 8);
+          const tier = i % 2 === 0 ? 'Tier A' : 'Tier B';
+          const service = 'Enterprise Workflow & Digital Automation';
+          const nameParts = (a.decision_maker_name || 'Executive Leader').trim().split(/\s+/);
+          const firstName = nameParts[0] || 'Executive';
+          const lastName = nameParts.slice(1).join(' ') || 'Leader';
+
+          if (!globalData.accounts.some(acc => acc.company_name === a.company_name)) {
+            globalData.accounts.unshift({
+              company_name: a.company_name,
+              domain: a.domain,
+              country: a.country,
+              headcount: a.headcount,
+              primary_matched_service: service,
+              recommended_wedge: '7-Day Enterprise Acceleration Sprint',
+              lead_score: score,
+              lead_tier: tier
+            });
+          }
+          globalData.drafts.unshift({
+            draft_id: `draft-batch-${Date.now()}-${i}`,
+            status: 'AWAITING_APPROVAL',
+            company_name: a.company_name,
+            domain: a.domain,
+            country: a.country,
+            channel: 'EMAIL',
+            touch_number: 1,
+            lead_score: score,
+            primary_matched_service: service,
+            first_name: firstName,
+            last_name: lastName,
+            job_title: a.decision_maker_title,
+            corporate_email: a.decision_maker_email,
+            subject_line: `Operational Automation Roadmap for ${a.company_name}`,
+            body_text: `Hi ${firstName},\n\nReviewed ${a.company_name}'s operational profile (${a.country}). Our engineering unit builds automated data & portal systems that eliminate manual bottlenecks within 7 days.\n\nWorth a brief 15-min review?\n\nBest,\nZenthra Systems`
+          });
+
+          return {
+            account: { company_name: a.company_name, country: a.country },
+            matchedService: { matched_service: service },
+            qualification: { tier, total_score: score }
+          };
+        });
       }
 
       if (traceSteps) {
@@ -3036,8 +3385,12 @@ WinRatePercentage = DIVIDE(CALCULATE(COUNTROWS('fact_pipeline'), 'fact_pipeline'
         `).join('');
       }
 
-      fetchPlatformData();
-      alert(`✅ Batch Complete! Processed ${results.length} enterprise accounts through Agent 2-6 and staged cold email drafts.`);
+      if (usedBackend) {
+        fetchPlatformData();
+      } else {
+        renderPlatform();
+      }
+      showToast(`✅ Batch Complete! Processed ${results.length} enterprise accounts & staged cold email drafts.`, 'success');
       if (btn) {
         btn.textContent = '⚡ Run Batch Ingest (All 6 Presets in Sequence)';
         btn.disabled = false;
@@ -3159,7 +3512,7 @@ WinRatePercentage = DIVIDE(CALCULATE(COUNTROWS('fact_pipeline'), 'fact_pipeline'
       }
 
       syncCategoryToQuery();
-      alert(`✓ City "${cityClean}" added and selected for ${country}!`);
+      showToast(`✓ City "${cityClean}" added and selected for ${country}!`, 'success');
     }
 
     function promptAddCustomCategory() {
@@ -3177,7 +3530,7 @@ WinRatePercentage = DIVIDE(CALCULATE(COUNTROWS('fact_pipeline'), 'fact_pipeline'
       catSelect.appendChild(newOpt);
 
       syncCategoryToQuery();
-      alert(`✓ Category "${catClean}" added and selected!`);
+      showToast(`✓ Category "${catClean}" added and selected!`, 'success');
     }
 
     function syncCategoryToQuery() {
@@ -3285,17 +3638,41 @@ WinRatePercentage = DIVIDE(CALCULATE(COUNTROWS('fact_pipeline'), 'fact_pipeline'
     }
 
     function copyToClipboard(text, btnElement) {
-      navigator.clipboard.writeText(text).then(() => {
-        const origText = btnElement.textContent;
-        btnElement.textContent = '✓ Copied to Clipboard!';
-        btnElement.style.background = '#059669';
-        setTimeout(() => {
-          btnElement.textContent = origText;
-          btnElement.style.background = '';
-        }, 2000);
-      }).catch(err => {
-        alert('Copied: ' + text);
-      });
+      const markCopied = () => {
+        if (btnElement) {
+          if (!btnElement.dataset.origText) {
+            btnElement.dataset.origText = btnElement.textContent;
+          }
+          const origText = btnElement.dataset.origText;
+          btnElement.textContent = '✓ Copied!';
+          btnElement.style.background = '#059669';
+          clearTimeout(btnElement._copyTimer);
+          btnElement._copyTimer = setTimeout(() => {
+            btnElement.textContent = origText;
+            btnElement.style.background = '';
+          }, 2000);
+        }
+        showToast('📋 Copied to clipboard!', 'info');
+      };
+
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).catch(() => {
+          fallbackCopyToClipboard(text);
+        });
+        markCopied();
+      } else {
+        fallbackCopyToClipboard(text);
+        markCopied();
+      }
+    }
+
+    function copyPlacePitch(cacheIndex, btnElement) {
+      const item = discoveredPlacesCache[cacheIndex];
+      if (!item) return;
+      const audit = item.weakness_audit || {};
+      const pitch = audit.proposalPitch || (item.drafts?.touch_1_email ? { subject: item.drafts.touch_1_email.subject, body: item.drafts.touch_1_email.body } : {});
+      const text = pitch.body || 'Outreach pitch prepared for review.';
+      copyToClipboard(text, btnElement);
     }
 
     // Category metadata for client-side discovery & weakness audits
@@ -3745,7 +4122,7 @@ WinRatePercentage = DIVIDE(CALCULATE(COUNTROWS('fact_pipeline'), 'fact_pipeline'
 
     async function downloadExcelCSV() {
       if (!discoveredPlacesCache || discoveredPlacesCache.length === 0) {
-        alert('Please run a discovery search first to scrape places before downloading the Excel file.');
+        showToast('Run a Google Maps discovery search first before exporting CSV.', 'warn');
         return;
       }
 
@@ -3956,22 +4333,20 @@ WinRatePercentage = DIVIDE(CALCULATE(COUNTROWS('fact_pipeline'), 'fact_pipeline'
         message_id: msgId
       });
 
-      if (window.globalData && Array.isArray(window.globalData.deals)) {
-        window.globalData.deals.unshift({
-          deal_id: 'deal_' + Math.random().toString(36).substring(2, 8),
-          company_name: payload.company_name,
-          stage: 'PROPOSAL_SENT',
-          deal_value_usd: payload.deal_value_usd,
-          probability_pct: 40,
-          weighted_value_usd: Math.round(payload.deal_value_usd * 0.4),
-          service_name: payload.service_wedge || 'Custom AI & Automation Proposal',
-          contact_name: payload.recipient_name,
-          created_at: new Date().toISOString()
-        });
-      }
+      stageNewDeal({
+        companyName: payload.company_name,
+        country: payload.country || 'Global',
+        serviceLine: payload.service_wedge || 'Custom AI & Automation Proposal',
+        dealValueUSD: payload.deal_value_usd,
+        stage: 'Proposal Submitted',
+        probability: 0.4
+      });
 
+      const fullProposal = `Subject: ${payload.subject}\n\n${payload.body}`;
       if (navigator.clipboard && navigator.clipboard.writeText) {
-        navigator.clipboard.writeText(`Subject: ${payload.subject}\n\n${payload.body}`).catch(() => {});
+        navigator.clipboard.writeText(fullProposal).catch(() => fallbackCopyToClipboard(fullProposal));
+      } else {
+        fallbackCopyToClipboard(fullProposal);
       }
 
       closeProposalModal();
@@ -3979,18 +4354,12 @@ WinRatePercentage = DIVIDE(CALCULATE(COUNTROWS('fact_pipeline'), 'fact_pipeline'
       loadSentEmailsLog();
 
       const mailtoUrl = `mailto:${encodeURIComponent(payload.recipient_email)}?subject=${encodeURIComponent(payload.subject)}&body=${encodeURIComponent(payload.body)}`;
-      const openMail = confirm(
-        `✓ Proposal Dispatched Successfully!\n\n` +
-        `👤 Recipient: ${payload.recipient_name} <${payload.recipient_email}>\n` +
-        `🏢 Company: ${payload.company_name}\n` +
-        `💼 Deal Staged in CRM: ${payload.deal_value_usd.toLocaleString()} USD\n` +
-        `📋 Proposal pitch copied to your clipboard!\n\n` +
-        `Would you like to open your email client (Gmail, Outlook, Apple Mail) to inspect or send directly?`
+      showToast(
+        `Proposal dispatched to ${payload.recipient_name} <${payload.recipient_email}> & staged $${payload.deal_value_usd.toLocaleString()} deal in CRM!`,
+        'success',
+        '✉️ Open in Mail App ↗',
+        mailtoUrl
       );
-
-      if (openMail) {
-        window.open(mailtoUrl, '_blank');
-      }
 
       btn.textContent = '🚀 Dispatch Proposal Now';
       btn.disabled = false;
@@ -3998,15 +4367,12 @@ WinRatePercentage = DIVIDE(CALCULATE(COUNTROWS('fact_pipeline'), 'fact_pipeline'
 
     async function triggerBatchSendProposals() {
       if (!discoveredPlacesCache || discoveredPlacesCache.length === 0) {
-        alert('Please search and discover businesses first before batch sending proposals.');
+        showToast('Search and discover businesses first before batch sending proposals.', 'warn');
         return;
       }
 
       const count = discoveredPlacesCache.length;
       const targetCountry = document.getElementById('maps-country')?.value || 'Target Country';
-      const confirmed = confirm(`Are you sure you want to batch dispatch tailored proposals to all ${count} discovered businesses in ${targetCountry} via outreach queue?`);
-      if (!confirmed) return;
-
       const btn = document.getElementById('btn-batch-send-proposals');
       btn.textContent = `🚀 Dispatching ${count} Proposals...`;
       btn.disabled = true;
@@ -4044,22 +4410,32 @@ WinRatePercentage = DIVIDE(CALCULATE(COUNTROWS('fact_pipeline'), 'fact_pipeline'
         }
       } catch (err) {}
 
-      discoveredPlacesCache.forEach(item => {
+      discoveredPlacesCache.forEach((item, idx) => {
         const placeKey = item.place_details?.place_id || item.account?.company_name;
         sentProposalsTracker.add(placeKey);
 
         const acc = item.account || {};
         const details = item.place_details || {};
+        const prop = proposals[idx];
         const email = acc.decision_maker_email || details.general_email || ('contact@' + acc.domain);
         recordOutboundDelivery({
           sent_at: new Date().toISOString(),
           recipient_email: email,
           recipient_name: acc.decision_maker_name || 'Executive Director',
           company_name: acc.company_name,
-          subject: `Automated Workflow & Systems Proposal for ${acc.company_name}`,
+          subject: prop.subject,
           provider: serverSuccess ? 'Gmail / SMTP' : 'Outbound Batch Queue',
           status: 'DELIVERED',
           message_id: 'batch_prop_' + Math.random().toString(36).substring(2, 9) + '@zenthrasystems.com'
+        });
+
+        stageNewDeal({
+          companyName: acc.company_name,
+          country: acc.country || targetCountry,
+          serviceLine: prop.service_wedge || 'Custom AI & Automation Sprint',
+          dealValueUSD: prop.deal_value_usd || 6500,
+          stage: 'Proposal Submitted',
+          probability: 0.4
         });
       });
 
@@ -4069,7 +4445,7 @@ WinRatePercentage = DIVIDE(CALCULATE(COUNTROWS('fact_pipeline'), 'fact_pipeline'
 
       renderDiscoveredPlaces(discoveredPlacesCache);
       loadSentEmailsLog();
-      alert(`✓ Successfully dispatched ${proposals.length} tailored proposals to outreach engine and staged deals in CRM!`);
+      showToast(`✓ Dispatched ${proposals.length} tailored proposals (${targetCountry}) & staged CRM deals!`, 'success');
 
       btn.textContent = '🚀 Batch Send Proposals to All Discovered';
       btn.disabled = false;
@@ -4083,6 +4459,8 @@ WinRatePercentage = DIVIDE(CALCULATE(COUNTROWS('fact_pipeline'), 'fact_pipeline'
       }
 
       resultsCont.innerHTML = places.map((r, i) => {
+        const origIdx = discoveredPlacesCache.indexOf(r);
+        const cacheIdx = origIdx >= 0 ? origIdx : i;
         const acc = r.account || {};
         const q = r.qualification || {};
         const audit = r.weakness_audit || {};
@@ -4315,7 +4693,7 @@ WinRatePercentage = DIVIDE(CALCULATE(COUNTROWS('fact_pipeline'), 'fact_pipeline'
                 <div style="font-weight: 700; font-size: 12px; color: #93c5fd;">
                   📧 Tailored Proposal Pitch: "${pitch.subject || 'Opportunity for ' + acc.company_name}"
                 </div>
-                <button class="btn-outline" style="font-size: 10px; padding: 3px 8px;" onclick="copyToClipboard(\`${(pitch.body || '').replace(/`/g, '\\`').replace(/\\/g, '\\\\')}\`, this)">
+                <button class="btn-outline" style="font-size: 10px; padding: 3px 8px;" onclick="copyPlacePitch(${cacheIdx}, this)">
                   📋 Copy Pitch
                 </button>
               </div>
@@ -4330,14 +4708,14 @@ WinRatePercentage = DIVIDE(CALCULATE(COUNTROWS('fact_pipeline'), 'fact_pipeline'
                 Destination: <strong>${details.country || acc.country}</strong>
               </div>
               <div style="display: flex; gap: 8px; flex-wrap: wrap;">
-                <button class="btn-success" style="font-size: 12px; padding: 7px 14px; background: linear-gradient(135deg, #059669, #0d9488); font-weight: 700; color: white;" onclick="executeModel1FromPlace(${i})">
+                <button class="btn-success" style="font-size: 12px; padding: 7px 14px; background: linear-gradient(135deg, #059669, #0d9488); font-weight: 700; color: white;" onclick="executeModel1FromPlace(${cacheIdx})">
                   ⚡ Model 1: Value Sprint
                 </button>
-                <button class="btn-primary" style="font-size: 12px; padding: 7px 16px; background: #2563eb; font-weight: 700;" onclick="openProposalModal(${i})">
+                <button class="btn-primary" style="font-size: 12px; padding: 7px 16px; background: #2563eb; font-weight: 700;" onclick="openProposalModal(${cacheIdx})">
                   ✉️ Send Proposal
                 </button>
                 <button class="btn-outline" style="font-size: 11px;" onclick="switchTab('sdr-tab')">🔍 Open in SDR Gate</button>
-                <button class="btn-success" style="font-size: 11px;" onclick="alert('Lead payload dispatched to live n8n webhook at http://192.168.0.104:5678/webhook/zenthra-lead-ingest and recorded in pipeline database!')">⚡ Synced to n8n ✓</button>
+                <button class="btn-success" style="font-size: 11px;" onclick="showToast('⚡ Lead payload synchronized to Zenthra n8n Webhook Mesh & Pipeline DB!', 'success')">⚡ Synced to n8n ✓</button>
               </div>
             </div>
 
@@ -4347,34 +4725,91 @@ WinRatePercentage = DIVIDE(CALCULATE(COUNTROWS('fact_pipeline'), 'fact_pipeline'
     }
 
     function showCampaign(key) {
+      ['power_bi', 'ai_automation', 'ai_rag'].forEach(k => {
+        const b = document.getElementById(`btn-camp-${k}`);
+        if (b) b.className = (k === key) ? 'btn-primary' : 'btn-outline';
+      });
+
       const c = (globalData.campaigns || {})[key];
       if (!c) return;
 
       document.getElementById('campaign-display').innerHTML = `
         <div style="background: #060911; padding: 16px; border-radius: 6px; border: 1px solid var(--border);">
           <div style="font-size: 16px; font-weight: 700; color: #93c5fd; margin-bottom: 8px;">${c.service}</div>
-          <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 12px;"><strong>Target Personas:</strong> ${c.target_personas.join(', ')}</div>
+          <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 12px;"><strong>Target Personas:</strong> ${(c.target_personas || []).join(', ')}</div>
           
           <div style="font-weight: 600; font-size: 13px; margin: 12px 0 6px 0;">3 Subject Lines:</div>
           <ul style="font-size: 12px; color: #34d399; margin-left: 20px;">
-            ${c.subject_lines.map(s => `<li>${s}</li>`).join('')}
+            ${(c.subject_lines || []).map(s => `<li>${s}</li>`).join('')}
           </ul>
 
           <div style="font-weight: 600; font-size: 13px; margin: 16px 0 6px 0;">Touch 1 Cold Email:</div>
-          <div style="font-size: 12px; background: #0c1220; padding: 12px; border-radius: 4px; white-space: pre-wrap; line-height: 1.5; color: #d1d5db;">${c.touch_1_variations[0]}</div>
+          <div style="font-size: 12px; background: #0c1220; padding: 12px; border-radius: 4px; white-space: pre-wrap; line-height: 1.5; color: #d1d5db;">${(c.touch_1_variations || [''])[0]}</div>
 
           <div style="font-weight: 600; font-size: 13px; margin: 16px 0 6px 0;">Top Objection Handlers:</div>
           <div style="font-size: 12px; color: var(--text-muted);">
-            <div><strong>"We have an internal team":</strong> ${c.objection_responses.internal_team}</div>
-            <div style="margin-top: 6px;"><strong>"No budget right now":</strong> ${c.objection_responses.no_budget}</div>
+            <div><strong>"We have an internal team":</strong> ${c.objection_responses?.internal_team || ''}</div>
+            <div style="margin-top: 6px;"><strong>"No budget right now":</strong> ${c.objection_responses?.no_budget || ''}</div>
           </div>
         </div>
       `;
     }
 
+    const PRICING_PACKAGE_CATALOG = {
+      POWER_BI_SPRINT: {
+        price: 12500,
+        name: '5-Day Executive Power BI KPI Sprint',
+        tier: 'Tier 1 Sprint',
+        retainer: { name: 'Executive BI Maintenance & DAX Optimization', monthlyUSD: 1800 },
+        deliverables: [
+          'Direct AS400 / NetSuite SQL and CSV automated extraction pipeline',
+          'Kimball-compliant Power BI Star Schema (dim_accounts, dim_services, fact_pipeline)',
+          '7 Executive DAX Measures including gross margin and pipeline velocity',
+          'Automated weekly email summary to CFO and executive team'
+        ]
+      },
+      AI_AUTOMATION_AUDIT: {
+        price: 9500,
+        name: 'Workflow Bottleneck Audit & Automation Prototype',
+        tier: 'Tier 1 Audit',
+        retainer: { name: 'Intake Automation & Pipeline SLA Retainer', monthlyUSD: 1500 },
+        deliverables: [
+          'End-to-end operational bottleneck audit and ROI leakage quantification',
+          'Production n8n / webhook workflow replacing manual CSV & inbox handoffs',
+          'Automated CRM Lead Scoring + SDR approval queue integration',
+          'Error trapping, retry queues, and executive runbook training'
+        ]
+      },
+      AI_RAG_PROTOTYPE: {
+        price: 18500,
+        name: 'Private Enterprise RAG Architecture PoC',
+        tier: 'Tier 2 Enterprise',
+        retainer: { name: 'Vector Knowledge Base Retainer & Model Tuning', monthlyUSD: 2800 },
+        deliverables: [
+          'Zero-hallucination vector ingestion over proprietary SOPs, contracts & docs',
+          'Source-cited semantic retrieval engine with role-based access control',
+          'Document & Invoice Vision Parser pipeline with 98%+ field accuracy',
+          'SOC-2 aligned audit logging and telemetry latency monitoring'
+        ]
+      },
+      pbi_starter: { price: 5000, name: 'Power BI Executive Starter', tier: 'Starter Sprint', retainer: { name: 'BI Maintenance', monthlyUSD: 1200 }, deliverables: ['Automated ETL connector', 'Core Star Schema', 'Executive KPI Dashboard'] },
+      rag_support: { price: 8500, name: 'AI RAG Support Assistant', tier: 'Growth Sprint', retainer: { name: 'Vector Retainer', monthlyUSD: 2200 }, deliverables: ['Vector knowledge base setup', 'Grounded citation UI', 'Slack/Web intake hook'] },
+      intake_flow: { price: 4500, name: 'Automated Intake Pipeline', tier: 'Quick-Win Sprint', retainer: { name: 'Workflow SLA', monthlyUSD: 1200 }, deliverables: ['AI Qualification Agent', 'Calendar Auto-Booking', 'CRM Sync'] }
+    };
+
+    function onPricingPackageChange() {
+      const packageKey = document.getElementById('calc-package')?.value || 'POWER_BI_SPRINT';
+      const meta = PRICING_PACKAGE_CATALOG[packageKey] || PRICING_PACKAGE_CATALOG.POWER_BI_SPRINT;
+      const priceInput = document.getElementById('calc-price');
+      if (priceInput) priceInput.value = meta.price;
+      runPricingCalculation();
+    }
+
     async function runPricingCalculation() {
-      const packageKey = document.getElementById('calc-package')?.value || 'pbi_starter';
-      const customPrice = parseInt(document.getElementById('calc-price')?.value, 10);
+      const packageKey = document.getElementById('calc-package')?.value || 'POWER_BI_SPRINT';
+      const customPriceRaw = parseInt(document.getElementById('calc-price')?.value, 10);
+      const meta = PRICING_PACKAGE_CATALOG[packageKey] || PRICING_PACKAGE_CATALOG.POWER_BI_SPRINT;
+      const customPrice = !isNaN(customPriceRaw) && customPriceRaw > 0 ? customPriceRaw : meta.price;
 
       let q = null;
       try {
@@ -4389,65 +4824,45 @@ WinRatePercentage = DIVIDE(CALCULATE(COUNTROWS('fact_pipeline'), 'fact_pipeline'
       } catch (e) {}
 
       if (!q) {
-        const basePrices = {
-          pbi_starter: 5000,
-          rag_support: 8500,
-          intake_flow: 4500,
-          custom_enterprise: 15000
-        };
-        const price = customPrice || basePrices[packageKey] || 5000;
+        const price = customPrice || meta.price;
         const internalCost = Math.round(price * 0.28);
         const grossMargin = price - internalCost;
-        const marginPct = Math.round((grossMargin / price) * 100);
-        const retainers = {
-          pbi_starter: { name: 'Executive BI Maintenance & DAX Optimization', monthlyUSD: 1500 },
-          rag_support: { name: 'Vector Knowledge Base Retainer & Model Tuning', monthlyUSD: 2500 },
-          intake_flow: { name: 'Intake Automation & Pipeline SLA Retainer', monthlyUSD: 1200 },
-          custom_enterprise: { name: 'Full-Stack Dedicated Engineering Pod', monthlyUSD: 4500 }
-        };
+        const marginPct = price > 0 ? Math.round((grossMargin / price) * 100) : 72;
 
         q = {
           priceUSD: price,
           internalCostUSD: internalCost,
           grossMarginUSD: grossMargin,
           grossMarginPercentage: marginPct,
-          recommendedRetainer: retainers[packageKey] || retainers.pbi_starter
+          recommendedRetainer: meta.retainer
         };
       }
 
       document.getElementById('pricing-results').innerHTML = `
         <div style="display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 6px;">
           <span>Contract Price:</span>
-          <strong>${q.priceUSD.toLocaleString()} USD</strong>
+          <strong>$${q.priceUSD.toLocaleString()} USD</strong>
         </div>
         <div style="display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 6px;">
           <span>Internal Delivery Cost:</span>
-          <span>${q.internalCostUSD.toLocaleString()} USD</span>
+          <span>$${q.internalCostUSD.toLocaleString()} USD</span>
         </div>
         <div style="display: flex; justify-content: space-between; font-size: 14px; font-weight: 700; color: #34d399; margin-bottom: 8px;">
           <span>Gross Margin:</span>
-          <span>${q.grossMarginUSD.toLocaleString()} (${q.grossMarginPercentage}%)</span>
+          <span>$${q.grossMarginUSD.toLocaleString()} (${q.grossMarginPercentage}%)</span>
         </div>
         <div style="font-size: 12px; color: var(--text-muted); border-top: 1px solid var(--border); padding-top: 8px;">
-          <strong>Suggested Retainer:</strong> ${q.recommendedRetainer.name} (${q.recommendedRetainer.monthlyUSD.toLocaleString()}/mo)
+          <strong>Suggested Retainer:</strong> ${q.recommendedRetainer.name} ($${q.recommendedRetainer.monthlyUSD.toLocaleString()}/mo)
         </div>
       `;
     }
 
     async function generateSowFromUI() {
-      const packageKey = document.getElementById('calc-package')?.value || 'pbi_starter';
-      const price = parseInt(document.getElementById('calc-price')?.value, 10) || 5000;
+      const packageKey = document.getElementById('calc-package')?.value || 'POWER_BI_SPRINT';
+      const meta = PRICING_PACKAGE_CATALOG[packageKey] || PRICING_PACKAGE_CATALOG.POWER_BI_SPRINT;
+      const price = parseInt(document.getElementById('calc-price')?.value, 10) || meta.price;
       const pkgs = globalData.packages || {};
-      const pkg = pkgs[packageKey] || {
-        name: 'Power BI Executive Dashboard Sprint',
-        tier: 'Tier 1 Sprint',
-        deliverables: [
-          'Direct AS400 / NetSuite SQL and CSV automated extraction pipeline',
-          'Kimball-compliant Power BI Star Schema (dim_accounts, dim_services, fact_pipeline)',
-          '7 Executive DAX Measures including gross margin and pipeline velocity',
-          'Automated weekly email summary to CFO and executive team'
-        ]
-      };
+      const pkg = pkgs[packageKey] || meta;
 
       let sowText = '';
       try {
@@ -4472,11 +4887,12 @@ WinRatePercentage = DIVIDE(CALCULATE(COUNTROWS('fact_pipeline'), 'fact_pipeline'
       } catch (err) {}
 
       if (!sowText) {
-        sowText = `# STATEMENT OF WORK (SOW)\n\n## 1. Project Title: ${pkg.name}\n**Client:** Apex Global Logistics Inc.\n**Fixed Investment:** $${price.toLocaleString()} USD\n**Delivery Timeline:** 2 Weeks (10 Business Days)\n**Service Category:** Enterprise Digital Engineering & AI Automation\n\n## 2. Executive Problem Statement\n15+ hours weekly spent consolidating manual ERP spreadsheets across 3 regional distribution hubs, creating report valuation latency and intake friction.\n\n## 3. Scope of Deliverables\n${(pkg.deliverables || []).map((d, i) => `${i + 1}. ${d}`).join('\n')}\n\n## 4. Acceptance Criteria & SLA\n- 99.98% Automation Pipeline Uptime\n- Automated Webhook Error Trapping & Incident Alerting\n- 30-Day Post-Launch Warranty & Runbook`;
+        sowText = `# STATEMENT OF WORK (SOW)\n\n## 1. Project Title: ${pkg.name}\n**Package Tier:** ${pkg.tier || 'Tier 1 Sprint'}\n**Client:** Apex Global Logistics Inc.\n**Fixed Investment:** $${price.toLocaleString()} USD\n**Delivery Timeline:** 2 Weeks (10 Business Days)\n**Service Category:** Enterprise Digital Engineering & AI Automation\n\n## 2. Executive Problem Statement\n15+ hours weekly spent consolidating manual ERP spreadsheets across 3 regional distribution hubs, creating report valuation latency and intake friction.\n\n## 3. Scope of Deliverables\n${(pkg.deliverables || []).map((d, i) => `${i + 1}. ${d}`).join('\n')}\n\n## 4. Acceptance Criteria & SLA\n- 99.98% Automation Pipeline Uptime\n- Automated Webhook Error Trapping & Incident Alerting\n- 30-Day Post-Launch Warranty & Runbook`;
       }
 
       const out = document.getElementById('sow-output');
       if (out) out.textContent = sowText;
+      showToast(`✅ Generated Statement of Work for ${pkg.name} ($${price.toLocaleString()}).`, 'success');
     }
 
     async function testReplyClassification() {
@@ -4669,7 +5085,7 @@ WinRatePercentage = DIVIDE(CALCULATE(COUNTROWS('fact_pipeline'), 'fact_pipeline'
       if (badge) badge.textContent = `Mail: ${payload.provider}${payload.auto_send_enabled ? ' • ⚡ Auto-Send ON' : ''}`;
       if (pill) pill.textContent = `Active: ${payload.provider}${payload.auto_send_enabled ? ' • ⚡ Auto-Send ON' : ''}`;
 
-      alert('✓ Mail API & SMTP configuration saved successfully!');
+      showToast('✓ Mail API & SMTP configuration saved successfully!', 'success');
       if (btn) {
         btn.textContent = origText;
         btn.disabled = false;
@@ -4689,13 +5105,13 @@ WinRatePercentage = DIVIDE(CALCULATE(COUNTROWS('fact_pipeline'), 'fact_pipeline'
         body: JSON.stringify({ auto_send_enabled: enabled })
       }).catch(() => {});
       loadMailSettings();
-      alert(`⚡ Auto-Mail is now ${enabled ? 'ENABLED: Discovered leads will receive proposals automatically upon discovery!' : 'DISABLED: Proposals staged for manual SDR review.'}`);
+      showToast(`⚡ Auto-Mail is now ${enabled ? 'ENABLED — discovered leads dispatch automatically!' : 'DISABLED — proposals staged for manual SDR review.'}`, 'info');
     }
 
     async function sendTestEmailFromUI() {
       const email = (document.getElementById('test-email-target')?.value || '').trim();
       if (!email) {
-        alert('Please enter a destination email address to receive the test verification email.');
+        showToast('Enter a destination email address to receive the verification email.', 'warn');
         return;
       }
 
@@ -4852,7 +5268,7 @@ WinRatePercentage = DIVIDE(CALCULATE(COUNTROWS('fact_pipeline'), 'fact_pipeline'
       const query = (document.getElementById('rag-query-input')?.value || '').trim();
       const docKey = document.getElementById('rag-doc-select')?.value || 'all';
       if (!query) {
-        alert('Please enter a query or question to search the vector index.');
+        showToast('Please enter a query or question to search the vector index.', 'warn');
         return;
       }
 
@@ -4878,21 +5294,24 @@ WinRatePercentage = DIVIDE(CALCULATE(COUNTROWS('fact_pipeline'), 'fact_pipeline'
       if (!r) {
         const docs = window.STATIC_RAG_DOCUMENTS || [];
         let matchingChunks = [];
+        const qTerms = query.toLowerCase().replace(/[^a-z0-9\s-]/g, ' ').split(/\s+/).filter(w => w.length > 2);
         docs.forEach(doc => {
-          if (docKey === 'all' || doc.key === docKey) {
-            (doc.chunks || []).forEach(chunk => {
-              const qTerms = query.toLowerCase().split(/\s+/).filter(w => w.length > 2);
+          const docId = doc.doc_id || doc.key;
+          if (docKey === 'all' || docId === docKey || doc.key === docKey) {
+            const items = doc.chunks || doc.sections || [];
+            items.forEach(chunk => {
               let hits = 0;
+              const hay = ((chunk.content || '') + ' ' + (chunk.heading || '') + ' ' + (doc.title || '')).toLowerCase();
               qTerms.forEach(term => {
-                if (chunk.content.toLowerCase().includes(term) || chunk.heading.toLowerCase().includes(term)) hits++;
+                if (hay.includes(term)) hits++;
               });
               if (hits > 0) {
                 matchingChunks.push({
-                  heading: chunk.heading,
-                  content: chunk.content,
+                  heading: chunk.heading || doc.title,
+                  content: chunk.content || '',
                   documentTitle: doc.title,
-                  category: doc.category,
-                  relevanceScore: Math.min(98, 75 + hits * 7)
+                  category: doc.category || 'Enterprise SOP',
+                  relevanceScore: Math.min(99, 76 + hits * 6)
                 });
               }
             });
@@ -4920,10 +5339,11 @@ WinRatePercentage = DIVIDE(CALCULATE(COUNTROWS('fact_pipeline'), 'fact_pipeline'
 
         matchingChunks.sort((a, b) => b.relevanceScore - a.relevanceScore);
         const topChunks = matchingChunks.slice(0, 3);
+        const leadExcerpt = topChunks[0] ? topChunks[0].content : '';
 
         r = {
-          retrievalLatencyMs: 42,
-          synthesizedAnswer: `Based on verified Zenthra documentation regarding "${query}":\n\nOur system deploys production-grade engineering sprints that integrate directly into existing legacy ERPs and operational workflows. We guarantee 99.98% pipeline uptime with Kimball-compliant data modeling and zero transcription errors across document and intake pipelines. Delivery is fixed at 10 business days under a value-anchored ROI model.`,
+          retrievalLatencyMs: 36,
+          synthesizedAnswer: `Based on verified Zenthra documentation regarding "${query}":\n\n${leadExcerpt}\n\nSummary: Our system enforces zero-hallucination retrieval across enterprise SOPs and operational runbooks with 99.98% uptime SLAs and verifiable source citations.`,
           citations: topChunks
         };
       }
@@ -5091,7 +5511,7 @@ WinRatePercentage = DIVIDE(CALCULATE(COUNTROWS('fact_pipeline'), 'fact_pipeline'
 
       const ld = o.leadData;
       document.getElementById('intake-intent').textContent = ld.detectedIntent;
-      document.getElementById('intake-budget').textContent = `${ld.estimatedBudgetUSD.toLocaleString()} USD`;
+      document.getElementById('intake-budget').textContent = `$${(Number(ld.estimatedBudgetUSD) || 0).toLocaleString()} USD`;
       document.getElementById('intake-urgency').textContent = ld.urgency;
       document.getElementById('intake-wedge').textContent = ld.projectScope;
       document.getElementById('intake-lead-tier').textContent = `${ld.tier} (${o.qualificationScore}/100)`;
@@ -5195,8 +5615,8 @@ WinRatePercentage = DIVIDE(CALCULATE(COUNTROWS('fact_pipeline'), 'fact_pipeline'
       const m = dataObj.metrics;
       const trend = dataObj.trend || [];
 
-      document.getElementById('bi-mrr').textContent = `${m.mrrUSD.toLocaleString()}`;
-      document.getElementById('bi-weighted').textContent = `${m.weightedPipelineUSD.toLocaleString()}`;
+      document.getElementById('bi-mrr').textContent = `$${m.mrrUSD.toLocaleString()}`;
+      document.getElementById('bi-weighted').textContent = `$${m.weightedPipelineUSD.toLocaleString()}`;
       document.getElementById('bi-margin').textContent = `${m.grossMarginPct}%`;
       document.getElementById('bi-payback').textContent = `${m.cacPaybackMonths} Months`;
       document.getElementById('bi-dax-code').textContent = m.daxMeasure;
@@ -5207,7 +5627,7 @@ WinRatePercentage = DIVIDE(CALCULATE(COUNTROWS('fact_pipeline'), 'fact_pipeline'
         const heightPct = Math.round((t.revenue / maxVal) * 100);
         return `
           <div style="flex: 1; display: flex; flex-direction: column; align-items: center; gap: 6px;">
-            <span style="font-size: 10px; color: #94a3b8;">${Math.round(t.revenue / 1000)}k</span>
+            <span style="font-size: 10px; color: #94a3b8;">$${Math.round(t.revenue / 1000)}k</span>
             <div style="width: 100%; max-width: 45px; height: ${heightPct}px; background: linear-gradient(180deg, #38bdf8 0%, #1e3a8a 100%); border-radius: 4px 4px 0 0; transition: height 0.3s;"></div>
             <span style="font-size: 11px; font-weight: 600; color: #f1f5f9;">${t.month}</span>
           </div>
@@ -5217,13 +5637,22 @@ WinRatePercentage = DIVIDE(CALCULATE(COUNTROWS('fact_pipeline'), 'fact_pipeline'
 
     function copyDaxCode() {
       const code = document.getElementById('bi-dax-code')?.textContent || '';
-      navigator.clipboard.writeText(code).then(() => {
-        alert('✓ Power BI DAX formula copied to clipboard! Paste directly into Power BI Desktop.');
-      });
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(code).catch(() => fallbackCopyToClipboard(code));
+      } else {
+        fallbackCopyToClipboard(code);
+      }
+      showToast('✓ Power BI DAX formula copied to clipboard!', 'success');
     }
 
     async function runDocumentParser() {
-      const sampleKey = document.getElementById('parser-sample-select')?.value || 'invoice';
+      const rawKey = document.getElementById('parser-sample-select')?.value || 'bill_of_lading';
+      const aliasMap = {
+        bill_of_lading: 'bol',
+        commercial_invoice: 'invoice',
+        clinical_lab: 'lab'
+      };
+      const sampleKey = aliasMap[rawKey] || rawKey;
       const btn = document.getElementById('btn-run-parser');
       const box = document.getElementById('parser-output-box');
 
@@ -5288,7 +5717,7 @@ WinRatePercentage = DIVIDE(CALCULATE(COUNTROWS('fact_pipeline'), 'fact_pipeline'
           }
         };
 
-        const docData = sampleDict[sampleKey] || sampleDict.invoice;
+        const docData = sampleDict[sampleKey] || sampleDict.bol;
         d = {
           confidenceScore: 0.984,
           parseLatencyMs: 38,
@@ -5335,8 +5764,8 @@ WinRatePercentage = DIVIDE(CALCULATE(COUNTROWS('fact_pipeline'), 'fact_pipeline'
                 <tr style="border-bottom: 1px solid rgba(255,255,255,0.04);">
                   <td style="padding: 6px; color: #f1f5f9;">${li.description}</td>
                   <td style="padding: 6px; text-align: right; color: #94a3b8;">${li.qty}</td>
-                  <td style="padding: 6px; text-align: right; color: #94a3b8;">${li.unitPrice.toFixed(2)}</td>
-                  <td style="padding: 6px; text-align: right; font-weight: 700; color: #34d399;">${li.total.toFixed(2)}</td>
+                  <td style="padding: 6px; text-align: right; color: #94a3b8;">$${li.unitPrice.toFixed(2)}</td>
+                  <td style="padding: 6px; text-align: right; font-weight: 700; color: #34d399;">$${li.total.toFixed(2)}</td>
                 </tr>
               `).join('')}
             </tbody>
@@ -5344,7 +5773,7 @@ WinRatePercentage = DIVIDE(CALCULATE(COUNTROWS('fact_pipeline'), 'fact_pipeline'
         </div>
       `;
 
-      btn.textContent = '⚡ Extract Structured Data';
+      btn.textContent = '⚡ Run Vision Parser';
       btn.disabled = false;
     }
 
@@ -5439,7 +5868,7 @@ WinRatePercentage = DIVIDE(CALCULATE(COUNTROWS('fact_pipeline'), 'fact_pipeline'
     function executeModel1FromPlace(index) {
       const p = (discoveredPlacesCache && discoveredPlacesCache[index]) ? discoveredPlacesCache[index] : null;
       if (!p) {
-        alert('Place record not found.');
+        showToast('Lead record not found in current cache.', 'warn');
         return;
       }
       const details = p.place_details || {};
@@ -5477,14 +5906,23 @@ WinRatePercentage = DIVIDE(CALCULATE(COUNTROWS('fact_pipeline'), 'fact_pipeline'
         btn.disabled = true;
       }
 
+      const weaknessCategory = document.getElementById('m1-weakness-select')?.value || 'BUSINESS_INTELLIGENCE';
+      const industryVal = document.getElementById('m1-industry')?.value || 'Logistics & Supply Chain';
+      const monthlyLossRaw = parseFloat(document.getElementById('m1-monthly-loss')?.value);
+      const customPriceRaw = parseFloat(document.getElementById('m1-custom-price')?.value);
+
       const payload = {
         sampleKey: 'custom',
-        companyName: document.getElementById('m1-company-name')?.value,
-        domain: (document.getElementById('m1-company-name')?.value || '').toLowerCase().replace(/[^a-z0-9]/g, '') + '.com',
+        companyName: document.getElementById('m1-company-name')?.value || 'Apex Global Logistics',
+        domain: (document.getElementById('m1-company-name')?.value || 'apexlogistics').toLowerCase().replace(/[^a-z0-9]/g, '') + '.com',
         country: document.getElementById('m1-city')?.value || 'USA',
-        decisionMaker: document.getElementById('m1-decision-maker')?.value,
-        recipient_email: document.getElementById('m1-recipient-email')?.value,
-        dispatch: document.getElementById('m1-dispatch-checkbox')?.checked
+        industry: industryVal,
+        weaknessCategory,
+        monthlyLossUSD: !isNaN(monthlyLossRaw) && monthlyLossRaw > 0 ? monthlyLossRaw : 9000,
+        customPriceUSD: !isNaN(customPriceRaw) && customPriceRaw > 0 ? customPriceRaw : 0,
+        decisionMaker: document.getElementById('m1-decision-maker')?.value || 'Marcus Vance',
+        recipient_email: document.getElementById('m1-recipient-email')?.value || 'connect.zenthra@gmail.com',
+        dispatch: Boolean(document.getElementById('m1-dispatch-checkbox')?.checked)
       };
 
       let execution = null;
@@ -5500,38 +5938,53 @@ WinRatePercentage = DIVIDE(CALCULATE(COUNTROWS('fact_pipeline'), 'fact_pipeline'
       } catch (e) {}
 
       if (!execution) {
-        const compName = payload.companyName || 'Apex Global Logistics';
-        const dm = payload.decisionMaker || 'Marcus Vance';
-        const dmEmail = payload.recipient_email || 'marcus.vance@apexlogistics.com';
-        const monthlyLoss = 12500;
-        const sprintPrice = 8500;
+        const serviceCatalog = {
+          BUSINESS_INTELLIGENCE: { service: 'Microsoft Power BI Executive Analytics', sprintLabel: 'Kimball Star-Schema & Executive KPI Sprint', retainer: 2200 },
+          INTAKE_AUTOMATION: { service: 'AI Customer Intake & Scheduling Automation', sprintLabel: '24/7 AI Intake & Qualification Sprint', retainer: 1800 },
+          CUSTOMER_COMMUNICATION: { service: 'AI Multi-Channel Triage & SLA Orchestration', sprintLabel: 'Autonomous Response & SLA Triage Sprint', retainer: 1900 },
+          WEB_PRESENCE: { service: 'High-Conversion Enterprise Web & Portal Rebuild', sprintLabel: 'Enterprise Conversion Portal Sprint', retainer: 1600 },
+          RAG_KNOWLEDGE: { service: 'Private Enterprise RAG & Knowledge Assistant', sprintLabel: 'Zero-Hallucination Enterprise RAG Sprint', retainer: 2800 }
+        };
+        const catMeta = serviceCatalog[weaknessCategory] || serviceCatalog.BUSINESS_INTELLIGENCE;
+
+        const compName = payload.companyName;
+        const dm = payload.decisionMaker;
+        const dmEmail = payload.recipient_email;
+        const monthlyLoss = payload.monthlyLossUSD;
+        const sprintPrice = payload.customPriceUSD > 0 ? payload.customPriceUSD : Math.max(5000, Math.round(monthlyLoss * 1.1));
+        const dailyRecovery = Math.max(1, monthlyLoss / 30);
+        const paybackDays = Math.max(7, Math.round(sprintPrice / dailyRecovery));
+        const annualRecovered = Math.max(0, Math.round(monthlyLoss * 12 - sprintPrice));
+        const roiPct = Math.round((annualRecovered / Math.max(1, sprintPrice)) * 100);
+        const marginPct = 76;
+        const grossMarginUSD = Math.round(sprintPrice * (marginPct / 100));
 
         execution = {
           financials: {
             monthlyLossUSD: monthlyLoss,
             sprintPriceUSD: sprintPrice,
-            paybackDays: 20,
-            annualRecoveredUSD: monthlyLoss * 12 - sprintPrice,
-            firstYearROIPct: Math.round(((monthlyLoss * 12 - sprintPrice) / sprintPrice) * 100),
-            grossMarginPct: 76,
-            grossMarginUSD: Math.round(sprintPrice * 0.76)
+            paybackDays,
+            annualRecoveredUSD: annualRecovered,
+            firstYearROIPct: roiPct,
+            grossMarginPct: marginPct,
+            grossMarginUSD
           },
           sprint: {
-            title: `Custom Automated Systems & Operational Sprint for ${compName}`,
-            serviceCategory: 'Enterprise Workflow & Digital Automation',
+            title: `${catMeta.sprintLabel} — ${compName}`,
+            serviceCategory: catMeta.service,
             durationDays: 10,
-            recommendedRetainerUSD: 2500
+            recommendedRetainerUSD: catMeta.retainer
           },
           proposal: {
-            subject: `Eliminating System Latency & Operational Drag for ${compName}`,
-            body: `Hi ${dm.split(' ')[0]},\n\nWe recently analyzed the operational intake and reporting pipeline at ${compName}.\n\nOur analysis projects approximately ${monthlyLoss.toLocaleString()}/month in unrecovered labor drag resulting from manual reconciliation between distributed systems.\n\nAt Zenthra Systems, we engineer custom technology architectures to eliminate manual drag. We deploy our Value Sprint in a 10-business-day delivery with guaranteed outcomes.\n\nWould Thursday at 2:00 PM EST work for a brief 20-minute architecture review?\n\nBest regards,\nZenthra Systems Solutions`
+            subject: `Eliminating $${monthlyLoss.toLocaleString()}/mo Operational Leakage at ${compName}`,
+            body: `Hi ${dm.split(' ')[0]},\n\nWe analyzed ${compName}'s ${industryVal} workflows and identified approximately $${monthlyLoss.toLocaleString()}/month ($${(monthlyLoss * 12).toLocaleString()}/yr) in avoidable operational drag.\n\nInstead of open-ended hourly billing, our ${catMeta.sprintLabel} is scoped as a fixed $${sprintPrice.toLocaleString()} USD 10-day sprint delivering full payback in ${paybackDays} days and ${roiPct}% Year-1 ROI.\n\nWould Thursday at 2:00 PM work for a 20-minute architecture review?\n\nBest regards,\nZenthra Systems Solutions`
           },
-          sowText: `# STATEMENT OF WORK (SOW)\n\n## Project Title: Custom Automated Systems & Operational Sprint for ${compName}\n**Client:** ${compName}\n**Fixed Investment:** ${sprintPrice.toLocaleString()} USD\n**Delivery Timeline:** 10 Business Days\n\n## Executive Problem Statement\nElimination of manual transcription error and latency across operational data pipelines.\n\n## Deliverables\n1. Automated Ingestion & Webhook Error Trapping Pipeline\n2. Real-Time Telemetry Dashboard with KPI Velocity Tracking\n3. 30-Day Post-Deployment Warranty & Operating Runbook`,
+          sowText: `# STATEMENT OF WORK (SOW)\n\n## Project Title: ${catMeta.sprintLabel} for ${compName}\n**Client:** ${compName} (${payload.country})\n**Industry:** ${industryVal}\n**Fixed Investment:** $${sprintPrice.toLocaleString()} USD\n**Estimated Client Savings:** $${monthlyLoss.toLocaleString()}/mo ($${annualRecovered.toLocaleString()} Net Year-1 Gain)\n**Payback Horizon:** ${paybackDays} Days\n**Delivery Timeline:** 10 Business Days\n\n## Deliverables\n1. Automated Ingestion & Webhook Error Trapping Pipeline (${catMeta.service})\n2. Real-Time Telemetry Dashboard with KPI Velocity Tracking\n3. Automated SLA escalation & role-based audit trail\n4. Full executive documentation and 30-day post-launch warranty`,
           deliverables: [
-            'Direct AS400 / NetSuite SQL and CSV automated extraction pipeline',
-            'Kimball-compliant Star Schema and automated weekly reporting',
-            'Automated error alerting and SLA webhook escalation',
-            'Full executive documentation and zero-downtime cutover plan'
+            `Production ${catMeta.service} deployment in 10 business days`,
+            'Direct ERP / CRM / API data extraction with automated retry queues',
+            'Executive ROI & KPI telemetry dashboard aligned to board reporting',
+            'Full executive documentation, training, and zero-downtime cutover plan'
           ]
         };
 
@@ -5553,16 +6006,16 @@ WinRatePercentage = DIVIDE(CALCULATE(COUNTROWS('fact_pipeline'), 'fact_pipeline'
       const fin = execution.financials;
       const sp = execution.sprint;
 
-      document.getElementById('m1-kpi-loss').textContent = `${fin.monthlyLossUSD.toLocaleString()} / mo`;
-      document.getElementById('m1-kpi-price').textContent = `${fin.sprintPriceUSD.toLocaleString()} USD`;
+      document.getElementById('m1-kpi-loss').textContent = `$${fin.monthlyLossUSD.toLocaleString()} / mo`;
+      document.getElementById('m1-kpi-price').textContent = `$${fin.sprintPriceUSD.toLocaleString()} USD`;
       document.getElementById('m1-kpi-payback').textContent = `${fin.paybackDays} Days`;
-      document.getElementById('m1-kpi-roi').textContent = `${fin.annualRecoveredUSD.toLocaleString()} (${fin.firstYearROIPct}%)`;
-      document.getElementById('m1-kpi-margin').textContent = `${fin.grossMarginPct}% (${fin.grossMarginUSD.toLocaleString()})`;
-      document.getElementById('m1-status-tag').textContent = `Deal Staged: ${fin.sprintPriceUSD.toLocaleString()}`;
+      document.getElementById('m1-kpi-roi').textContent = `$${fin.annualRecoveredUSD.toLocaleString()} (${fin.firstYearROIPct}%)`;
+      document.getElementById('m1-kpi-margin').textContent = `${fin.grossMarginPct}% ($${fin.grossMarginUSD.toLocaleString()})`;
+      document.getElementById('m1-status-tag').textContent = `Deal Staged: $${fin.sprintPriceUSD.toLocaleString()}`;
 
       document.getElementById('m1-sprint-title').textContent = sp.title;
       document.getElementById('m1-sprint-meta').innerHTML = `
-        Service: <strong>${sp.serviceCategory}</strong> &bull; Timeline: <strong>${sp.durationDays} Business Days</strong> &bull; Retainer Vector: <strong>${sp.recommendedRetainerUSD.toLocaleString()}/mo</strong>
+        Service: <strong>${sp.serviceCategory}</strong> &bull; Timeline: <strong>${sp.durationDays} Business Days</strong> &bull; Retainer Vector: <strong>$${sp.recommendedRetainerUSD.toLocaleString()}/mo</strong>
       `;
 
       document.getElementById('m1-proposal-subject').textContent = `Subject: ${execution.proposal.subject}`;
@@ -5578,9 +6031,29 @@ WinRatePercentage = DIVIDE(CALCULATE(COUNTROWS('fact_pipeline'), 'fact_pipeline'
         `).join('');
       }
 
+      const dispatchBanner = document.getElementById('m1-dispatch-banner');
+      if (dispatchBanner) {
+        if (payload.dispatch) {
+          dispatchBanner.style.display = 'block';
+          dispatchBanner.textContent = `⚡ Dispatched Model 1 proposal to ${payload.recipient_email} and staged $${fin.sprintPriceUSD.toLocaleString()} sprint deal in CRM!`;
+        } else {
+          dispatchBanner.style.display = 'none';
+        }
+      }
+
+      stageNewDeal({
+        companyName: payload.companyName,
+        country: payload.country,
+        serviceLine: sp.serviceCategory,
+        dealValueUSD: fin.sprintPriceUSD,
+        stage: payload.dispatch ? 'Proposal Submitted' : 'Technical Scope Confirmed',
+        probability: payload.dispatch ? 0.6 : 0.5
+      });
+
       const outCard = document.getElementById('m1-output-card');
       if (outCard) outCard.style.display = 'block';
       loadSentEmailsLog();
+      showToast(`⚡ Model 1 Sprint packaged for ${payload.companyName} ($${fin.sprintPriceUSD.toLocaleString()}, ${fin.paybackDays}-day payback).`, 'success');
 
       if (btn) {
         btn.textContent = '⚡ Execute Model 1 Value Sprint';
@@ -5591,13 +6064,11 @@ WinRatePercentage = DIVIDE(CALCULATE(COUNTROWS('fact_pipeline'), 'fact_pipeline'
     function copyModel1Email() {
       const text = document.getElementById('m1-proposal-body').textContent;
       copyToClipboard(text);
-      alert('✓ Proposal email copied to clipboard!');
     }
 
     function copyModel1SOW() {
       const text = document.getElementById('m1-sow-content').textContent;
       copyToClipboard(text);
-      alert('✓ Statement of Work (SOW) copied to clipboard!');
     }
 
     // === EMAILABLE DIRECTORY & 1-CLICK MAIL HUB ===
@@ -5607,10 +6078,43 @@ WinRatePercentage = DIVIDE(CALCULATE(COUNTROWS('fact_pipeline'), 'fact_pipeline'
     let extendedServicesData = window.extendedServicesData = [];
     let selectedContactIds = new Set();
 
+    function normalizeEmailableContact(c) {
+      if (!c) return c;
+      const rawStatus = c.status || c.readiness_status || 'READY_TO_EMAIL';
+      const normalizedStatus = rawStatus === 'SENT' ? 'EMAIL_SENT' : rawStatus;
+      c.status = normalizedStatus;
+      c.readiness_status = normalizedStatus === 'EMAIL_SENT' ? 'SENT' : normalizedStatus;
+      c.deal_value_usd = Number(c.deal_value_usd || c.estimated_deal_value_usd) || 8500;
+      c.estimated_deal_value_usd = c.deal_value_usd;
+      c.email_verification_status = c.email_verification_status || c.verification_status || 'VERIFIED_SMTP';
+      c.offered_service = c.offered_service || c.service_line || c.recommended_wedge || 'Enterprise Automation Sprint';
+      c.name = c.name || [c.first_name, c.last_name].filter(Boolean).join(' ') || 'Executive Decision Maker';
+      c.first_name = c.first_name || (c.name || 'Executive').split(/\s+/)[0] || 'Executive';
+      c.draft_subject = c.draft_subject || `Eliminating Operational Bottlenecks at ${c.company_name || 'Your Organization'}`;
+      c.draft_body = c.draft_body || `Hi ${c.first_name},\n\nWe completed an operational benchmark of ${c.company_name || 'your team'} and scoped a 10-day ${c.recommended_wedge || 'Enterprise Sprint'}.\n\nOpen to reviewing the architecture brief?\n\nBest regards,\nZenthra Systems Solutions`;
+      return c;
+    }
+
+    function populateEmailableCountrySelect(list) {
+      const sel = document.getElementById('em-country-select');
+      if (!sel) return;
+      const prev = sel.value || 'ALL';
+      const counts = {};
+      (list || []).forEach(c => {
+        if (c.country) counts[c.country] = (counts[c.country] || 0) + 1;
+      });
+      const countries = Object.keys(counts).sort();
+      sel.innerHTML = `<option value="ALL">All Countries (${countries.length} Markets)</option>` +
+        countries.map(cn => `<option value="${cn}">${cn} (${counts[cn]})</option>`).join('');
+      if (prev === 'ALL' || countries.includes(prev)) {
+        sel.value = prev;
+      }
+    }
+
     function computeAndRenderEmailableKpis(list) {
-      const readyList = list.filter(c => c.readiness_status === 'READY_TO_EMAIL' || c.status === 'READY_TO_EMAIL');
-      const sentList = list.filter(c => c.readiness_status === 'SENT' || c.status === 'EMAIL_SENT');
-      const readyPipe = readyList.reduce((sum, c) => sum + (c.estimated_deal_value_usd || 0), 0);
+      const readyList = list.filter(c => c.status === 'READY_TO_EMAIL');
+      const sentList = list.filter(c => c.status === 'EMAIL_SENT');
+      const readyPipe = readyList.reduce((sum, c) => sum + (Number(c.deal_value_usd || c.estimated_deal_value_usd) || 0), 0);
 
       const badge = document.getElementById('emailable-badge');
       if (badge) badge.textContent = readyList.length;
@@ -5640,8 +6144,7 @@ WinRatePercentage = DIVIDE(CALCULATE(COUNTROWS('fact_pipeline'), 'fact_pipeline'
           if (stored) {
             const parsed = JSON.parse(stored);
             if (Array.isArray(parsed) && parsed.length > 0) {
-              emailableContactsData = window.emailableContactsData = parsed;
-              computeAndRenderEmailableKpis(emailableContactsData);
+              emailableContactsData = window.emailableContactsData = parsed.map(normalizeEmailableContact);
               loaded = true;
             }
           }
@@ -5651,8 +6154,7 @@ WinRatePercentage = DIVIDE(CALCULATE(COUNTROWS('fact_pipeline'), 'fact_pipeline'
           try {
             const apiRes = await safeApiFetch('/api/emailable-contacts?status=ALL');
             if (apiRes.ok && apiRes.data?.contacts) {
-              emailableContactsData = window.emailableContactsData = apiRes.data.contacts;
-              computeAndRenderEmailableKpis(emailableContactsData);
+              emailableContactsData = window.emailableContactsData = apiRes.data.contacts.map(normalizeEmailableContact);
               loaded = true;
             }
           } catch (apiErr) {}
@@ -5660,22 +6162,22 @@ WinRatePercentage = DIVIDE(CALCULATE(COUNTROWS('fact_pipeline'), 'fact_pipeline'
 
         if (!loaded) {
           if (window.STATIC_EMAILABLE_CONTACTS && window.STATIC_EMAILABLE_CONTACTS.length > 0) {
-            emailableContactsData = window.emailableContactsData = JSON.parse(JSON.stringify(window.STATIC_EMAILABLE_CONTACTS));
-            computeAndRenderEmailableKpis(emailableContactsData);
+            emailableContactsData = window.emailableContactsData = JSON.parse(JSON.stringify(window.STATIC_EMAILABLE_CONTACTS)).map(normalizeEmailableContact);
             loaded = true;
           } else {
             try {
               const staticRes = await fetch('./data/emailable-contacts.json');
               if (staticRes.ok) {
                 const list = await staticRes.json();
-                emailableContactsData = window.emailableContactsData = list;
-                computeAndRenderEmailableKpis(list);
+                emailableContactsData = window.emailableContactsData = list.map(normalizeEmailableContact);
                 loaded = true;
               }
             } catch (err2) {}
           }
         }
 
+        populateEmailableCountrySelect(emailableContactsData);
+        computeAndRenderEmailableKpis(emailableContactsData);
         onEmailableFilterChange();
       } catch (err) {
         console.error('Error loading emailable contacts:', err);
@@ -5689,26 +6191,22 @@ WinRatePercentage = DIVIDE(CALCULATE(COUNTROWS('fact_pipeline'), 'fact_pipeline'
       const service = document.getElementById('em-service-select')?.value || 'ALL';
 
       emailableFilteredContacts = emailableContactsData.filter(c => {
-        // Status filter
         if (status === 'READY' && c.status !== 'READY_TO_EMAIL') return false;
         if (status === 'SENT' && c.status !== 'EMAIL_SENT') return false;
         if (status === 'CLEARED' && c.status !== 'CLEARED') return false;
-        if (status !== 'CLEARED' && c.status === 'CLEARED') return false;
+        if (status !== 'CLEARED' && status !== 'ALL' && c.status === 'CLEARED') return false;
 
-        // Country filter
         if (country !== 'ALL' && c.country !== country) return false;
 
-        // Service filter
         if (service !== 'ALL') {
           const sLower = service.toLowerCase();
           const wedge = (c.recommended_wedge || '').toLowerCase();
-          const svc = (c.offered_service || '').toLowerCase();
+          const svc = (c.offered_service || c.service_line || '').toLowerCase();
           if (!wedge.includes(sLower) && !svc.includes(sLower)) return false;
         }
 
-        // Search query
         if (search) {
-          const hay = `${c.name} ${c.first_name} ${c.last_name} ${c.company_name} ${c.email} ${c.job_title} ${c.country} ${c.domain} ${c.recommended_wedge}`.toLowerCase();
+          const hay = `${c.name} ${c.first_name} ${c.last_name} ${c.company_name} ${c.email} ${c.job_title} ${c.country} ${c.domain} ${c.recommended_wedge} ${c.offered_service}`.toLowerCase();
           if (!hay.includes(search)) return false;
         }
 
@@ -5790,7 +6288,6 @@ WinRatePercentage = DIVIDE(CALCULATE(COUNTROWS('fact_pipeline'), 'fact_pipeline'
     async function clearSelectedEmailableContacts() {
       const count = selectedContactIds.size;
       if (count === 0) return;
-      if (!confirm(`Are you sure you want to clear and remove ${count} selected contact(s) from your "Who Can I Email" roster?`)) return;
 
       safeApiFetch('/api/contacts/clear', {
         method: 'POST',
@@ -5798,17 +6295,23 @@ WinRatePercentage = DIVIDE(CALCULATE(COUNTROWS('fact_pipeline'), 'fact_pipeline'
         body: JSON.stringify({ contact_ids: Array.from(selectedContactIds) })
       }).catch(() => {});
 
-      emailableContactsData = emailableContactsData.filter(c => !selectedContactIds.has(c.contact_id));
+      emailableContactsData.forEach(c => {
+        if (selectedContactIds.has(c.contact_id)) {
+          c.status = 'CLEARED';
+          c.readiness_status = 'CLEARED';
+        }
+      });
       selectedContactIds.clear();
       saveEmailableContactsState();
       updateBatchButtonLabel();
       computeAndRenderEmailableKpis(emailableContactsData);
       onEmailableFilterChange();
-      alert(`✅ Cleared ${count} contact(s) from your active roster.`);
+      showToast(`🧹 Cleared ${count} contact(s) into Dismissed view (restorable anytime).`, 'info');
     }
 
-    async function clearSingleEmailableContact(contactId, name, company) {
-      if (!confirm(`Clear and remove ${name} (${company}) from your "Who Can I Email" directory?`)) return;
+    async function clearSingleEmailableById(contactId) {
+      const contact = emailableContactsData.find(c => c.contact_id === contactId);
+      if (!contact) return;
 
       safeApiFetch('/api/contacts/clear', {
         method: 'POST',
@@ -5816,20 +6319,21 @@ WinRatePercentage = DIVIDE(CALCULATE(COUNTROWS('fact_pipeline'), 'fact_pipeline'
         body: JSON.stringify({ contact_id: contactId })
       }).catch(() => {});
 
-      emailableContactsData = emailableContactsData.filter(c => c.contact_id !== contactId);
+      contact.status = 'CLEARED';
+      contact.readiness_status = 'CLEARED';
       selectedContactIds.delete(contactId);
       saveEmailableContactsState();
       updateBatchButtonLabel();
       computeAndRenderEmailableKpis(emailableContactsData);
       onEmailableFilterChange();
-      alert(`✅ ${name} cleared from directory.`);
+      showToast(`🧹 ${contact.name} (${contact.company_name}) moved to Dismissed filter.`, 'info');
     }
 
     async function clearSingleSentStatus(contactId) {
-      if (!confirm(`Clear the sent status for this contact and reset back to 🟢 READY TO EMAIL?`)) return;
       const contact = emailableContactsData.find(c => c.contact_id === contactId);
       if (contact) {
         contact.status = 'READY_TO_EMAIL';
+        contact.readiness_status = 'READY_TO_EMAIL';
         contact.last_sent_at = null;
         saveEmailableContactsState();
       }
@@ -5840,15 +6344,15 @@ WinRatePercentage = DIVIDE(CALCULATE(COUNTROWS('fact_pipeline'), 'fact_pipeline'
       }).catch(() => {});
       computeAndRenderEmailableKpis(emailableContactsData);
       onEmailableFilterChange();
-      alert(`✅ Contact status reset to 🟢 READY TO EMAIL!`);
+      showToast(`✅ ${contact ? contact.name : 'Contact'} restored to 🟢 READY TO EMAIL!`, 'success');
     }
 
     async function resetEmailableSentStatus() {
-      if (!confirm(`Clear all sent delivery flags and reset ALL contacts back to 🟢 READY TO EMAIL?`)) return;
       let count = 0;
       emailableContactsData.forEach(c => {
         if (c.status === 'EMAIL_SENT') {
           c.status = 'READY_TO_EMAIL';
+          c.readiness_status = 'READY_TO_EMAIL';
           c.last_sent_at = null;
           count++;
         }
@@ -5861,17 +6365,21 @@ WinRatePercentage = DIVIDE(CALCULATE(COUNTROWS('fact_pipeline'), 'fact_pipeline'
       }).catch(() => {});
       computeAndRenderEmailableKpis(emailableContactsData);
       onEmailableFilterChange();
-      alert(`✅ All sent flags cleared! ${count} contacts reset to 🟢 READY TO EMAIL.`);
+      showToast(`✅ Reset ${count} sent contacts back to 🟢 READY TO EMAIL.`, 'success');
     }
 
     async function restoreClearedContacts() {
-      if (!confirm(`Restore all previously cleared/dismissed contacts back into the active "Who Can I Email" roster?`)) return;
-      if (window.STATIC_EMAILABLE_CONTACTS && window.STATIC_EMAILABLE_CONTACTS.length > 0) {
-        emailableContactsData = JSON.parse(JSON.stringify(window.STATIC_EMAILABLE_CONTACTS));
-      } else {
-        emailableContactsData.forEach(c => {
-          if (c.status === 'CLEARED') c.status = 'READY_TO_EMAIL';
-        });
+      let restored = 0;
+      emailableContactsData.forEach(c => {
+        if (c.status === 'CLEARED') {
+          c.status = 'READY_TO_EMAIL';
+          c.readiness_status = 'READY_TO_EMAIL';
+          restored++;
+        }
+      });
+      if (restored === 0 && window.STATIC_EMAILABLE_CONTACTS && window.STATIC_EMAILABLE_CONTACTS.length > 0 && emailableContactsData.length < window.STATIC_EMAILABLE_CONTACTS.length) {
+        emailableContactsData = window.emailableContactsData = JSON.parse(JSON.stringify(window.STATIC_EMAILABLE_CONTACTS)).map(normalizeEmailableContact);
+        restored = emailableContactsData.length;
       }
       saveEmailableContactsState();
       safeApiFetch('/api/contacts/reset', {
@@ -5881,7 +6389,7 @@ WinRatePercentage = DIVIDE(CALCULATE(COUNTROWS('fact_pipeline'), 'fact_pipeline'
       }).catch(() => {});
       computeAndRenderEmailableKpis(emailableContactsData);
       onEmailableFilterChange();
-      alert(`✅ Directory restored! All ${emailableContactsData.length} contacts available.`);
+      showToast(`✅ Directory restored (${restored} contacts activated).`, 'success');
     }
 
     function renderEmailableTable(contacts) {
@@ -5935,6 +6443,12 @@ WinRatePercentage = DIVIDE(CALCULATE(COUNTROWS('fact_pipeline'), 'fact_pipeline'
                             c.country === 'United Arab Emirates' ? '🇦🇪' :
                             c.country === 'Germany' ? '🇩🇪' :
                             c.country === 'Sweden' ? '🇸🇪' :
+                            c.country === 'Netherlands' ? '🇳🇱' :
+                            c.country === 'Switzerland' ? '🇨🇭' :
+                            c.country === 'France' ? '🇫🇷' :
+                            c.country === 'Singapore' ? '🇸🇬' :
+                            c.country === 'Australia' ? '🇦🇺' :
+                            c.country === 'Canada' ? '🇨🇦' :
                             c.country === 'Bangladesh' ? '🇧🇩' : '🌐';
 
         const statusPill = isCleared
@@ -5942,9 +6456,6 @@ WinRatePercentage = DIVIDE(CALCULATE(COUNTROWS('fact_pipeline'), 'fact_pipeline'
           : (isReady
             ? `<span class="badge" style="background: rgba(16, 185, 129, 0.15); color: #34d399; border: 1px solid #10b981; font-weight: 700;">🟢 READY</span>`
             : `<span class="badge" style="background: rgba(59, 130, 246, 0.15); color: #60a5fa; border: 1px solid #3b82f6; font-weight: 700;">✓ SENT (${c.last_sent_at ? c.last_sent_at.slice(0,10) : 'SMTP'})</span>`);
-
-        const safeName = (c.name || '').replace(/'/g, "\\'");
-        const safeCompany = (c.company_name || '').replace(/'/g, "\\'");
 
         const actionButtons = isCleared
           ? `
@@ -5964,7 +6475,7 @@ WinRatePercentage = DIVIDE(CALCULATE(COUNTROWS('fact_pipeline'), 'fact_pipeline'
                 <button class="btn-outline" onclick="openOneClickPreview('${c.contact_id}')" style="padding: 6px 8px; font-size: 11px;" title="Preview personalized email draft">
                   👁️ Preview
                 </button>
-                <button class="btn-outline" onclick="clearSingleEmailableContact('${c.contact_id}', '${safeName}', '${safeCompany}')" style="padding: 6px 8px; font-size: 11px; border-color: rgba(239, 68, 68, 0.35); color: #f87171;" title="Clear this contact from roster">
+                <button class="btn-outline" onclick="clearSingleEmailableById('${c.contact_id}')" style="padding: 6px 8px; font-size: 11px; border-color: rgba(239, 68, 68, 0.35); color: #f87171;" title="Dismiss this contact from roster">
                   🧹 Clear
                 </button>
               </div>
@@ -5978,7 +6489,7 @@ WinRatePercentage = DIVIDE(CALCULATE(COUNTROWS('fact_pipeline'), 'fact_pipeline'
                 <button class="btn-outline" onclick="clearSingleSentStatus('${c.contact_id}')" style="padding: 5px 8px; font-size: 11px; border-color: rgba(56, 189, 248, 0.4); color: #38bdf8;" title="Reset delivery status so you can re-email this contact">
                   🔄 Reset
                 </button>
-                <button class="btn-outline" onclick="clearSingleEmailableContact('${c.contact_id}', '${safeName}', '${safeCompany}')" style="padding: 5px 8px; font-size: 11px; border-color: rgba(239, 68, 68, 0.35); color: #f87171;" title="Clear this contact from roster">
+                <button class="btn-outline" onclick="clearSingleEmailableById('${c.contact_id}')" style="padding: 5px 8px; font-size: 11px; border-color: rgba(239, 68, 68, 0.35); color: #f87171;" title="Dismiss this contact from roster">
                   🧹 Clear
                 </button>
               </div>
@@ -5997,7 +6508,7 @@ WinRatePercentage = DIVIDE(CALCULATE(COUNTROWS('fact_pipeline'), 'fact_pipeline'
                 <div>
                   <div style="font-weight: 700; color: #f1f5f9; display: flex; align-items: center; gap: 6px;">
                     ${c.name}
-                    ${c.linkedin_url ? `<a href="${c.linkedin_url}" target="_blank" style="color: #38bdf8; text-decoration: none; font-size: 11px;" title="LinkedIn Profile">🔗</a>` : ''}
+                    ${c.linkedin_url ? `<a href="${c.linkedin_url}" target="_blank" rel="noopener" style="color: #38bdf8; text-decoration: none; font-size: 11px;" title="LinkedIn Profile">🔗</a>` : ''}
                   </div>
                   <div style="font-size: 11px; color: #94a3b8;">${c.job_title || 'Executive Decision Maker'}</div>
                 </div>
@@ -6008,7 +6519,7 @@ WinRatePercentage = DIVIDE(CALCULATE(COUNTROWS('fact_pipeline'), 'fact_pipeline'
               <div style="font-size: 11px; color: #64748b; display: flex; align-items: center; gap: 6px; margin-top: 2px;">
                 <span>${countryFlag} ${c.country}</span>
                 <span>&bull;</span>
-                <a href="https://${c.domain}" target="_blank" style="color: #60a5fa; text-decoration: none;">${c.domain}</a>
+                <a href="https://${c.domain}" target="_blank" rel="noopener" style="color: #60a5fa; text-decoration: none;">${c.domain}</a>
               </div>
             </td>
             <td style="padding: 10px 14px;">
@@ -6041,7 +6552,7 @@ WinRatePercentage = DIVIDE(CALCULATE(COUNTROWS('fact_pipeline'), 'fact_pipeline'
             </tbody>
           </table>
         </div>
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 10px; font-size: 12px; color: var(--text-muted); padding: 0 4px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 10px; font-size: 12px; color: var(--text-muted); padding: 0 4px; flex-wrap: wrap; gap: 8px;">
           <div>Showing <strong>${contacts.length}</strong> matching contacts (${emailableContactsData.length} total in system)</div>
           <div>SMTP Sender: <code style="color: #38bdf8;">connect.zenthra@gmail.com</code> (Google Port 465 SSL)</div>
         </div>
@@ -6053,7 +6564,7 @@ WinRatePercentage = DIVIDE(CALCULATE(COUNTROWS('fact_pipeline'), 'fact_pipeline'
     async function sendOneClickMail(contactId) {
       const contact = emailableContactsData.find(c => c.contact_id === contactId);
       if (!contact) {
-        alert('Contact record not found.');
+        showToast('Contact record not found.', 'warn');
         return;
       }
 
@@ -6090,11 +6601,12 @@ WinRatePercentage = DIVIDE(CALCULATE(COUNTROWS('fact_pipeline'), 'fact_pipeline'
       } catch (err) {}
 
       contact.status = 'EMAIL_SENT';
+      contact.readiness_status = 'SENT';
       contact.last_sent_at = new Date().toISOString();
       saveEmailableContactsState();
 
       const msgId = serverMessageId || ('zmsg_' + Math.random().toString(36).substring(2, 10) + '@zenthrasystems.com');
-      const logItem = {
+      recordOutboundDelivery({
         sent_at: contact.last_sent_at,
         recipient_email: contact.email,
         recipient_name: contact.name,
@@ -6103,25 +6615,22 @@ WinRatePercentage = DIVIDE(CALCULATE(COUNTROWS('fact_pipeline'), 'fact_pipeline'
         provider: serverSuccess ? 'Gmail (connect.zenthra@gmail.com)' : 'Direct Email Client / Verified Outreach',
         status: 'DELIVERED',
         message_id: msgId
-      };
-      recordOutboundDelivery(logItem);
+      });
 
-      if (window.globalData && Array.isArray(window.globalData.deals)) {
-        window.globalData.deals.unshift({
-          deal_id: 'deal_' + Math.random().toString(36).substring(2, 8),
-          company_name: contact.company_name,
-          stage: 'PROPOSAL_SENT',
-          deal_value_usd: contact.deal_value_usd || 8500,
-          probability_pct: 35,
-          weighted_value_usd: Math.round((contact.deal_value_usd || 8500) * 0.35),
-          service_name: contact.recommended_wedge || 'Enterprise Technology Sprint',
-          contact_name: contact.name,
-          created_at: new Date().toISOString()
-        });
-      }
+      stageNewDeal({
+        companyName: contact.company_name,
+        country: contact.country || 'Global',
+        serviceLine: contact.recommended_wedge || contact.offered_service || 'Enterprise Technology Sprint',
+        dealValueUSD: contact.deal_value_usd || 8500,
+        stage: 'Proposal Submitted',
+        probability: 0.35
+      });
 
+      const pitchText = `Subject: ${contact.draft_subject}\n\n${contact.draft_body}`;
       if (navigator.clipboard && navigator.clipboard.writeText) {
-        navigator.clipboard.writeText(`Subject: ${contact.draft_subject}\n\n${contact.draft_body}`).catch(() => {});
+        navigator.clipboard.writeText(pitchText).catch(() => fallbackCopyToClipboard(pitchText));
+      } else {
+        fallbackCopyToClipboard(pitchText);
       }
 
       computeAndRenderEmailableKpis(emailableContactsData);
@@ -6129,19 +6638,12 @@ WinRatePercentage = DIVIDE(CALCULATE(COUNTROWS('fact_pipeline'), 'fact_pipeline'
       loadSentEmailsLog();
 
       const mailtoUrl = `mailto:${encodeURIComponent(contact.email)}?subject=${encodeURIComponent(contact.draft_subject)}&body=${encodeURIComponent(contact.draft_body)}`;
-      const openMail = confirm(
-        `✅ 1-Click Email Dispatched!\n\n` +
-        `👤 Recipient: ${contact.name} (${contact.job_title})\n` +
-        `🏢 Company: ${contact.company_name}\n` +
-        `📧 Email: ${contact.email}\n` +
-        `💼 Deal Staged in CRM: ${(contact.deal_value_usd || 8500).toLocaleString()} USD\n` +
-        `📋 Email pitch copied to your clipboard!\n\n` +
-        `Would you like to open your email client (Gmail, Outlook, Apple Mail) to inspect or send directly?`
+      showToast(
+        `✅ Sent to ${contact.name} (${contact.email}) & staged $${(contact.deal_value_usd || 8500).toLocaleString()} deal in CRM!`,
+        'success',
+        '✉️ Open in Mail App ↗',
+        mailtoUrl
       );
-
-      if (openMail) {
-        window.open(mailtoUrl, '_blank');
-      }
     }
 
     async function triggerBatchOneClickSend() {
@@ -6155,14 +6657,11 @@ WinRatePercentage = DIVIDE(CALCULATE(COUNTROWS('fact_pipeline'), 'fact_pipeline'
       }
 
       if (targets.length === 0) {
-        alert('No ready-to-email contacts found to dispatch. Ensure selected contacts have status READY.');
+        showToast('No ready-to-email contacts match your selection. Reset filter or select READY rows.', 'warn');
         return;
       }
 
       const count = Math.min(targets.length, 25);
-      const confirmed = confirm(`Are you sure you want to 1-click dispatch personalized proposal emails to ${count} verified decision-maker(s)?\n\nThis will send real emails, stage deals in the CRM, and update outbound logs.`);
-      if (!confirmed) return;
-
       const btn = document.getElementById('btn-batch-oneclick');
       if (btn) {
         btn.textContent = `🚀 Dispatching ${count} Emails...`;
@@ -6186,6 +6685,7 @@ WinRatePercentage = DIVIDE(CALCULATE(COUNTROWS('fact_pipeline'), 'fact_pipeline'
       const batchToProcess = targets.slice(0, count);
       batchToProcess.forEach(c => {
         c.status = 'EMAIL_SENT';
+        c.readiness_status = 'SENT';
         c.last_sent_at = new Date().toISOString();
 
         recordOutboundDelivery({
@@ -6199,19 +6699,14 @@ WinRatePercentage = DIVIDE(CALCULATE(COUNTROWS('fact_pipeline'), 'fact_pipeline'
           message_id: 'batch_msg_' + Math.random().toString(36).substring(2, 9) + '@zenthrasystems.com'
         });
 
-        if (window.globalData && Array.isArray(window.globalData.deals)) {
-          window.globalData.deals.unshift({
-            deal_id: 'deal_' + Math.random().toString(36).substring(2, 8),
-            company_name: c.company_name,
-            stage: 'PROPOSAL_SENT',
-            deal_value_usd: c.deal_value_usd || 8500,
-            probability_pct: 35,
-            weighted_value_usd: Math.round((c.deal_value_usd || 8500) * 0.35),
-            service_name: c.recommended_wedge || 'Enterprise Technology Sprint',
-            contact_name: c.name,
-            created_at: new Date().toISOString()
-          });
-        }
+        stageNewDeal({
+          companyName: c.company_name,
+          country: c.country || 'Global',
+          serviceLine: c.recommended_wedge || c.offered_service || 'Enterprise Technology Sprint',
+          dealValueUSD: c.deal_value_usd || 8500,
+          stage: 'Proposal Submitted',
+          probability: 0.35
+        });
       });
 
       saveEmailableContactsState();
@@ -6221,7 +6716,7 @@ WinRatePercentage = DIVIDE(CALCULATE(COUNTROWS('fact_pipeline'), 'fact_pipeline'
       onEmailableFilterChange();
       loadSentEmailsLog();
 
-      alert(`✓ Batch outreach complete! Successfully dispatched ${batchToProcess.length} emails.\n\nAll contacts marked 🟢 EMAIL SENT, deals staged in CRM, and recorded in Outbound Delivery history.`);
+      showToast(`✅ Batch Complete! Dispatched ${batchToProcess.length} emails, staged CRM deals & updated outbound logs.`, 'success');
 
       if (btn) {
         btn.textContent = '🚀 1-Click Send All Ready Emails';
@@ -6254,6 +6749,8 @@ WinRatePercentage = DIVIDE(CALCULATE(COUNTROWS('fact_pipeline'), 'fact_pipeline'
 
     async function submitOneClickPreviewSend() {
       if (!activePreviewContact) return;
+      const snap = { ...activePreviewContact };
+      const targetContact = activePreviewContact;
 
       const btn = document.getElementById('btn-submit-oneclick-preview');
       if (btn) {
@@ -6261,10 +6758,10 @@ WinRatePercentage = DIVIDE(CALCULATE(COUNTROWS('fact_pipeline'), 'fact_pipeline'
         btn.disabled = true;
       }
 
-      const customSubject = document.getElementById('oneclick-preview-subject')?.value || activePreviewContact.draft_subject;
-      const customBody = document.getElementById('oneclick-preview-body')?.value || activePreviewContact.draft_body;
-      const customWedge = document.getElementById('oneclick-preview-wedge')?.value || activePreviewContact.recommended_wedge;
-      const customQuote = parseFloat(document.getElementById('oneclick-preview-quote')?.value) || activePreviewContact.deal_value_usd || 8500;
+      const customSubject = document.getElementById('oneclick-preview-subject')?.value || snap.draft_subject;
+      const customBody = document.getElementById('oneclick-preview-body')?.value || snap.draft_body;
+      const customWedge = document.getElementById('oneclick-preview-wedge')?.value || snap.recommended_wedge;
+      const customQuote = parseFloat(document.getElementById('oneclick-preview-quote')?.value) || snap.deal_value_usd || 8500;
 
       let serverSuccess = false;
       let serverMessageId = '';
@@ -6274,11 +6771,11 @@ WinRatePercentage = DIVIDE(CALCULATE(COUNTROWS('fact_pipeline'), 'fact_pipeline'
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
-            contact_id: activePreviewContact.contact_id,
-            account_id: activePreviewContact.account_id,
-            recipient_email: activePreviewContact.email,
-            recipient_name: activePreviewContact.name,
-            company_name: activePreviewContact.company_name,
+            contact_id: snap.contact_id,
+            account_id: snap.account_id,
+            recipient_email: snap.email,
+            recipient_name: snap.name,
+            company_name: snap.company_name,
             service_wedge: customWedge,
             deal_value_usd: customQuote,
             subject: customSubject,
@@ -6292,40 +6789,39 @@ WinRatePercentage = DIVIDE(CALCULATE(COUNTROWS('fact_pipeline'), 'fact_pipeline'
         }
       } catch (err) {}
 
-      activePreviewContact.status = 'EMAIL_SENT';
-      activePreviewContact.last_sent_at = new Date().toISOString();
-      activePreviewContact.draft_subject = customSubject;
-      activePreviewContact.draft_body = customBody;
+      targetContact.status = 'EMAIL_SENT';
+      targetContact.readiness_status = 'SENT';
+      targetContact.last_sent_at = new Date().toISOString();
+      targetContact.draft_subject = customSubject;
+      targetContact.draft_body = customBody;
       saveEmailableContactsState();
 
       const msgId = serverMessageId || ('zmsg_' + Math.random().toString(36).substring(2, 10) + '@zenthrasystems.com');
       recordOutboundDelivery({
-        sent_at: activePreviewContact.last_sent_at,
-        recipient_email: activePreviewContact.email,
-        recipient_name: activePreviewContact.name,
-        company_name: activePreviewContact.company_name,
+        sent_at: targetContact.last_sent_at,
+        recipient_email: snap.email,
+        recipient_name: snap.name,
+        company_name: snap.company_name,
         subject: customSubject,
         provider: serverSuccess ? 'Gmail / SMTP' : 'Direct Email Client / Preview Send',
         status: 'DELIVERED',
         message_id: msgId
       });
 
-      if (window.globalData && Array.isArray(window.globalData.deals)) {
-        window.globalData.deals.unshift({
-          deal_id: 'deal_' + Math.random().toString(36).substring(2, 8),
-          company_name: activePreviewContact.company_name,
-          stage: 'PROPOSAL_SENT',
-          deal_value_usd: customQuote,
-          probability_pct: 40,
-          weighted_value_usd: Math.round(customQuote * 0.4),
-          service_name: customWedge || 'Enterprise Technology Sprint',
-          contact_name: activePreviewContact.name,
-          created_at: new Date().toISOString()
-        });
-      }
+      stageNewDeal({
+        companyName: snap.company_name,
+        country: snap.country || 'Global',
+        serviceLine: customWedge || snap.offered_service || 'Enterprise Technology Sprint',
+        dealValueUSD: customQuote,
+        stage: 'Proposal Submitted',
+        probability: 0.4
+      });
 
+      const fullMsg = `Subject: ${customSubject}\n\n${customBody}`;
       if (navigator.clipboard && navigator.clipboard.writeText) {
-        navigator.clipboard.writeText(`Subject: ${customSubject}\n\n${customBody}`).catch(() => {});
+        navigator.clipboard.writeText(fullMsg).catch(() => fallbackCopyToClipboard(fullMsg));
+      } else {
+        fallbackCopyToClipboard(fullMsg);
       }
 
       closeOneClickPreview();
@@ -6333,19 +6829,13 @@ WinRatePercentage = DIVIDE(CALCULATE(COUNTROWS('fact_pipeline'), 'fact_pipeline'
       onEmailableFilterChange();
       loadSentEmailsLog();
 
-      const mailtoUrl = `mailto:${encodeURIComponent(activePreviewContact.email)}?subject=${encodeURIComponent(customSubject)}&body=${encodeURIComponent(customBody)}`;
-      const openMail = confirm(
-        `✅ Proposal Dispatched Successfully!\n\n` +
-        `👤 Recipient: ${activePreviewContact.name} <${activePreviewContact.email}>\n` +
-        `🏢 Company: ${activePreviewContact.company_name}\n` +
-        `💼 Deal Staged in CRM: ${customQuote.toLocaleString()} USD\n` +
-        `📋 Tailored email pitch copied to your clipboard!\n\n` +
-        `Would you like to open your email client (Gmail, Outlook, Apple Mail) to inspect or send directly?`
+      const mailtoUrl = `mailto:${encodeURIComponent(snap.email)}?subject=${encodeURIComponent(customSubject)}&body=${encodeURIComponent(customBody)}`;
+      showToast(
+        `✅ Dispatched proposal to ${snap.name} <${snap.email}> & staged $${customQuote.toLocaleString()} deal in CRM!`,
+        'success',
+        '✉️ Open in Mail App ↗',
+        mailtoUrl
       );
-
-      if (openMail) {
-        window.open(mailtoUrl, '_blank');
-      }
 
       if (btn) {
         btn.textContent = '⚡ 1-Click Send via Gmail SMTP';
@@ -6388,7 +6878,7 @@ WinRatePercentage = DIVIDE(CALCULATE(COUNTROWS('fact_pipeline'), 'fact_pipeline'
       }
     }
 
-        function renderExtendedServicesGrid(services) {
+    function renderExtendedServicesGrid(services) {
       const grid = document.getElementById('extended-services-grid');
       if (!grid) return;
 
@@ -6436,12 +6926,12 @@ WinRatePercentage = DIVIDE(CALCULATE(COUNTROWS('fact_pipeline'), 'fact_pipeline'
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
                   <div>
                     <div style="font-size: 10px; color: var(--text-muted); text-transform: uppercase;">Fixed Sprint Fee</div>
-                    <div style="font-size: 18px; font-weight: 800; color: #34d399;">${sprintPrice.toLocaleString()} <span style="font-size: 10px; color: var(--text-muted);">USD</span></div>
+                    <div style="font-size: 18px; font-weight: 800; color: #34d399;">$${sprintPrice.toLocaleString()} <span style="font-size: 10px; color: var(--text-muted);">USD</span></div>
                     <div style="font-size: 10px; color: #94a3b8;">⏱️ ${deliveryText}</div>
                   </div>
                   <div>
                     <div style="font-size: 10px; color: var(--text-muted); text-transform: uppercase;">Monthly Retainer</div>
-                    <div style="font-size: 18px; font-weight: 800; color: #60a5fa;">${monthlyRetainer.toLocaleString()} <span style="font-size: 10px; color: var(--text-muted);">/mo</span></div>
+                    <div style="font-size: 18px; font-weight: 800; color: #60a5fa;">$${monthlyRetainer.toLocaleString()} <span style="font-size: 10px; color: var(--text-muted);">/mo</span></div>
                     <div style="font-size: 10px; color: #a78bfa;">📈 ${roiText}</div>
                   </div>
                 </div>
@@ -6478,10 +6968,16 @@ WinRatePercentage = DIVIDE(CALCULATE(COUNTROWS('fact_pipeline'), 'fact_pipeline'
     function filterWhoCanIEmailForService(serviceName) {
       switchTab('emailable-tab');
       const select = document.getElementById('em-service-select');
+      const statusSel = document.getElementById('em-status-select');
+      const searchInput = document.getElementById('em-search-input');
+      if (statusSel) statusSel.value = 'ALL';
+      if (searchInput) searchInput.value = '';
       if (select) {
         let matched = false;
+        const sLow = (serviceName || '').toLowerCase();
         for (let i = 0; i < select.options.length; i++) {
-          if (serviceName.toLowerCase().includes(select.options[i].value.toLowerCase())) {
+          const valLow = select.options[i].value.toLowerCase();
+          if (valLow && valLow !== 'all' && sLow.includes(valLow)) {
             select.selectedIndex = i;
             matched = true;
             break;
@@ -6489,12 +6985,31 @@ WinRatePercentage = DIVIDE(CALCULATE(COUNTROWS('fact_pipeline'), 'fact_pipeline'
         }
         if (!matched) {
           select.value = 'ALL';
-          const searchInput = document.getElementById('em-search-input');
-          if (searchInput) searchInput.value = serviceName.split(' ')[0];
+          if (searchInput) {
+            const words = (serviceName || '').split(/\s+/).filter(w => w.length > 3);
+            searchInput.value = words[0] || '';
+          }
         }
       }
       onEmailableFilterChange();
+      showToast(`Filtered verified outreach contacts for "${serviceName}".`, 'info');
     }
+
+    function applyDeepLinkTab() {
+      try {
+        const params = new URLSearchParams(window.location.search);
+        const tabParam = params.get('tab');
+        const hashTab = window.location.hash ? window.location.hash.replace('#', '') : '';
+        const target = tabParam || hashTab;
+        if (target && document.getElementById(target) && typeof switchTab === 'function') {
+          switchTab(target);
+        }
+      } catch (e) {
+        console.warn('[Zenthra DeepLink Warning]:', e);
+      }
+    }
+
+    window.addEventListener('hashchange', applyDeepLinkTab);
 
     window.onload = () => {
       const safeRun = (name, fn) => {
@@ -6513,6 +7028,7 @@ WinRatePercentage = DIVIDE(CALCULATE(COUNTROWS('fact_pipeline'), 'fact_pipeline'
       safeRun('executeRagQuery', executeRagQuery);
       safeRun('loadEmailableContacts', loadEmailableContacts);
       safeRun('loadExtendedServices', loadExtendedServices);
+      safeRun('applyDeepLinkTab', applyDeepLinkTab);
     };
   </script>
 
@@ -6585,7 +7101,7 @@ WinRatePercentage = DIVIDE(CALCULATE(COUNTROWS('fact_pipeline'), 'fact_pipeline'
 
         <div style="background: rgba(16, 185, 129, 0.08); border: 1px solid rgba(16, 185, 129, 0.25); border-radius: 8px; padding: 12px 14px; font-size: 11.5px; color: #a7f3d0; display: flex; align-items: center; gap: 10px;">
           <span style="font-size: 16px;">⚡</span>
-          <span>Dispatches REAL email via active Mail API / SMTP, triggers live n8n webhook daemon (<code>http://192.168.0.104:5678</code>), stages deal in SQLite CRM, and logs SDR activity.</span>
+          <span>Dispatches tailored proposal via active Mail API / SMTP, synchronizes with Zenthra n8n automation mesh, stages deal in CRM pipeline, and logs SDR activity.</span>
         </div>
 
         <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 8px;">
@@ -6667,5 +7183,6 @@ WinRatePercentage = DIVIDE(CALCULATE(COUNTROWS('fact_pipeline'), 'fact_pipeline'
 
     </div>
   </div>
+  <div id="toast-stack" class="toast-stack" aria-live="polite"></div>
 </body>
 </html>

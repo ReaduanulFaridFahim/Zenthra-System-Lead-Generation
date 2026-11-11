@@ -20,6 +20,7 @@ const {
   listAllCountriesAndCities,
   listAllCategories
 } = require('../agents/places_discovery_agent');
+const { scrapeBusinessWebsiteContacts } = require('../agents/live_web_scraper');
 const mailService = require('../services/mail_service');
 const demoProjects = require('../services/demo_projects');
 
@@ -196,7 +197,7 @@ const server = http.createServer(async (req, res) => {
   // 3c2. POST /api/places-discover (Unlimited Google Maps Discovery & Weakness Audit Agent)
   if (req.method === 'POST' && req.url === '/api/places-discover') {
     try {
-      const { query, country, city, categoryKey, count, forwardToN8n, autoSendMail } = await parseJsonBody(req);
+      const { query, country, city, categoryKey, count, forwardToN8n, autoSendMail, liveScrapeWeb, googlePlacesApiKey } = await parseJsonBody(req);
       const shouldForward = forwardToN8n !== undefined ? forwardToN8n : true;
       const outcome = await discoverAuditAndPropose(
         query || 'apparel manufacturers in Dhaka',
@@ -204,7 +205,8 @@ const server = http.createServer(async (req, res) => {
         parseInt(count, 10) || 10,
         city || 'All',
         categoryKey || '',
-        shouldForward
+        shouldForward,
+        { liveScrapeWeb, googlePlacesApiKey }
       );
 
       // Auto-Send Mail Check
@@ -222,6 +224,20 @@ const server = http.createServer(async (req, res) => {
         results: outcome.results,
         auto_mail_sent: autoMailOutcome.autoSentCount
       }));
+    } catch (err) {
+      res.writeHead(500, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify({ error: err.message }));
+    }
+    return;
+  }
+
+  // 3c2b. POST /api/scrape-website (Direct server-side contact extraction without CORS limits)
+  if (req.method === 'POST' && req.url === '/api/scrape-website') {
+    try {
+      const { url } = await parseJsonBody(req);
+      const result = await scrapeBusinessWebsiteContacts(url);
+      res.writeHead(200, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify({ success: true, ...result }));
     } catch (err) {
       res.writeHead(500, { 'Content-Type': 'application/json' });
       res.end(JSON.stringify({ error: err.message }));

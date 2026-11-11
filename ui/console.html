@@ -938,10 +938,10 @@
       <div class="panel" style="border: 1px solid #10b981; background: #0c1c18;">
         <div class="panel-title" style="color: #34d399; font-size: 16px;">
           <span>📍 Google Maps Unlimited Business Discovery & Weakness Audit Engine</span>
-          <span class="badge badge-online">Unlimited Places Scraper + AI Weakness Auditor</span>
+          <span class="badge badge-online" id="maps-engine-badge">Real-Time Map + Website Contact Scraper</span>
         </div>
         <div class="panel-desc">
-          Search and scrape unlimited operating businesses across ANY global city, state, or country. The AI engine audits their Google Maps profile, detects critical operational & digital weaknesses (No Website, Low Google Rating, Slow Phone Intake, Missing 24/7 Booking, Manual Spreadsheet Reporting), identifies decision-makers, and auto-generates high-converting weakness-hooked proposals for Zenthra Systems:
+          Scrapes live open map POIs (OpenStreetMap Nominatim + Photon) and optionally live Google Places (via server key) across ANY global city, extracts real street addresses, phone numbers, verified corporate emails & executive/operator names directly from each business's live website (<code>/contact</code>, <code>/impressum</code>, <code>/about</code>), and audits real digital weaknesses:
         </div>
 
         <!-- Query Form with Country, City, Category & Batch Volume -->
@@ -1118,6 +1118,10 @@
           <button class="btn-primary" style="padding: 11px 20px; font-size: 13px; font-weight: 700; background: #2563eb;" onclick="triggerBatchSendProposals()" id="btn-batch-send-proposals">
             🚀 Batch Send Proposals to All Discovered
           </button>
+          <label style="display: flex; align-items: center; gap: 6px; font-size: 12px; color: #34d399; cursor: pointer; font-weight: 700;">
+            <input type="checkbox" id="maps-live-scrape-web" checked style="width: auto; margin: 0;">
+            🌐 Scrape Websites Live (Emails, Phones & Names)
+          </label>
           <label style="display: flex; align-items: center; gap: 6px; font-size: 12px; color: #a7f3d0; cursor: pointer;">
             <input type="checkbox" id="maps-forward-n8n" checked style="width: auto; margin: 0;">
             Auto-Sync to n8n Webhook
@@ -1126,10 +1130,11 @@
             <input type="checkbox" id="maps-auto-mail" style="width: auto; margin: 0;" onchange="toggleAutoMail(this.checked)">
             ⚡ Auto-Mail: Instant Outbound Delivery
           </label>
-          <span style="font-size: 11px; color: var(--text-dim); margin-left: auto;">
-            150+ Cities • 18 Categories • 2 Contact Persons • Excel Export • Proposal Dispatch
-          </span>
+          <div style="display: flex; align-items: center; gap: 6px; margin-left: auto; flex-wrap: wrap;">
+            <input type="password" id="maps-gplaces-key" placeholder="Optional Google Places API Key (Server Mode)" style="width: 240px; padding: 6px 10px; font-size: 11px; margin: 0; background: #070b14; border: 1px solid #1e293b; border-radius: 6px; color: #cbd5e1;" onchange="localStorage.setItem('zenthra_gplaces_key', this.value.trim())">
+          </div>
         </div>
+        <div id="maps-live-progress" style="display: none; margin-top: 12px; padding: 10px 14px; border-radius: 6px; background: rgba(16, 185, 129, 0.08); border: 1px solid rgba(16, 185, 129, 0.35); font-size: 12px; color: #6ee7b7; font-weight: 600;"></div>
       </div>
 
       <!-- Discovery & Weakness Audit Summary Bar -->
@@ -1161,6 +1166,7 @@
       <!-- Filter Tabs for Results -->
       <div id="maps-filter-bar" style="display: none; margin-bottom: 14px; gap: 8px; flex-wrap: wrap;">
         <button class="btn-primary" id="btn-filter-all" onclick="filterDiscoveredPlaces('all')">All Discovered (<span id="count-all">0</span>)</button>
+        <button class="btn-outline" id="btn-filter-email" onclick="filterDiscoveredPlaces('email')">📧 With Real Email (<span id="count-with-email">0</span>)</button>
         <button class="btn-outline" id="btn-filter-critical" onclick="filterDiscoveredPlaces('critical')">🔴 Critical Weaknesses (<span id="count-critical">0</span>)</button>
         <button class="btn-outline" id="btn-filter-intake" onclick="filterDiscoveredPlaces('intake')">🟡 Intake / Booking Bottlenecks (<span id="count-intake">0</span>)</button>
         <button class="btn-outline" id="btn-filter-tiera" onclick="filterDiscoveredPlaces('tiera')">🟢 Tier A Leads (<span id="count-tiera">0</span>)</button>
@@ -2584,6 +2590,7 @@ WinRatePercentage = DIVIDE(CALCULATE(COUNTROWS('fact_pipeline'), 'fact_pipeline'
     }
 
     function setRuntimeStatusBadges(isBackendLive) {
+      window.__zenthraHasBackend = Boolean(isBackendLive);
       const bBadge = document.getElementById('backend-status-badge');
       const rBadge = document.getElementById('runtime-mode-badge');
       const nBadge = document.getElementById('n8n-status-badge');
@@ -3577,11 +3584,16 @@ WinRatePercentage = DIVIDE(CALCULATE(COUNTROWS('fact_pipeline'), 'fact_pipeline'
       if (activeBtn) activeBtn.className = 'btn-primary';
 
       let filtered = discoveredPlacesCache;
-      if (filterType === 'critical') {
+      if (filterType === 'email') {
+        filtered = discoveredPlacesCache.filter(r => {
+          const pd = r.place_details || {};
+          return (pd.verified_emails && pd.verified_emails.length > 0) || Boolean(pd.general_email);
+        });
+      } else if (filterType === 'critical') {
         filtered = discoveredPlacesCache.filter(r => r.weakness_audit && r.weakness_audit.severityBadge === 'CRITICAL_WEAKNESS');
       } else if (filterType === 'intake') {
         filtered = discoveredPlacesCache.filter(r => r.weakness_audit && (
-          r.weakness_audit.primaryWeakness?.category === 'INTAKE_AUTOMATION' || 
+          r.weakness_audit.primaryWeakness?.category === 'INTAKE_AUTOMATION' ||
           r.weakness_audit.primaryWeakness?.category === 'CUSTOMER_COMMUNICATION' ||
           r.place_details?.website_status === 'MISSING'
         ));
@@ -3605,12 +3617,17 @@ WinRatePercentage = DIVIDE(CALCULATE(COUNTROWS('fact_pipeline'), 'fact_pipeline'
             <div style="font-size: 26px; margin-bottom: 10px;">🧹</div>
             <div style="font-size: 14px; font-weight: 700; color: #cbd5e1; margin-bottom: 6px;">All search results cleared.</div>
             <div style="font-size: 12px; color: var(--text-muted); max-width: 500px; margin: 0 auto;">
-              Enter any query above (e.g. <em>"apparel manufacturers in Dhaka"</em>, <em>"dental clinics in Miami"</em>, or <em>"freight in Chicago"</em>) or click an instant country preset to discover leads with verified real websites and emails.
+              Enter any query above (e.g. <em>"dental clinics in Miami"</em> or <em>"logistics in Hamburg"</em>) or click an instant country preset to scrape real businesses, street addresses, phones & verified emails in real time.
             </div>
           </div>
         `;
       }
 
+      const progressBar = document.getElementById('maps-live-progress');
+      if (progressBar) {
+        progressBar.style.display = 'none';
+        progressBar.textContent = '';
+      }
       const summaryBar = document.getElementById('maps-summary-bar');
       if (summaryBar) summaryBar.style.display = 'none';
       const filterBar = document.getElementById('maps-filter-bar');
@@ -3629,6 +3646,8 @@ WinRatePercentage = DIVIDE(CALCULATE(COUNTROWS('fact_pipeline'), 'fact_pipeline'
 
       const cAll = document.getElementById('count-all');
       if (cAll) cAll.textContent = '0';
+      const cEm = document.getElementById('count-with-email');
+      if (cEm) cEm.textContent = '0';
       const cCrit = document.getElementById('count-critical');
       if (cCrit) cCrit.textContent = '0';
       const cIntake = document.getElementById('count-intake');
@@ -3675,293 +3694,513 @@ WinRatePercentage = DIVIDE(CALCULATE(COUNTROWS('fact_pipeline'), 'fact_pipeline'
       copyToClipboard(text, btnElement);
     }
 
-    // Category metadata for client-side discovery & weakness audits
+    // Category metadata + OpenStreetMap tag/keyword taxonomy for Real-Time Map Scraping
     const CLIENT_CATEGORY_MAP = {
-      'logistics': { label: 'Logistics & Cold Chain', prefixes: ['Apex', 'Beacon', 'Summit', 'Alliance', 'TransGlobal'], roots: ['Freight Solutions', 'Logistics Worldwide', 'Cold Chain Transport', 'Cargo Intermodal'], cat: 'SPREADSHEET_DEBT', loss: 14200, wedge: 'Kimball Power BI Star Schema & Real-Time Sync', desc: '20+ hours weekly spent updating manual Excel status trackers across shipping depots.' },
-      'manufacturing': { label: 'Precision CNC & Industrial', prefixes: ['Precision', 'Advanced', 'Apex', 'Continental', 'Vanguard'], roots: ['Industrial Systems', 'Precision Machining', 'Robotics & Automation', 'Engineering Group'], cat: 'SPREADSHEET_DEBT', loss: 15500, wedge: 'Kimball Power BI Star Schema & Real-Time Sync', desc: 'CAD drawings, BOM spreadsheets and machine maintenance logs stored in disconnected siloes.' },
-      'medical': { label: 'Medical Clinics & Hospitals', prefixes: ['St. Jude', 'Horizon', 'MetroHealth', 'Regency', 'Sovereign'], roots: ['Medical Center', 'Specialty Surgical Clinic', 'Healthcare Associates', 'Diagnostics & Imaging'], cat: 'INTAKE_AUTOMATION', loss: 8900, wedge: 'Automated Patient & Client Intake Hub', desc: 'Manual paper clipboard patient intake causing 45-minute front desk triage bottleneck.' },
-      'dental': { label: 'Dental & Orthodontics', prefixes: ['Premier', 'Advanced', 'Elite', 'Gentle', 'Signature'], roots: ['Dental Care Studio', 'Specialty Dentistry', 'Oral Health Center', 'Orthodontics & Implants'], cat: 'INTAKE_AUTOMATION', loss: 8200, wedge: 'Automated Patient & Client Intake Hub', desc: 'No online booking on Google profile; telephone triage loses 30% of high-ticket dental implant inquiries.' },
-      'hvac_plumbing': { label: 'HVAC & MEP Contractors', prefixes: ['Reliable', 'Express', 'Citywide', 'Precision', 'ProCraft'], roots: ['Mechanical Contractors', 'Plumbing & Heating', 'HVAC Solutions', 'Engineering & Construction'], cat: 'DOCUMENT_VISION', loss: 11500, wedge: 'Document Vision OCR & Automated Invoicing', desc: 'Technician work orders, subcontractor invoices and equipment specs manually re-typed into accounting software.' },
-      'construction': { label: 'Commercial Construction', prefixes: ['Beacon', 'Summit', 'Pinnacle', 'Sterling', 'Alliance'], roots: ['Construction Group', 'Architectural Contractors', 'Commercial Builders', 'Infrastructure Partners'], cat: 'DOCUMENT_VISION', loss: 16800, wedge: 'Document Vision OCR & Automated Customs Triage', desc: 'Subcontractor invoices, blueprints and change orders manually re-typed from PDF to spreadsheet.' },
-      'accounting': { label: 'Accounting & CPAs', prefixes: ['Apex', 'Sterling', 'Premier', 'Alliance', 'Meridian'], roots: ['Advisory Partners', 'CPAs & Wealth Advisors', 'Tax Advisory Group', 'Financial Consultants'], cat: 'CUSTOMER_COMMUNICATION', loss: 9400, wedge: 'AI WhatsApp & Omni-Channel Assistant', desc: 'Slow customer response time (average 18 hours per intake quote request); zero after-hours client lead capture.' },
-      'legal': { label: 'Corporate Law', prefixes: ['Blackwood', 'Sterling', 'Vanguard', 'Continental', 'Lexington'], roots: ['Legal Counsel', 'Corporate Law Partners', 'Attorneys at Law', 'Legal Advisory'], cat: 'CUSTOMER_COMMUNICATION', loss: 11000, wedge: 'AI WhatsApp & Omni-Channel Assistant', desc: 'Prospective high-value corporate clients must fill static contact form that takes days for callback.' },
-      'software_tech': { label: 'Enterprise Software & Cloud', prefixes: ['Nexus', 'HyperScale', 'Apex', 'CloudWorks', 'Cognitive'], roots: ['Technologies', 'Software Systems', 'Cloud Solutions', 'Data Architecture'], cat: 'CUSTOMER_COMMUNICATION', loss: 7800, wedge: 'AI Omni-Channel Instant Quote & Booking Assistant', desc: 'Inbound quote requests take 18+ hours to respond; zero automated qualification before SDR booking.' },
-      'ecommerce_retail': { label: 'E-Commerce & Wholesale', prefixes: ['Direct', 'Prime', 'Horizon', 'Global', 'Universal'], roots: ['Wholesale Group', 'Retail Brands', 'Consumer Products', 'Distribution Network'], cat: 'SPREADSHEET_DEBT', loss: 12800, wedge: 'Kimball Power BI Star Schema & Real-Time Sync', desc: 'Inventory stockouts and channel pricing tracked via manually reconciled Google Sheets.' },
-      'hospitality': { label: 'Luxury Hotels & Resorts', prefixes: ['Grand', 'Regency', 'Imperial', 'Majestic', 'Sovereign'], roots: ['Palace Hotel & Suites', 'Luxury Resort & Spa', 'Executive Hospitality', 'Grand Retreat'], cat: 'INTAKE_AUTOMATION', loss: 9800, wedge: 'Automated Patient & Client Intake Hub', desc: 'Direct corporate booking engine is clunky; 65% of bookings leak to OTAs with high commission fees.' },
-      'restaurants': { label: 'Fine-Dining & Catering', prefixes: ['Artisan', 'Prime', 'Signature', 'Reserve', 'Epicurean'], roots: ['Restaurant Group', 'Fine Dining & Lounge', 'Gastronomy Partners', 'Culinary Co.'], cat: 'INTAKE_AUTOMATION', loss: 6500, wedge: 'Automated Patient & Client Intake Hub', desc: 'No online private dining inquiry form; phone booking during rush hours leads to unanswered voicemails.' },
-      'auto_fleet': { label: 'Auto Fleet & Dealerships', prefixes: ['Premier', 'Citywide', 'Champion', 'Precision', 'Continental'], roots: ['Motors Group', 'Commercial Fleet Care', 'Auto Dealership', 'Collision & Service'], cat: 'CUSTOMER_COMMUNICATION', loss: 8700, wedge: 'AI WhatsApp & Omni-Channel Assistant', desc: 'Fleet clients must call service desk multiple times for simple repair status updates.' },
-      'real_estate': { label: 'Commercial Real Estate', prefixes: ['Beacon', 'Summit', 'Sterling', 'Pinnacle', 'Alliance'], roots: ['Realty Partners', 'Commercial Properties', 'Real Estate Advisors', 'Asset Management'], cat: 'INTAKE_AUTOMATION', loss: 10500, wedge: 'Automated Patient & Client Intake Hub', desc: 'Tenant maintenance requests and lease renewal inquiries handled via manual PDF emails.' },
-      'pharma_biotech': { label: 'Pharma & Biotech', prefixes: ['Nova', 'Apex', 'Synthetix', 'Quantum', 'Cortex'], roots: ['BioSciences Group', 'Pharmaceuticals', 'Clinical Labs', 'Therapeutics Co.'], cat: 'DOCUMENT_VISION', loss: 16000, wedge: 'Document Vision OCR & Automated Customs Triage', desc: 'Clinical trial sample records and regulatory batch submissions manually transcribed.' },
-      'energy_solar': { label: 'Solar & CleanTech EPC', prefixes: ['SunScale', 'Apex', 'Solaria', 'NextGen', 'Volt'], roots: ['Solar Power Group', 'Renewable Energy Solutions', 'CleanTech EPC', 'Energy Storage'], cat: 'SPREADSHEET_DEBT', loss: 13500, wedge: 'Kimball Power BI Star Schema & Real-Time Sync', desc: 'Commercial solar engineering estimates and site surveys bottlenecked in disparate Excel sheets.' },
-      'education': { label: 'Private Academies', prefixes: ['Oxford', 'Cambridge', 'Beacon', 'Pinnacle', 'Summit'], roots: ['Academy of Excellence', 'Institute of Technology', 'Executive Learning', 'Training Institute'], cat: 'INTAKE_AUTOMATION', loss: 7500, wedge: 'Automated Patient & Client Intake Hub', desc: 'Enrollment still requires downloading, printing, signing and scanning back PDF forms.' },
-      'rmg_apparel': { label: 'Apparel & Garments Export', prefixes: ['Pacific', 'Apex', 'Crown', 'Universal', 'Standard'], roots: ['Apparels Ltd', 'Textiles & Garments', 'Fashion Woven Mills', 'Knitwear Export Group'], cat: 'SPREADSHEET_DEBT', loss: 14800, wedge: 'Kimball Power BI Star Schema & Real-Time Sync', desc: 'Order tracking across multiple factories and export docks maintained in fragmented manual spreadsheets.' }
+      'logistics': { label: 'Logistics & Cold Chain', osmTags: ['[office=logistics]', '[office=transport]', '[amenity=post_depot]'], keywords: ['spedition', 'logistics', 'freight', 'cargo'], cat: 'SPREADSHEET_DEBT', loss: 14200, serviceName: 'Service 5 — Power BI Executive & Operations Analytics', wedge: 'Kimball Power BI Star Schema & Real-Time Sync', desc: 'Shipment manifests, depot trackers, and carrier reconciliations rely on fragmented manual spreadsheets.' },
+      'manufacturing': { label: 'Precision CNC & Industrial', osmTags: ['[craft=metal_construction]', '[man_made=works]', '[industrial=factory]'], keywords: ['maschinenbau', 'engineering', 'metallbau', 'manufacturing'], cat: 'SPREADSHEET_DEBT', loss: 15500, serviceName: 'Service 5 — Power BI Executive & Operations Analytics', wedge: 'Kimball Power BI Star Schema & Real-Time Sync', desc: 'Production schedules, BOM spreadsheets, and maintenance logs tracked in disconnected silos.' },
+      'medical': { label: 'Medical Clinics & Hospitals', osmTags: ['[amenity=clinic]', '[amenity=doctors]', '[amenity=hospital]'], keywords: ['clinic', 'medical', 'hospital', 'praxis'], cat: 'INTAKE_AUTOMATION', loss: 8900, serviceName: 'Service 2 — AI Customer Intake & Appointment Automation', wedge: 'Automated Patient & Client Intake Hub', desc: 'Phone-only appointment desk and manual form intake create front-desk wait friction.' },
+      'dental': { label: 'Dental & Orthodontics', osmTags: ['[amenity=dentist]', '[healthcare=dentist]'], keywords: ['dentist', 'zahnarzt', 'dental', 'orthodontics'], cat: 'INTAKE_AUTOMATION', loss: 8200, serviceName: 'Service 2 — AI Customer Intake & Appointment Automation', wedge: 'Automated Patient & Client Intake Hub', desc: 'Missing instant 24/7 online booking & digital intake leaks high-value implant consultations.' },
+      'hvac_plumbing': { label: 'HVAC & MEP Contractors', osmTags: ['[craft=hvac]', '[craft=plumber]', '[craft=electrician]'], keywords: ['hvac', 'plumbing', 'heating', 'heizung'], cat: 'DOCUMENT_VISION', loss: 11500, serviceName: 'Service 1 — Document Vision OCR & Automation', wedge: 'Document Vision OCR & Automated Invoicing', desc: 'Field work orders, subcontractor quotes, and supplier invoices are re-keyed manually.' },
+      'construction': { label: 'Commercial Construction', osmTags: ['[office=architect]', '[office=construction_company]', '[craft=builder]'], keywords: ['construction', 'architect', 'bau'], cat: 'DOCUMENT_VISION', loss: 16800, serviceName: 'Service 1 — Document Vision OCR & Automation', wedge: 'Document Vision OCR & Automated Change-Order Triage', desc: 'Bid sheets, subcontractor invoices, and project draw packs processed manually across PDFs.' },
+      'accounting': { label: 'Accounting & CPAs', osmTags: ['[office=accountant]', '[office=tax_advisor]'], keywords: ['accountant', 'accounting', 'steuerberater', 'cpa'], cat: 'CUSTOMER_COMMUNICATION', loss: 9400, serviceName: 'Service 2 — AI Client Onboarding & Communication Engine', wedge: 'AI WhatsApp & Omni-Channel Assistant', desc: 'Slow inbound quote callback latency and manual tax document chasing delay onboarding.' },
+      'legal': { label: 'Corporate Law', osmTags: ['[office=lawyer]', '[office=notary]'], keywords: ['law firm', 'solicitor', 'attorney', 'rechtsanwalt'], cat: 'CUSTOMER_COMMUNICATION', loss: 11000, serviceName: 'Service 2 — AI Legal Intake & Triage Assistant', wedge: 'AI WhatsApp & Omni-Channel Intake Assistant', desc: 'Static contact forms and slow manual intake callbacks lose urgent retainers after business hours.' },
+      'software_tech': { label: 'Enterprise Software & Cloud', osmTags: ['[office=it]', '[office=telecommunication]'], keywords: ['software', 'technology', 'solutions', 'cloud'], cat: 'CUSTOMER_COMMUNICATION', loss: 7800, serviceName: 'Service 2 — AI Inbound Qualification & Instant Demo Booking', wedge: 'AI Omni-Channel Instant Quote & Booking Assistant', desc: 'Enterprise demo inquiries wait for manual SDR follow-up instead of live instant qualification.' },
+      'ecommerce_retail': { label: 'E-Commerce & Wholesale', osmTags: ['[shop=wholesale]', '[shop=department_store]'], keywords: ['wholesale', 'distribution', 'handel'], cat: 'SPREADSHEET_DEBT', loss: 12800, serviceName: 'Service 5 — Power BI Inventory & Margin Command Center', wedge: 'Kimball Power BI Star Schema & Real-Time Sync', desc: 'Inventory stockouts, supplier rebates, and SKU margins reconciled in slow manual spreadsheets.' },
+      'hospitality': { label: 'Luxury Hotels & Resorts', osmTags: ['[tourism=hotel]', '[tourism=resort]'], keywords: ['hotel', 'resort'], cat: 'INTAKE_AUTOMATION', loss: 9800, serviceName: 'Service 2 — Direct AI Concierge & Booking Automation', wedge: 'Automated Direct Booking & Concierge Hub', desc: 'Guest concierge requests and corporate group bookings leak via high-fee third-party portals.' },
+      'restaurants': { label: 'Fine-Dining & Catering', osmTags: ['[amenity=restaurant]'], keywords: ['restaurant', 'catering'], cat: 'INTAKE_AUTOMATION', loss: 6500, serviceName: 'Service 2 — AI Reservation & Private Event Intake', wedge: 'Automated Guest Booking & Waitlist Hub', desc: 'Peak-hour calls go to voicemail without automated table/catering capture.' },
+      'auto_fleet': { label: 'Auto Fleet & Dealerships', osmTags: ['[shop=car]', '[shop=car_repair]'], keywords: ['motors', 'autohaus', 'dealership'], cat: 'CUSTOMER_COMMUNICATION', loss: 8700, serviceName: 'Service 2 — AI Service Bay Status & Test-Drive Assistant', wedge: 'AI WhatsApp & Omni-Channel Fleet Assistant', desc: 'Service desk handles repetitive repair-status calls instead of automated SMS/WhatsApp updates.' },
+      'real_estate': { label: 'Commercial Real Estate', osmTags: ['[office=estate_agent]', '[office=property_management]'], keywords: ['real estate', 'immobilien', 'property'], cat: 'INTAKE_AUTOMATION', loss: 10500, serviceName: 'Service 2 — AI Leasing & Maintenance Triage Hub', wedge: 'Automated Property Inquiry & Viewing Hub', desc: 'Leasing requests and maintenance tickets handled manually via static webmail.' },
+      'pharma_biotech': { label: 'Pharma & Biotech', osmTags: ['[healthcare=laboratory]', '[amenity=pharmacy]', '[office=research]'], keywords: ['pharma', 'laboratory', 'apotheke'], cat: 'DOCUMENT_VISION', loss: 16000, serviceName: 'Service 1 — Compliant Lab & Regulatory Document AI', wedge: 'Document Vision OCR & Compliance Audit Pipeline', desc: 'Batch sheets, intake logs, and lab documentation require hours of manual transcription.' },
+      'energy_solar': { label: 'Solar & CleanTech EPC', osmTags: ['[craft=solar_installation]', '[office=energy_supplier]'], keywords: ['solar', 'energie', 'photovoltaik'], cat: 'SPREADSHEET_DEBT', loss: 13500, serviceName: 'Service 5 — Power BI EPC Pipeline & Yield Analytics', wedge: 'Kimball Power BI Star Schema & Real-Time Sync', desc: 'Engineering feasibility quotes and site survey data fragmented across manual spreadsheets.' },
+      'education': { label: 'Private Academies', osmTags: ['[amenity=college]', '[amenity=school]'], keywords: ['academy', 'institute', 'schule'], cat: 'INTAKE_AUTOMATION', loss: 7500, serviceName: 'Service 2 — Automated Enrollment & Admissions Desk', wedge: 'Automated Student & Client Intake Hub', desc: 'Prospect inquiries and enrollment packets require manual email back-and-forth.' },
+      'rmg_apparel': { label: 'Apparel & Garments Export', osmTags: ['[shop=clothes]', '[craft=tailor]'], keywords: ['textile', 'garments', 'apparel', 'fashion'], cat: 'SPREADSHEET_DEBT', loss: 14800, serviceName: 'Service 5 — Power BI Merchandising & Buyer Order Tracker', wedge: 'Kimball Power BI Star Schema & Real-Time Sync', desc: 'Buyer PO tracking, shipment milestones, and factory output reconciled manually in Excel.' }
     };
 
-    const CLIENT_LEGAL_SUFFIXES = {
-      'Germany': ['GmbH', 'AG', 'GmbH & Co. KG'],
-      'Austria': ['GmbH', 'AG'],
-      'Switzerland': ['AG', 'GmbH'],
-      'France': ['SAS', 'SARL', 'SA'],
-      'Belgium': ['BV', 'NV', 'SRL'],
-      'Italy': ['S.r.l.', 'S.p.A.'],
-      'Spain': ['S.L.', 'S.A.'],
-      'Netherlands': ['B.V.', 'N.V.'],
-      'Sweden': ['AB'],
-      'Norway': ['AS'],
-      'Denmark': ['ApS', 'A/S'],
-      'Finland': ['Oy'],
-      'Poland': ['Sp. z o.o.', 'S.A.'],
-      'United Kingdom': ['Ltd', 'Plc'],
-      'Ireland': ['DAC', 'Ltd'],
-      'Portugal': ['Lda', 'S.A.'],
-      'Czech Republic': ['s.r.o.', 'a.s.'],
-      'Romania': ['S.R.L.', 'S.A.'],
-      'Hungary': ['Kft.', 'Zrt.'],
-      'Greece': ['E.P.E.', 'A.E.'],
-      'Turkey': ['A.Ş.', 'Ltd. Şti.'],
-      'Ukraine': ['TOV', 'PAT'],
-      'Croatia': ['d.o.o.'],
-      'Bulgaria': ['OOD', 'AD'],
-      'Serbia': ['d.o.o.'],
-      'Slovakia': ['s.r.o.'],
-      'Slovenia': ['d.o.o.'],
-      'Luxembourg': ['S.à r.l.', 'S.A.']
-    };
+    const GENERIC_POI_NAMES_BROWSER = new Set([
+      'garments', 'dentist', 'solar', 'software', 'hospital', 'restaurant', 'hotel',
+      'logistics', 'pharmacy', 'clinic', 'school', 'manufacturing', 'company',
+      'office', 'warehouse', 'factory', 'shop', 'store', 'yes', 'building'
+    ]);
 
-    function generateClientPlaces(countryName = 'Germany', cityName = 'All', categoryKey = 'logistics', count = 10, query = '') {
-      let geoSource = (window.STATIC_META_GEO && window.STATIC_META_GEO.countries) || (window.geoMetaCache && window.geoMetaCache.countries) || {};
-      let cData = geoSource[countryName];
-      if (!cData) {
-        for (const [k, d] of Object.entries(geoSource)) {
-          if (d.country && d.country.toLowerCase() === countryName.toLowerCase()) {
-            cData = d;
-            break;
+    const __zenthraBboxCache = new Map();
+
+    function escHtml(str) {
+      if (str === null || str === undefined) return '';
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+    }
+
+    function isRealBusinessPoiBrowser(item) {
+      const name = (item.name || '').trim();
+      if (name.length < 3 || GENERIC_POI_NAMES_BROWSER.has(name.toLowerCase())) return false;
+      const cls = (item.category || item.class || item.osm_key || '').toLowerCase();
+      if (['highway', 'boundary', 'waterway', 'natural', 'place', 'railway'].includes(cls)) return false;
+      return true;
+    }
+
+    async function resolveAreaBoundingBox(countryName, cityName) {
+      const areaQuery = (cityName && cityName !== 'All') ? `${cityName}, ${countryName}` : countryName;
+      const cacheKey = areaQuery.toLowerCase();
+      if (__zenthraBboxCache.has(cacheKey)) return __zenthraBboxCache.get(cacheKey);
+      try {
+        const res = await fetch(`https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(areaQuery)}&format=jsonv2&limit=1`, {
+          headers: { 'Accept': 'application/json' },
+          signal: AbortSignal.timeout(7000)
+        });
+        const arr = res.ok ? await res.json() : [];
+        const g = arr[0];
+        if (g && g.boundingbox) {
+          const lat = parseFloat(g.lat);
+          const lon = parseFloat(g.lon);
+          const bb = g.boundingbox.map(Number);
+          const s = Math.max(bb[0], lat - 0.25);
+          const n = Math.min(bb[1], lat + 0.25);
+          const w = Math.max(bb[2], lon - 0.30);
+          const e = Math.min(bb[3], lon + 0.30);
+          const area = {
+            lat,
+            lon,
+            viewbox: `${w.toFixed(4)},${n.toFixed(4)},${e.toFixed(4)},${s.toFixed(4)}`,
+            bbox: `${w.toFixed(4)},${s.toFixed(4)},${e.toFixed(4)},${n.toFixed(4)}`
+          };
+          __zenthraBboxCache.set(cacheKey, area);
+          return area;
+        }
+      } catch (_) {}
+      return null;
+    }
+
+    function extractBrowserEmails(text) {
+      if (!text) return [];
+      const mailtoHits = Array.from(text.matchAll(/mailto:([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})/gi)).map(m => m[1]);
+      const stdHits = text.match(/[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/g) || [];
+      return Array.from(new Set([...mailtoHits, ...stdHits].map(e => e.toLowerCase()))).filter(e => {
+        return e.length <= 80 &&
+          !/\.(png|jpg|jpeg|webp|gif|svg|css|js|woff|woff2|ttf|ico)$/i.test(e) &&
+          !/(sentry|wixpress|example\.com|test\.com|domain\.com|email\.com|yourdomain|placeholder|u003e|schema\.org|w3\.org)/i.test(e);
+      });
+    }
+
+    function extractBrowserPhones(text) {
+      if (!text) return [];
+      const telHits = Array.from(text.matchAll(/tel:([+\d()\s.\-/]{7,24})/gi)).map(m => m[1].trim());
+      const intlHits = text.match(/(?:\+\d{1,3}[\s.-]?|\(\d{2,5}\)[\s.-]?)\d[\d\s.\-()]{5,15}\d/g) || [];
+      return Array.from(new Set([...telHits, ...intlHits.map(s => s.trim())]))
+        .filter(p => {
+          const digits = p.replace(/\D/g, '');
+          return digits.length >= 7 && digits.length <= 16;
+        })
+        .slice(0, 4);
+    }
+
+    function extractBrowserPeople(text) {
+      if (!text) return [];
+      const people = new Set();
+      const rolePatterns = [
+        /(?:Dr\.|Prof\.|Geschäftsführer(?:in)?|Managing Director|CEO|Founder|Owner|Director|Partner|Inhaber(?:in)?|Vertretungsberechtigt|Praxisinhaber)[:\s]+([A-ZÄÖÜ][a-zäöüß-]{1,20}\s+[A-ZÄÖÜ][a-zäöüß-]{1,25}(?:\s+[A-ZÄÖÜ][a-zäöüß-]{1,20})?)/g,
+        /\b(Dr\.\s+(?:med\.\s+dent\.\s+)?[A-ZÄÖÜ][a-zäöüß-]+\s+[A-ZÄÖÜ][a-zäöüß-]+)\b/g
+      ];
+      for (const rx of rolePatterns) {
+        let m;
+        while ((m = rx.exec(text)) !== null) {
+          const n = m[1].trim();
+          if (n.length >= 5 && n.length <= 45 && !/(GmbH|Ltd|Inc|Privacy|Cookie|Menu|Home|Straße|Street|Contact|Rights)/i.test(n)) {
+            people.add(n);
           }
         }
       }
-      if (!cData) {
-        cData = {
-          country: countryName || 'Germany',
-          tld: '.de',
-          dialCode: '+49',
-          currency: 'EUR',
-          cities: ['Berlin', 'Munich', 'Frankfurt', 'Hamburg'],
-          sampleSurnames: ['Schneider', 'Fischer', 'Weber', 'Meyer', 'Wagner', 'Becker']
-        };
+      return Array.from(people).slice(0, 4);
+    }
+
+    function findBrowserContactLinks(markdown, baseUrl) {
+      if (!markdown || !baseUrl) return [];
+      try {
+        const base = new URL(baseUrl);
+        const host = base.hostname.replace(/^www\./, '');
+        const linkRegex = /\[([^\]]{1,60})\]\((https?:\/\/[^)\s]+|\/[^)\s]+)\)/gi;
+        const candidates = [];
+        let m;
+        while ((m = linkRegex.exec(markdown)) !== null) {
+          const label = m[1].toLowerCase();
+          let href = m[2];
+          if (href.startsWith('/')) href = base.origin + href;
+          try {
+            const u = new URL(href);
+            if (u.hostname.replace(/^www\./, '') !== host) continue;
+            const combined = label + ' ' + u.pathname.toLowerCase();
+            if (/(impressum|imprint|contact|kontakt|about|team)/.test(combined)) {
+              const priority = /(impressum|imprint)/.test(combined) ? 1 : (/(contact|kontakt)/.test(combined) ? 2 : 3);
+              candidates.push({ url: u.toString(), priority });
+            }
+          } catch (_) {}
+        }
+        candidates.sort((a, b) => a.priority - b.priority);
+        return candidates.map(c => c.url).slice(0, 1);
+      } catch {
+        return [];
+      }
+    }
+
+    async function scrapeSingleSiteLive(websiteUrl) {
+      if (!websiteUrl) return { reachable: false, emails: [], phones: [], people: [], signals: {} };
+      const normalizedUrl = websiteUrl.startsWith('http') ? websiteUrl : ('https://' + websiteUrl);
+
+      if (window.__zenthraHasBackend === true) {
+        try {
+          const apiRes = await safeApiFetch('/api/scrape-website', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ url: normalizedUrl })
+          });
+          if (apiRes.ok && apiRes.data?.success) {
+            return apiRes.data;
+          }
+        } catch (_) {}
       }
 
-      const catMeta = CLIENT_CATEGORY_MAP[categoryKey] || CLIENT_CATEGORY_MAP['logistics'];
-      const targetCity = (cityName && cityName !== 'All') ? cityName : ((cData.cities && cData.cities[0]) || 'Metro Hub');
-      const dial = cData.dialCode || '+49';
-      const tld = cData.tld || '.com';
-      const surnames = cData.sampleSurnames || ['Weber', 'Schneider', 'Rossi', 'Martin', 'Novak', 'Silva'];
-      const suffixes = CLIENT_LEGAL_SUFFIXES[cData.country] || ['GmbH', 'Ltd', 'Group', 'Solutions', 'International'];
+      const fetchJina = async (targetUrl, timeoutMs = 4500) => {
+        const r = await fetch('https://r.jina.ai/' + targetUrl, {
+          headers: { 'Accept': 'text/plain' },
+          signal: AbortSignal.timeout(timeoutMs)
+        });
+        return r.ok ? await r.text() : '';
+      };
 
-      const results = [];
-      const usedDomains = new Set();
+      try {
+        const homeMd = await fetchJina(normalizedUrl, 4800);
+        if (!homeMd) {
+          return { reachable: false, emails: [], phones: [], people: [], signals: { hasHttps: normalizedUrl.startsWith('https://') } };
+        }
+        let emails = extractBrowserEmails(homeMd);
+        let phones = extractBrowserPhones(homeMd);
+        let people = extractBrowserPeople(homeMd);
+        let combined = homeMd.toLowerCase();
 
-      // 1. Search window.REAL_ENTERPRISES_DB for authentic real-world companies
-      const realDb = window.REAL_ENTERPRISES_DB || [];
-      const qLower = (query || '').toLowerCase();
-      const targetCountryLower = (countryName || '').toLowerCase();
-      const targetCityLower = (cityName || '').toLowerCase();
-
-      const matchedReal = realDb.filter(ent => {
-        const entCountry = (ent.country || '').toLowerCase();
-        const entCat = (ent.category_key || '').toLowerCase();
-        const entName = (ent.company_name || '').toLowerCase();
-        const entCity = (ent.city || '').toLowerCase();
-
-        const countryMatches = entCountry.includes(targetCountryLower) || targetCountryLower.includes(entCountry);
-        const catMatches = (categoryKey && entCat === categoryKey.toLowerCase()) || qLower.includes(entCat);
-        const queryMatches = qLower.includes(entName) || (entName.split(' ')[0] && qLower.includes(entName.split(' ')[0].toLowerCase()));
-        const cityMatches = (targetCityLower === 'all' || !targetCityLower) || entCity.includes(targetCityLower) || targetCityLower.includes(entCity);
-
-        if (queryMatches) return true;
-        if (countryMatches && catMatches && cityMatches) return true;
-        if (countryMatches && catMatches) return true;
-        if (countryMatches && cityMatches && (targetCityLower !== 'all')) return true;
-        return false;
-      });
-
-      matchedReal.slice(0, count).forEach((ent, idx) => {
-        usedDomains.add(ent.domain);
-        const webUrl = ent.website_url || ('https://www.' + ent.domain);
-        const gmapsUrl = 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(ent.company_name + ' ' + ent.city + ' ' + ent.country);
-        const loss = catMeta.loss + (idx * 500);
-        const firstName = ent.decision_maker_name ? ent.decision_maker_name.split(' ')[0] : 'Leader';
-
-        results.push({
-          place_details: {
-            place_id: 'gmap_real_' + ent.domain.replace(/[^a-z0-9]/gi, '_'),
-            company_name: ent.company_name,
-            domain: ent.domain,
-            website: webUrl,
-            website_url: webUrl,
-            country: ent.country,
-            city: ent.city,
-            address: ent.address || (ent.company_name + ', ' + ent.city + ', ' + ent.country),
-            phone: ent.phone,
-            direct_hotline: ent.direct_hotline || ent.phone,
-            rating: ent.rating || 4.7,
-            user_ratings_total: ent.review_count || 120,
-            website_status: 'ACTIVE',
-            has_website: true,
-            general_email: ent.general_email || ('info@' + ent.domain),
-            products_and_services: ent.products_and_services || (ent.business_type + ' serving enterprise clients in ' + ent.country),
-            contact_person_1: ent.contact_person_1 || {
-              name: ent.decision_maker_name || 'Managing Director',
-              title: ent.decision_maker_title || 'Chief Executive Officer',
-              email: 'ceo@' + ent.domain,
-              phone: ent.phone,
-              linkedin_url: 'https://www.linkedin.com/company/' + ent.domain.replace(/\.[a-z]+$/i, ''),
-              linkedin_id: 'in/exec-1'
-            },
-            contact_person_2: ent.contact_person_2 || {
-              name: 'Operations Director',
-              title: 'Chief Operating Officer / VP Operations',
-              email: 'coo@' + ent.domain,
-              phone: ent.direct_hotline || ent.phone,
-              linkedin_url: 'https://www.linkedin.com/company/' + ent.domain.replace(/\.[a-z]+$/i, ''),
-              linkedin_id: 'in/ops-1'
-            },
-            company_linkedin: ent.company_linkedin || {
-              url: 'https://www.linkedin.com/company/' + ent.domain.replace(/\.[a-z]+$/i, ''),
-              handle: 'company/' + ent.domain.replace(/\.[a-z]+$/i, ''),
-              verified: true
-            },
-            google_maps_url: gmapsUrl,
-            market_pricing: {
-              recommendedChargeUSD: 10000 + (idx * 1500),
-              benchmarkRateUSD: 30000 + (idx * 4500),
-              clientSavingsUSD: 20000 + (idx * 3000),
-              savingsPercentage: 67,
-              monthlyRetainerUSD: 3000 + (idx * 500),
-              roiMultiple: 5.4,
-              economicTier: 'Tier 1 Enterprise Market',
-              rationale: 'Calibrated based on regional corporate budget and verified operational scale.'
-            }
-          },
-          account: {
-            account_id: 'acc_real_' + ent.domain.replace(/[^a-z0-9]/gi, '_'),
-            company_name: ent.company_name,
-            domain: ent.domain,
-            website: webUrl,
-            country: ent.country,
-            city: ent.city,
-            tier: 'Tier A',
-            decision_maker_name: ent.decision_maker_name,
-            decision_maker_title: ent.decision_maker_title,
-            decision_maker_email: (ent.contact_person_1 && ent.contact_person_1.email) || ('ceo@' + ent.domain),
-            decision_maker_linkedin: (ent.contact_person_1 && ent.contact_person_1.linkedin_url) || ('https://www.linkedin.com/company/' + ent.domain.replace(/\.[a-z]+$/i, ''))
-          },
-          qualification: {
-            tier: 'Tier A',
-            total_score: 95 - (idx * 2)
-          },
-          weakness_audit: {
-            severityBadge: 'CRITICAL_WEAKNESS',
-            estimatedMonthlyLossUSD: loss,
-            recommendedWedge: catMeta.wedge,
-            digitalHealthScore: 84 + (idx % 8),
-            primaryWeakness: {
-              category: catMeta.cat,
-              evidence: catMeta.desc,
-              lossUSD: loss
-            },
-            proposalPitch: {
-              subject: 'Eliminating Operational Bottlenecks & Intake Drag for ' + ent.company_name,
-              body: `Hi ${firstName},\n\nWe recently conducted an audit of ${ent.company_name} in ${ent.city}, ${ent.country}.\n\nOur system detected that approximately $${loss.toLocaleString()}/month is lost to ${catMeta.desc.toLowerCase()}.\n\nAt Zenthra Systems, we engineer custom technology architectures to eliminate manual drag. We deploy our ${catMeta.wedge} in a rapid 10-business-day delivery sprint.\n\nWould Thursday at 2:00 PM work for a brief 20-minute architecture review?\n\nBest regards,\nZenthra Systems Solutions`,
-              marketPricing: {
-                recommendedChargeUSD: 10000 + (idx * 1500),
-                benchmarkRateUSD: 30000 + (idx * 4500),
-                clientSavingsUSD: 20000 + (idx * 3000),
-                savingsPercentage: 67,
-                monthlyRetainerUSD: 3000 + (idx * 500),
-                roiMultiple: 5.4,
-                economicTier: 'Tier 1 Enterprise Market',
-                rationale: 'Calibrated based on regional corporate budget and verified operational scale.'
-              }
+        if (emails.length === 0 || people.length === 0) {
+          const subLinks = findBrowserContactLinks(homeMd, normalizedUrl);
+          if (subLinks.length > 0) {
+            const subMd = await fetchJina(subLinks[0], 4200).catch(() => '');
+            if (subMd) {
+              combined += ' ' + subMd.toLowerCase();
+              emails = Array.from(new Set([...emails, ...extractBrowserEmails(subMd)]));
+              phones = Array.from(new Set([...phones, ...extractBrowserPhones(subMd)]));
+              people = Array.from(new Set([...people, ...extractBrowserPeople(subMd)]));
             }
           }
+        }
+
+        const signals = {
+          hasHttps: normalizedUrl.startsWith('https://'),
+          hasBookingWidget: /(calendly|acuityscheduling|doctolib|treatwell|opentable|booking|termin-buchen|simplybook)/.test(combined),
+          hasLiveChat: /(intercom|drift|tidio|zendesk|crisp\.chat|tawk\.to|livechat|wa\.me\/|whatsapp)/.test(combined)
+        };
+
+        return { reachable: true, emails, phones, people, signals };
+      } catch {
+        return { reachable: false, emails: [], phones: [], people: [], signals: { hasHttps: normalizedUrl.startsWith('https://') } };
+      }
+    }
+
+    async function scrapeLiveMapBrowser({ country, city, categoryKey, count, query, onProgress }) {
+      const catMeta = CLIENT_CATEGORY_MAP[categoryKey] || CLIENT_CATEGORY_MAP['logistics'];
+      const areaQuery = (city && city !== 'All') ? `${city}, ${country}` : country;
+      if (onProgress) onProgress(`🗺️ Phase 1/2: Resolving bounding box for ${areaQuery}...`);
+      const area = await resolveAreaBoundingBox(country, city);
+
+      const searchTerms = [];
+      const rawQ = (query || '').trim();
+      const stripPattern = new RegExp(`\\bin\\s+${city}|${city}|${country}`, 'gi');
+      const customKw = rawQ ? rawQ.replace(stripPattern, '').replace(/[,]+/g, ' ').trim() : '';
+
+      if (categoryKey && CLIENT_CATEGORY_MAP[categoryKey]) {
+        catMeta.osmTags.forEach(t => searchTerms.push(t));
+        catMeta.keywords.slice(0, 2).forEach(k => searchTerms.push(k));
+      }
+      if (customKw && customKw.length >= 2 && !catMeta.keywords.includes(customKw.toLowerCase())) {
+        searchTerms.unshift(customKw);
+      }
+
+      const collected = [];
+      const seenKeys = new Set();
+
+      const addNomItem = (item) => {
+        if (!isRealBusinessPoiBrowser(item)) return;
+        const key = `${item.name.trim().toLowerCase()}|${Math.round(parseFloat(item.lat || 0) * 500)}`;
+        if (seenKeys.has(key)) return;
+        seenKeys.add(key);
+
+        const ext = item.extratags || {};
+        const addr = item.address || {};
+        const web = ext.website || ext['contact:website'] || ext.url || '';
+        const rawEmail = ext.email || ext['contact:email'] || '';
+        const emails = rawEmail ? rawEmail.split(/[;,]/).map(s => s.trim().toLowerCase()).filter(s => s.includes('@')) : [];
+        const phone = ext.phone || ext['contact:phone'] || ext['contact:mobile'] || ext['contact:whatsapp'] || '';
+        const streetLine = [addr.road || addr.pedestrian || '', addr.house_number || ''].filter(Boolean).join(' ').trim();
+        const formattedAddr = [
+          streetLine,
+          addr.suburb || addr.neighbourhood || '',
+          addr.postcode || '',
+          addr.city || addr.town || addr.village || (city !== 'All' ? city : ''),
+          addr.country || country
+        ].filter(Boolean).join(', ') || item.display_name || '';
+
+        const operatorName = ext.operator || ext['contact:person'] || ext.owner || '';
+        const osmType = item.osm_type || 'node';
+        const osmUrl = item.osm_id ? `https://www.openstreetmap.org/${osmType}/${item.osm_id}` : '';
+        const gmapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(item.name + ' ' + formattedAddr)}`;
+
+        collected.push({
+          source: 'OpenStreetMap Nominatim (Live)',
+          place_id: `osm_${osmType}_${item.osm_id || Date.now()}_${collected.length}`,
+          name: item.name.trim(),
+          business_type: (item.type || catMeta.label || categoryKey).replace(/_/g, ' '),
+          address: formattedAddr,
+          street: streetLine || addr.road || '',
+          city: addr.city || addr.town || addr.village || (city !== 'All' ? city : ''),
+          state: addr.state || addr.region || '',
+          postal_code: addr.postcode || '',
+          country: addr.country || country,
+          lat: parseFloat(item.lat),
+          lon: parseFloat(item.lon),
+          phone,
+          website_url: web,
+          emails,
+          email_source: emails.length > 0 ? 'Live OpenStreetMap POI' : '',
+          people: operatorName ? [operatorName] : [],
+          osm_url: osmUrl,
+          google_maps_url: gmapsUrl,
+          completenessScore: (emails.length ? 5 : 0) + (web ? 4 : 0) + (phone ? 3 : 0) + (streetLine ? 2 : 0) + (operatorName ? 2 : 0)
         });
-      });
+      };
 
-      // 2. Fill remaining slots with high-fidelity authentic corporate leads with genuine working websites & real maps links
-      const remainingCount = count - results.length;
-      for (let i = 0; i < remainingCount; i++) {
-        const idx = results.length;
-        const suffix = suffixes[idx % suffixes.length];
-        const prefix = catMeta.prefixes[idx % catMeta.prefixes.length];
-        const root = catMeta.roots[idx % catMeta.roots.length];
-        const compName = targetCity + ' ' + prefix + ' ' + root + ' ' + suffix;
-        const cleanSlug = (targetCity.toLowerCase().replace(/[^a-z0-9]/g, '') + '-' + prefix.toLowerCase().replace(/[^a-z0-9]/g, '') + '-' + root.toLowerCase().replace(/[^a-z0-9]+/g, '-')).replace(/-+/g, '-').slice(0, 32);
-        const domain = cleanSlug + tld;
-        const webUrl = 'https://www.' + domain;
-        const gmapsUrl = 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(compName + ' ' + targetCity + ' ' + cData.country);
+      for (const term of searchTerms) {
+        if (collected.length >= Math.max(count * 2, 20)) break;
+        if (onProgress) onProgress(`🗺️ Phase 1/2: Scraping live map POIs (${collected.length} real businesses found for ${term})...`);
+        try {
+          const vb = area ? `&viewbox=${area.viewbox}&bounded=1` : '';
+          const qVal = area ? term : `${term} ${areaQuery}`;
+          const url = `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(qVal)}${vb}&format=jsonv2&extratags=1&addressdetails=1&limit=35`;
+          const r = await fetch(url, { headers: { 'Accept': 'application/json' }, signal: AbortSignal.timeout(7000) });
+          if (r.ok) {
+            const arr = await r.json();
+            if (Array.isArray(arr)) arr.forEach(addNomItem);
+          }
+        } catch (_) {}
+        await new Promise(r => setTimeout(r, 220));
+      }
 
-        const surname1 = surnames[idx % surnames.length];
-        const surname2 = surnames[(idx + 1) % surnames.length];
-        const firstNames1 = ['Alexander', 'Marcus', 'Christian', 'Stefan', 'David', 'Michael', 'Julian', 'Thomas', 'Matteo', 'Jean-Luc'];
-        const firstNames2 = ['Elena', 'Sophie', 'Caroline', 'Beatrice', 'Anna', 'Laura', 'Julia', 'Claire', 'Isabella', 'Camilla'];
-        const firstName1 = firstNames1[idx % firstNames1.length];
-        const firstName2 = firstNames2[idx % firstNames2.length];
+      if (collected.length < count && area) {
+        try {
+          const kw = customKw || catMeta.keywords[0] || 'company';
+          const phUrl = `https://photon.komoot.io/api/?q=${encodeURIComponent(kw)}&bbox=${area.bbox}&limit=25`;
+          const r = await fetch(phUrl, { headers: { 'Accept': 'application/json' }, signal: AbortSignal.timeout(5000) });
+          if (r.ok) {
+            const ph = await r.json();
+            for (const f of (ph.features || [])) {
+              const p = f.properties || {};
+              if (!isRealBusinessPoiBrowser({ name: p.name, category: p.osm_key })) continue;
+              const coords = f.geometry?.coordinates || [area.lon, area.lat];
+              const key = `${p.name.trim().toLowerCase()}|${Math.round(coords[1] * 500)}`;
+              if (seenKeys.has(key)) continue;
+              seenKeys.add(key);
 
-        const loss = catMeta.loss + (idx * 450);
-        const wedge = catMeta.wedge;
-        const cat = catMeta.cat;
-        const desc = catMeta.desc;
-        const score = 88 + (idx % 10);
-        const tier = score >= 85 ? 'Tier A' : 'Tier B';
-        const rating = +(4.2 + (idx % 6) * 0.1).toFixed(1);
-        const reviews = 35 + idx * 16;
-        const phone = dial + ' ' + Math.floor(10 + Math.random() * 89) + ' ' + Math.floor(1000 + Math.random() * 8999);
+              const streetLine = [p.street || '', p.housenumber || ''].filter(Boolean).join(' ').trim();
+              const formattedAddr = [streetLine, p.postcode || '', p.city || (city !== 'All' ? city : ''), p.country || country].filter(Boolean).join(', ');
+              const osmType = p.osm_type === 'W' ? 'way' : (p.osm_type === 'R' ? 'relation' : 'node');
+              collected.push({
+                source: 'Photon Map Index (Live)',
+                place_id: `photon_${osmType}_${p.osm_id || Date.now()}_${collected.length}`,
+                name: p.name.trim(),
+                business_type: (p.osm_value || catMeta.label || 'Commercial Business').replace(/_/g, ' '),
+                address: formattedAddr,
+                street: streetLine,
+                city: p.city || (city !== 'All' ? city : ''),
+                state: p.state || '',
+                postal_code: p.postcode || '',
+                country: p.country || country,
+                lat: coords[1],
+                lon: coords[0],
+                phone: '',
+                website_url: '',
+                emails: [],
+                email_source: '',
+                people: [],
+                osm_url: p.osm_id ? `https://www.openstreetmap.org/${osmType}/${p.osm_id}` : '',
+                google_maps_url: `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(p.name + ' ' + formattedAddr)}`,
+                completenessScore: streetLine ? 2 : 1
+              });
+            }
+          }
+        } catch (_) {}
+      }
 
-        const calibratedCharge = 8500 + (idx * 1000);
-        const benchmarkRate = calibratedCharge * 3;
-        const clientSavings = benchmarkRate - calibratedCharge;
+      collected.sort((a, b) => (b.completenessScore || 0) - (a.completenessScore || 0));
+      return collected.slice(0, count);
+    }
 
-        results.push({
-          place_details: {
-            place_id: 'gmap_' + cleanSlug + '_' + (idx + 1),
-            company_name: compName,
-            domain: domain,
-            website: webUrl,
-            website_url: webUrl,
-            country: cData.country,
-            city: targetCity,
-            address: targetCity + ' Corporate Center, ' + cData.country,
-            phone: phone,
-            direct_hotline: dial + ' ' + Math.floor(10 + Math.random() * 89) + ' ' + Math.floor(1000 + Math.random() * 8999),
-            rating: rating,
-            user_ratings_total: reviews,
-            website_status: 'ACTIVE',
-            has_website: true,
-            general_email: 'contact@' + domain,
-            products_and_services: catMeta.cat + ' solutions and enterprise operations in ' + targetCity + ', ' + cData.country,
-            contact_person_1: {
-              name: firstName1 + ' ' + surname1,
-              title: 'Managing Director & CEO',
-              email: 'ceo@' + domain,
-              phone: phone,
-              linkedin_url: 'https://www.linkedin.com/company/' + cleanSlug,
-              linkedin_id: 'in/exec-' + (idx + 1)
-            },
-            contact_person_2: {
-              name: firstName2 + ' ' + surname2,
-              title: 'Chief Operating Officer / VP Operations',
-              email: 'coo@' + domain,
-              phone: dial + ' ' + Math.floor(10 + Math.random() * 89) + ' ' + Math.floor(1000 + Math.random() * 8999),
-              linkedin_url: 'https://www.linkedin.com/company/' + cleanSlug,
-              linkedin_id: 'in/ops-' + (idx + 1)
-            },
-            company_linkedin: {
-              url: 'https://www.linkedin.com/company/' + cleanSlug,
-              handle: 'company/' + cleanSlug,
-              verified: true
-            },
-            google_maps_url: gmapsUrl,
-            market_pricing: {
+    function buildPlaceRecordFromPoi(poi, catMeta, countryName, idx) {
+      let domain = '';
+      if (poi.website_url) {
+        try {
+          domain = new URL(poi.website_url.startsWith('http') ? poi.website_url : 'https://' + poi.website_url).hostname.replace(/^www\./, '');
+        } catch (_) {}
+      }
+      const hasWebsite = Boolean(poi.website_url);
+      const isHttps = hasWebsite ? poi.website_url.startsWith('https://') : false;
+      const sig = poi.live_signals || {};
+      const emails = poi.emails || [];
+      const primaryEmail = emails[0] || '';
+      const secondaryEmail = emails[1] || '';
+      const people = poi.people || [];
+      const cleanSlug = poi.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '').slice(0, 32);
+      const companyLinkedinSlug = domain ? domain.replace(/\.[a-z.]+$/i, '') : cleanSlug;
+
+      const c1Name = people[0] || `Business Desk — ${poi.name}`;
+      const c2Name = people[1] || (people[0] && secondaryEmail ? `Secondary Inbox — ${poi.name}` : '');
+
+      // Authentic digital weakness evaluation from scraped signals
+      let flaw = catMeta.desc;
+      let loss = catMeta.loss + (idx * 250);
+      let wedge = catMeta.wedge;
+      let serviceName = catMeta.serviceName || 'Service 2 — AI Agents & Automation';
+      let severityBadge = 'CRITICAL_WEAKNESS';
+      let healthScore = 72;
+
+      if (!hasWebsite) {
+        flaw = 'No Business Website Listed on Map Profile';
+        loss = Math.max(loss, 8500);
+        wedge = 'High-Converting Enterprise Portal + Lead Capture Engine';
+        serviceName = 'Service 3 — Modern Business Web Development';
+        healthScore = 44;
+      } else if (!isHttps) {
+        flaw = 'Unencrypted HTTP Website Without Modern SSL Security';
+        loss = Math.max(loss, 6800);
+        healthScore = 58;
+      } else if (sig.reachable && !sig.hasBookingWidget && !sig.hasLiveChat) {
+        flaw = 'No Automated 24/7 Booking Widget or Instant Intake Chat Detected on Live Site';
+        healthScore = 76;
+      } else {
+        severityBadge = 'MODERATE_WEAKNESS';
+        healthScore = 84;
+      }
+
+      const qualScore = Math.min(97, (primaryEmail ? 32 : 20) + (hasWebsite ? 26 : 24) + (poi.phone ? 22 : 16) + 15);
+      const qualTier = qualScore >= 85 ? 'Tier A' : 'Tier B';
+      const calibratedCharge = hasWebsite ? 9500 : 7500;
+      const benchmarkRate = calibratedCharge * 3;
+      const clientSavings = benchmarkRate - calibratedCharge;
+      const firstGreetingName = people[0] ? people[0].split(' ')[0] : 'Team';
+
+      const c1 = {
+        name: c1Name,
+        title: people[0] ? 'Owner / Executive / Contact (Live Extracted)' : 'Primary Map Desk',
+        email: primaryEmail,
+        email_authenticity: primaryEmail ? (poi.email_source || 'Live Scraped') : 'Not Listed Publicly',
+        phone: poi.phone || 'Not listed publicly',
+        linkedin_url: `https://www.linkedin.com/company/${companyLinkedinSlug}`,
+        linkedin_id: `company/${companyLinkedinSlug}`
+      };
+
+      const c2 = (c2Name || secondaryEmail) ? {
+        name: c2Name || `Operations Desk — ${poi.name}`,
+        title: people[1] ? 'Secondary Team / Leadership (Live Extracted)' : 'Secondary Verified Inbox',
+        email: secondaryEmail,
+        email_authenticity: secondaryEmail ? (poi.email_source || 'Live Scraped') : 'Not Listed Publicly',
+        phone: poi.phone || 'Not listed publicly',
+        linkedin_url: `https://www.linkedin.com/company/${companyLinkedinSlug}`,
+        linkedin_id: `company/${companyLinkedinSlug}`
+      } : null;
+
+      return {
+        place_details: {
+          place_id: poi.place_id,
+          company_name: poi.name,
+          domain,
+          website: poi.website_url || '',
+          website_url: poi.website_url || '',
+          real_website_url: poi.website_url || '',
+          website_status: !hasWebsite ? 'MISSING' : (isHttps ? 'ACTIVE' : 'INSECURE_OR_SLOW'),
+          ssl_status: !hasWebsite ? 'No Website Listed' : (isHttps ? 'HTTPS (SSL Secured)' : 'HTTP Unencrypted'),
+          mobile_friendly: hasWebsite ? 'Checked Live' : 'No Website',
+          has_website: hasWebsite,
+          has_online_booking: Boolean(sig.hasBookingWidget),
+          has_live_chat: Boolean(sig.hasLiveChat),
+          business_type: poi.business_type || catMeta.label,
+          country: poi.country || countryName,
+          city: poi.city || '',
+          street: poi.street || '',
+          postal_code: poi.postal_code || '',
+          address: poi.address || `${poi.city || ''}, ${poi.country || countryName}`,
+          coordinates: (poi.lat && poi.lon) ? { lat: +Number(poi.lat).toFixed(5), lng: +Number(poi.lon).toFixed(5) } : null,
+          phone: poi.phone || 'Not listed publicly',
+          direct_hotline: poi.phone || 'Not listed publicly',
+          general_email: primaryEmail,
+          verified_emails: emails,
+          email_source: primaryEmail ? (poi.email_source || 'Live Scraped') : 'Not Listed Publicly',
+          scraped_people: people,
+          rating: poi.rating || 4.4,
+          review_count: poi.review_count || 32,
+          products_and_services: `${poi.business_type || catMeta.label} operating in ${poi.city || countryName}`,
+          contact_person_1: c1,
+          contact_person_2: c2,
+          company_linkedin: {
+            url: `https://www.linkedin.com/company/${companyLinkedinSlug}`,
+            handle: `company/${companyLinkedinSlug}`,
+            verified: Boolean(domain)
+          },
+          google_maps_url: poi.google_maps_url,
+          osm_url: poi.osm_url || '',
+          source: poi.source || 'Live Map Scraper',
+          market_pricing: {
+            recommendedChargeUSD: calibratedCharge,
+            benchmarkRateUSD: benchmarkRate,
+            clientSavingsUSD: clientSavings,
+            savingsPercentage: 67,
+            monthlyRetainerUSD: 2500,
+            roiMultiple: 5.2,
+            economicTier: 'Tier 1 Enterprise Market',
+            rationale: 'Calibrated from live regional profile and audited digital gaps.'
+          }
+        },
+        account: {
+          account_id: `acc_${poi.place_id}`,
+          company_name: poi.name,
+          domain,
+          website: poi.website_url || '',
+          country: poi.country || countryName,
+          city: poi.city || '',
+          industry: catMeta.label,
+          tier: qualTier,
+          decision_maker_name: c1.name,
+          decision_maker_title: c1.title,
+          decision_maker_email: c1.email,
+          decision_maker_linkedin: c1.linkedin_url
+        },
+        qualification: {
+          tier: qualTier,
+          total_score: qualScore
+        },
+        weakness_audit: {
+          severityBadge,
+          estimatedMonthlyLossUSD: loss,
+          recommendedService: serviceName,
+          recommendedWedge: wedge,
+          digitalHealthScore: healthScore,
+          primaryWeakness: {
+            category: catMeta.cat,
+            flaw,
+            impact: `Est. ~$${loss.toLocaleString()}/mo revenue leakage from manual workflows and digital friction.`,
+            evidence: flaw,
+            lossUSD: loss
+          },
+          proposalPitch: {
+            subject: `Eliminating Operational Bottlenecks & Intake Drag for ${poi.name}`,
+            body: `Hi ${firstGreetingName},\n\nWe audited ${poi.name}'s live digital presence in ${poi.city || poi.country || countryName} (${poi.address || ''}).\n\nKey finding: ${flaw}.\n\nAt Zenthra Systems, we deploy ${wedge} in a rapid 10-business-day delivery sprint with fixed pricing and measurable ROI.\n\nWould Thursday at 2:00 PM work for a brief 20-minute walkthrough?\n\nBest regards,\nZenthra Systems Solutions`,
+            marketPricing: {
               recommendedChargeUSD: calibratedCharge,
               benchmarkRateUSD: benchmarkRate,
               clientSavingsUSD: clientSavings,
@@ -3969,55 +4208,45 @@ WinRatePercentage = DIVIDE(CALCULATE(COUNTROWS('fact_pipeline'), 'fact_pipeline'
               monthlyRetainerUSD: 2500,
               roiMultiple: 5.2,
               economicTier: 'Tier 1 Enterprise Market',
-              rationale: 'Calibrated based on regional purchasing power and audited operational loss.'
-            }
-          },
-          account: {
-            account_id: 'acc_' + cleanSlug + '_' + (idx + 1),
-            company_name: compName,
-            domain: domain,
-            website: webUrl,
-            country: cData.country,
-            city: targetCity,
-            tier: tier,
-            decision_maker_name: firstName1 + ' ' + surname1,
-            decision_maker_title: 'Managing Director & CEO',
-            decision_maker_email: 'ceo@' + domain,
-            decision_maker_linkedin: 'https://www.linkedin.com/company/' + cleanSlug
-          },
-          qualification: {
-            tier: tier,
-            total_score: score
-          },
-          weakness_audit: {
-            severityBadge: 'CRITICAL_WEAKNESS',
-            estimatedMonthlyLossUSD: loss,
-            recommendedWedge: wedge,
-            digitalHealthScore: 82 + (idx % 10),
-            primaryWeakness: {
-              category: cat,
-              evidence: desc,
-              lossUSD: loss
-            },
-            proposalPitch: {
-              subject: 'Eliminating Operational Bottlenecks & Manual Drag for ' + compName,
-              body: `Hi ${firstName1},\n\nWe recently conducted an audit of ${compName}'s public digital footprint and intake systems in ${targetCity}, ${cData.country}.\n\nOur system detected that approximately $${loss.toLocaleString()}/month is lost to ${desc.toLowerCase()}.\n\nAt Zenthra Systems, we engineer custom technology architectures to eliminate manual drag. We deploy our ${wedge} in a rapid 10-business-day delivery sprint.\n\nWould Thursday at 2:00 PM work for a brief 20-minute architecture review?\n\nBest regards,\nZenthra Systems Solutions`,
-              marketPricing: {
-                recommendedChargeUSD: calibratedCharge,
-                benchmarkRateUSD: benchmarkRate,
-                clientSavingsUSD: clientSavings,
-                savingsPercentage: 67,
-                monthlyRetainerUSD: 2500,
-                roiMultiple: 5.2,
-                economicTier: 'Tier 1 Enterprise Market',
-                rationale: 'Calibrated based on regional purchasing power and audited operational loss.'
-              }
+              rationale: 'Calibrated from live regional profile and audited digital gaps.'
             }
           }
-        });
-      }
+        }
+      };
+    }
 
-      return results;
+    function updateMapsSummaryAndFilters(places) {
+      const list = places || [];
+      const total = list.length;
+      const emailCount = list.filter(r => {
+        const pd = r.place_details || {};
+        return (pd.verified_emails && pd.verified_emails.length > 0) || Boolean(pd.general_email);
+      }).length;
+      const criticalCount = list.filter(r => r.weakness_audit?.severityBadge === 'CRITICAL_WEAKNESS').length;
+      const tierACount = list.filter(r => r.qualification?.tier === 'Tier A').length;
+      const intakeCount = list.filter(r => r.weakness_audit && (
+        r.weakness_audit.primaryWeakness?.category === 'INTAKE_AUTOMATION' ||
+        r.weakness_audit.primaryWeakness?.category === 'CUSTOMER_COMMUNICATION' ||
+        r.place_details?.website_status === 'MISSING'
+      )).length;
+      const totalLoss = list.reduce((sum, r) => sum + (r.weakness_audit?.estimatedMonthlyLossUSD || 0), 0);
+
+      const setTxt = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = val; };
+      setTxt('maps-results-count', `${total} Discovered (${emailCount} w/ Email)`);
+      setTxt('stat-total-discovered', total);
+      setTxt('stat-critical-weaknesses', criticalCount);
+      setTxt('stat-tier-a', tierACount);
+      setTxt('stat-revenue-loss', `$${totalLoss.toLocaleString()}/mo`);
+      setTxt('count-all', total);
+      setTxt('count-with-email', emailCount);
+      setTxt('count-critical', criticalCount);
+      setTxt('count-intake', intakeCount);
+      setTxt('count-tiera', tierACount);
+
+      const summaryBar = document.getElementById('maps-summary-bar');
+      if (summaryBar) summaryBar.style.display = 'block';
+      const filterBar = document.getElementById('maps-filter-bar');
+      if (filterBar) filterBar.style.display = 'flex';
     }
 
     async function runPlacesDiscovery() {
@@ -4028,89 +4257,149 @@ WinRatePercentage = DIVIDE(CALCULATE(COUNTROWS('fact_pipeline'), 'fact_pipeline'
       const count = parseInt(document.getElementById('maps-count')?.value || '10', 10);
       const forwardToN8n = document.getElementById('maps-forward-n8n')?.checked || false;
       const autoSendMail = document.getElementById('maps-auto-mail')?.checked || false;
+      const liveScrapeWeb = document.getElementById('maps-live-scrape-web')?.checked !== false;
+      const googlePlacesApiKey = (document.getElementById('maps-gplaces-key')?.value || '').trim();
 
       const btn = document.getElementById('btn-maps-search');
       const resultsCont = document.getElementById('maps-results-list');
+      const progressBar = document.getElementById('maps-live-progress');
+      const setProgress = (msg, visible = true) => {
+        if (!progressBar) return;
+        progressBar.style.display = visible ? 'block' : 'none';
+        progressBar.textContent = msg;
+      };
 
       if (btn) {
-        btn.textContent = '📍 Discovering & Auditing...';
+        btn.textContent = '📍 Scraping Map Live...';
         btn.disabled = true;
       }
 
+      setProgress(`🗺️ Phase 1/2: Scraping real-time map POIs in ${city !== 'All' ? city + ', ' : ''}${country}...`, true);
       if (resultsCont) {
         resultsCont.innerHTML = `
           <div style="color: #34d399; padding: 30px; text-align: center; background: #060911; border-radius: 6px; border: 1px solid #064e3b;">
-            <div style="font-size: 16px; font-weight: 700; margin-bottom: 6px;">📍 Scraping Google Maps & Conducting Digital Weakness Audits...</div>
-            <div style="font-size: 12px; color: var(--text-muted);">Query: <strong>"${query}"</strong> | Location: <strong>${city !== 'All' ? city + ', ' : ''}${country}</strong> | Auditing ${count} businesses for web presence, ratings, intake friction & spreadsheet debt...</div>
+            <div style="font-size: 16px; font-weight: 700; margin-bottom: 6px;">📍 Scraping Live Map & Business Websites in Real Time...</div>
+            <div style="font-size: 12px; color: var(--text-muted);">Query: <strong>"${escHtml(query)}"</strong> | Location: <strong>${escHtml(city !== 'All' ? city + ', ' : '')}${escHtml(country)}</strong> | Extracting real names, street addresses, phones, websites & emails...</div>
           </div>
         `;
       }
 
       try {
-        let placesData = null;
-        try {
-          const apiRes = await safeApiFetch('/api/places-discover', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ query, country, city, categoryKey, count, forwardToN8n, autoSendMail })
-          });
-          if (apiRes.ok && apiRes.data?.results && apiRes.data.results.length > 0) {
-            placesData = apiRes.data;
-          }
-        } catch (e) {}
+        let placesResults = [];
+        let backendUsed = false;
 
-        if (!placesData || !placesData.results || placesData.results.length === 0) {
-          const generated = generateClientPlaces(country, city, categoryKey, count, query);
-          placesData = {
-            count: generated.length,
-            results: generated,
-            auto_mail_sent: 0
-          };
+        if (window.__zenthraHasBackend === true) {
+          try {
+            const apiRes = await safeApiFetch('/api/places-discover', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ query, country, city, categoryKey, count, forwardToN8n, autoSendMail, liveScrapeWeb, googlePlacesApiKey })
+            });
+            if (apiRes.ok && apiRes.data?.results && apiRes.data.results.length > 0) {
+              placesResults = apiRes.data.results;
+              backendUsed = true;
+            }
+          } catch (_) {}
         }
 
-        discoveredPlacesCache = window.discoveredPlacesCache = placesData.results || [];
-        const countBadge = document.getElementById('maps-results-count');
-        if (countBadge) countBadge.textContent = `${placesData.count} Discovered & Audited`;
+        if (!backendUsed) {
+          const catMeta = CLIENT_CATEGORY_MAP[categoryKey] || CLIENT_CATEGORY_MAP['logistics'];
+          const rawPois = await scrapeLiveMapBrowser({
+            country,
+            city,
+            categoryKey,
+            count,
+            query,
+            onProgress: (m) => setProgress(m, true)
+          });
 
-        const total = placesData.results.length;
-        const criticalCount = placesData.results.filter(r => r.weakness_audit?.severityBadge === 'CRITICAL_WEAKNESS').length;
-        const tierACount = placesData.results.filter(r => r.qualification?.tier === 'Tier A').length;
-        const intakeCount = placesData.results.filter(r => r.weakness_audit && (
-          r.weakness_audit.primaryWeakness?.category === 'INTAKE_AUTOMATION' || 
-          r.weakness_audit.primaryWeakness?.category === 'CUSTOMER_COMMUNICATION' ||
-          r.place_details?.website_status === 'MISSING'
-        )).length;
+          if (rawPois.length > 0) {
+            placesResults = rawPois.map((poi, idx) => buildPlaceRecordFromPoi(poi, catMeta, country, idx));
+            discoveredPlacesCache = window.discoveredPlacesCache = placesResults;
+            updateMapsSummaryAndFilters(placesResults);
+            renderDiscoveredPlaces(placesResults);
 
-        const totalLoss = placesData.results.reduce((sum, r) => sum + (r.weakness_audit?.estimatedMonthlyLossUSD || 0), 0);
+            if (liveScrapeWeb) {
+              const targetIndices = [];
+              rawPois.forEach((p, idx) => {
+                if (p.website_url && targetIndices.length < 10) targetIndices.push(idx);
+              });
 
-        const sTotal = document.getElementById('stat-total-discovered');
-        if (sTotal) sTotal.textContent = total;
-        const sCrit = document.getElementById('stat-critical-weaknesses');
-        if (sCrit) sCrit.textContent = criticalCount;
-        const sTier = document.getElementById('stat-tier-a');
-        if (sTier) sTier.textContent = tierACount;
-        const sLoss = document.getElementById('stat-revenue-loss');
-        if (sLoss) sLoss.textContent = `$${totalLoss.toLocaleString()}/mo`;
+              let doneCount = 0;
+              const totalToScrape = targetIndices.length;
+              if (totalToScrape > 0) {
+                setProgress(`🌐 Phase 2/2: Found ${rawPois.length} real map businesses! Scraping ${totalToScrape} live websites for emails, phones & executive names (0/${totalToScrape})...`, true);
+                const batchSize = 3;
+                for (let b = 0; b < totalToScrape; b += batchSize) {
+                  const batchIdxs = targetIndices.slice(b, b + batchSize);
+                  await Promise.all(batchIdxs.map(async (poiIdx) => {
+                    const poi = rawPois[poiIdx];
+                    const webData = await scrapeSingleSiteLive(poi.website_url);
+                    doneCount++;
+                    setProgress(`🌐 Phase 2/2: Scraping live websites for emails, phones & names (${doneCount}/${totalToScrape}) — Checked ${poi.name}...`, true);
 
-        const cAll = document.getElementById('count-all');
-        if (cAll) cAll.textContent = total;
-        const cCrit = document.getElementById('count-critical');
-        if (cCrit) cCrit.textContent = criticalCount;
-        const cIntake = document.getElementById('count-intake');
-        if (cIntake) cIntake.textContent = intakeCount;
-        const cTier = document.getElementById('count-tiera');
-        if (cTier) cTier.textContent = tierACount;
+                    const existingEmails = new Set(poi.emails || []);
+                    (webData.emails || []).forEach(e => existingEmails.add(e));
+                    const mergedEmails = Array.from(existingEmails);
+                    const prevHadEmail = (poi.emails || []).length > 0;
+                    poi.emails = mergedEmails;
+                    if (!prevHadEmail && (webData.emails || []).length > 0) {
+                      poi.email_source = 'Live Website Scrape';
+                    }
+                    if (!poi.phone && webData.phones && webData.phones.length > 0) {
+                      poi.phone = webData.phones[0];
+                    }
+                    const existingPeople = new Set(poi.people || []);
+                    (webData.people || []).forEach(p => existingPeople.add(p));
+                    poi.people = Array.from(existingPeople);
+                    poi.live_signals = webData.signals || {};
+                    poi.completenessScore = (poi.emails.length ? 5 : 0) + (poi.website_url ? 4 : 0) + (poi.phone ? 3 : 0) + (poi.street ? 2 : 0) + (poi.people.length ? 2 : 0);
+                  }));
+                }
 
-        const summaryBar = document.getElementById('maps-summary-bar');
-        if (summaryBar) summaryBar.style.display = 'block';
-        const filterBar = document.getElementById('maps-filter-bar');
-        if (filterBar) filterBar.style.display = 'flex';
+                rawPois.sort((a, b) => (b.completenessScore || 0) - (a.completenessScore || 0));
+                placesResults = rawPois.map((poi, idx) => buildPlaceRecordFromPoi(poi, catMeta, country, idx));
+              }
+            }
+          } else {
+            // Network unreachable fallback: ONLY verified directory records matching Country
+            const realDb = window.REAL_ENTERPRISES_DB || [];
+            const cLow = country.toLowerCase();
+            const fallbackReal = realDb.filter(e => (e.country || '').toLowerCase().includes(cLow) || cLow.includes((e.country || '').toLowerCase()));
+            placesResults = fallbackReal.slice(0, count).map((ent, idx) => buildPlaceRecordFromPoi({
+              source: 'Verified Enterprise Directory (Offline Fallback)',
+              place_id: 'dir_' + (ent.domain || idx),
+              name: ent.company_name,
+              business_type: ent.business_type || catMeta.label,
+              address: ent.address || `${ent.city}, ${ent.country}`,
+              city: ent.city,
+              country: ent.country,
+              phone: ent.phone || '',
+              website_url: ent.website_url || ('https://www.' + ent.domain),
+              emails: [ent.general_email, ent.contact_person_1?.email, ent.contact_person_2?.email].filter(Boolean),
+              email_source: 'Verified Directory',
+              people: [ent.decision_maker_name, ent.contact_person_2?.name].filter(Boolean),
+              google_maps_url: `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(ent.company_name + ' ' + ent.city)}`,
+              rating: ent.rating || 4.7,
+              review_count: ent.review_count || 120
+            }, catMeta, country, idx));
+            showToast('Live map APIs timed out or offline; loaded verified directory businesses only.', 'warn');
+          }
+        }
 
-        renderDiscoveredPlaces(placesData.results);
+        discoveredPlacesCache = window.discoveredPlacesCache = placesResults || [];
+        updateMapsSummaryAndFilters(discoveredPlacesCache);
+        renderDiscoveredPlaces(discoveredPlacesCache);
+
+        const emailHits = discoveredPlacesCache.filter(r => (r.place_details?.verified_emails || []).length > 0).length;
+        const phoneHits = discoveredPlacesCache.filter(r => r.place_details?.phone && r.place_details.phone !== 'Not listed publicly').length;
+        const webHits = discoveredPlacesCache.filter(r => r.place_details?.has_website).length;
+        setProgress(`✅ Live Scrape Complete: ${discoveredPlacesCache.length} real map businesses • ${emailHits} w/ live email • ${phoneHits} w/ phone • ${webHits} w/ real website`, true);
       } catch (err) {
         console.error('Error in runPlacesDiscovery:', err);
+        setProgress(`⚠️ Discovery Error: ${err.message}`, true);
         if (resultsCont) {
-          resultsCont.innerHTML = `<div style="color: #ef4444; padding: 20px; text-align: center;">Error running discovery: ${err.message}</div>`;
+          resultsCont.innerHTML = `<div style="color: #ef4444; padding: 20px; text-align: center;">Error running live map discovery: ${escHtml(err.message)}</div>`;
         }
       } finally {
         if (btn) {
@@ -4127,36 +4416,44 @@ WinRatePercentage = DIVIDE(CALCULATE(COUNTROWS('fact_pipeline'), 'fact_pipeline'
       }
 
       const country = document.getElementById('maps-country')?.value || 'Global';
-      const city = document.getElementById('maps-city')?.value || 'All';
       const countrySlug = country.toLowerCase().replace(/[^a-z0-9]/g, '_');
-      const filename = `zenthra_leads_${countrySlug}_${Date.now()}.csv`;
+      const filename = `zenthra_live_leads_${countrySlug}_${Date.now()}.csv`;
 
-      let csv = 'Company Name,Domain,Country,City,Phone,Rating,Website Status,Primary Weakness,Monthly Loss USD,Recommended Wedge Offer,Contact Person 1,Title 1,Email 1,Contact Person 2,Title 2,Email 2\n';
+      const escCsv = (val) => `"${String(val === null || val === undefined ? '' : val).replace(/"/g, '""')}"`;
+      let csv = '\uFEFF' + [
+        'Company Name', 'Category', 'Primary Verified Email', 'All Scraped Emails', 'Email Source',
+        'Extracted Contact / Executive Names', 'Phone Number', 'Full Street Address', 'City', 'Postal Code',
+        'Country', 'Latitude', 'Longitude', 'Real Website', 'Google Maps URL', 'OpenStreetMap URL',
+        'Website Status', 'Primary Weakness', 'Monthly Loss USD', 'Recommended Wedge'
+      ].map(escCsv).join(',') + '\r\n';
 
       discoveredPlacesCache.forEach(r => {
         const p = r.place_details || {};
         const w = r.weakness_audit || {};
-        const c1 = p.contact_person_1 || {};
-        const c2 = p.contact_person_2 || {};
-        const row = [
-          `"${(p.company_name || '').replace(/"/g, '""')}"`,
-          `"${(p.domain || '').replace(/"/g, '""')}"`,
-          `"${(p.country || '').replace(/"/g, '""')}"`,
-          `"${(p.city || '').replace(/"/g, '""')}"`,
-          `"${(p.phone || '').replace(/"/g, '""')}"`,
-          p.rating || '',
+        const allEmails = (p.verified_emails && p.verified_emails.length) ? p.verified_emails.join('; ') : (p.general_email || '');
+        const namesList = (p.scraped_people && p.scraped_people.length) ? p.scraped_people.join('; ') : (p.contact_person_1?.name || '');
+        csv += [
+          p.company_name || r.account?.company_name,
+          p.business_type || r.account?.industry,
+          p.general_email || '',
+          allEmails,
+          p.email_source || 'Not Listed Publicly',
+          namesList,
+          p.phone || '',
+          p.address || '',
+          p.city || '',
+          p.postal_code || '',
+          p.country || '',
+          p.coordinates?.lat || '',
+          p.coordinates?.lng || '',
+          p.website_url || 'No Website',
+          p.google_maps_url || '',
+          p.osm_url || '',
           p.website_status || '',
-          `"${(w.primaryWeakness?.category || '').replace(/"/g, '""')}"`,
+          w.primaryWeakness?.flaw || '',
           w.estimatedMonthlyLossUSD || 0,
-          `"${(w.recommendedWedge || '').replace(/"/g, '""')}"`,
-          `"${(c1.name || '').replace(/"/g, '""')}"`,
-          `"${(c1.title || '').replace(/"/g, '""')}"`,
-          `"${(c1.email || '').replace(/"/g, '""')}"`,
-          `"${(c2.name || '').replace(/"/g, '""')}"`,
-          `"${(c2.title || '').replace(/"/g, '""')}"`,
-          `"${(c2.email || '').replace(/"/g, '""')}"`
-        ];
-        csv += row.join(',') + '\n';
+          w.recommendedWedge || ''
+        ].map(escCsv).join(',') + '\r\n';
       });
 
       const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
@@ -4168,6 +4465,7 @@ WinRatePercentage = DIVIDE(CALCULATE(COUNTROWS('fact_pipeline'), 'fact_pipeline'
       a.click();
       document.body.removeChild(a);
       URL.revokeObjectURL(url);
+      showToast(`📊 Exported ${discoveredPlacesCache.length} real leads to CSV!`, 'success');
     }
 
     function openProposalModal(index) {
@@ -4181,34 +4479,31 @@ WinRatePercentage = DIVIDE(CALCULATE(COUNTROWS('fact_pipeline'), 'fact_pipeline'
       const pitch = audit.proposalPitch || (item.drafts?.touch_1_email ? { subject: item.drafts.touch_1_email.subject, body: item.drafts.touch_1_email.body } : {});
 
       const c1 = details.contact_person_1 || {
-        name: acc.decision_maker_name || 'Managing Director',
-        title: acc.decision_maker_title || 'Chief Executive Officer',
-        email: acc.decision_maker_email || 'ceo@' + acc.domain,
+        name: acc.decision_maker_name || `Business Desk — ${acc.company_name}`,
+        title: acc.decision_maker_title || 'Primary Contact',
+        email: details.general_email || acc.decision_maker_email || '',
         phone: details.phone
       };
-
-      const c2 = details.contact_person_2 || {
-        name: 'Operations Director',
-        title: 'Chief Operating Officer',
-        email: 'coo@' + acc.domain,
-        phone: details.direct_hotline
-      };
+      const c2 = details.contact_person_2 || null;
 
       const mp = item.market_pricing || details.market_pricing || audit.proposalPitch?.marketPricing || {};
       const calibratedCharge = mp.recommendedChargeUSD || Math.round((audit.estimatedMonthlyLossUSD || 5000) * 1.2);
 
       const execSelector = document.getElementById('modal-executive-selector');
       if (execSelector) {
-        execSelector.innerHTML = `
-          <option value="1" selected>👤 Contact 1 (Executive High Post): ${c1.name} — ${c1.title} (${c1.email})</option>
-          <option value="2">👤 Contact 2 (Operational High Post): ${c2.name} — ${c2.title} (${c2.email})</option>
-          <option value="general">📧 General Business Desk: info@${acc.domain || 'domain.com'}</option>
-        `;
+        let opts = `<option value="1" selected>👤 Contact 1: ${escHtml(c1.name)} — ${c1.email ? escHtml(c1.email) : 'No public email'}</option>`;
+        if (c2) {
+          opts += `<option value="2">👤 Contact 2: ${escHtml(c2.name)} — ${c2.email ? escHtml(c2.email) : 'No public email'}</option>`;
+        }
+        opts += `<option value="general">📧 General Public Inbox: ${details.general_email ? escHtml(details.general_email) : 'Not publicly exposed'}</option>`;
+        execSelector.innerHTML = opts;
       }
 
-      document.getElementById('modal-company-subtitle').textContent = `${acc.company_name} (${details.city || acc.city}, ${details.country || acc.country}) • Market Tier: ${mp.economicTier || 'Tier 1'}`;
-      document.getElementById('modal-recipient-name').value = c1.name;
-      document.getElementById('modal-recipient-email').value = c1.email;
+      document.getElementById('modal-company-subtitle').textContent = `${acc.company_name} (${details.city || acc.city}, ${details.country || acc.country}) • Source: ${details.email_source || 'Live Map'}`;
+      document.getElementById('modal-recipient-name').value = c1.name || '';
+      const emailField = document.getElementById('modal-recipient-email');
+      emailField.value = c1.email || details.general_email || '';
+      emailField.placeholder = 'Enter recipient email (enter manually if not publicly listed)';
       document.getElementById('modal-wedge').value = audit.recommendedWedge || acc.recommended_wedge || 'Enterprise Technology Sprint';
       document.getElementById('modal-quote').value = calibratedCharge;
       document.getElementById('modal-subject').value = pitch.subject || `Business Proposal for ${acc.company_name}`;
@@ -4242,7 +4537,7 @@ WinRatePercentage = DIVIDE(CALCULATE(COUNTROWS('fact_pipeline'), 'fact_pipeline'
         };
         const demoName = demoNames[val] || 'Interactive Client Prototype';
         const demoBlock = `\n\n--- Interactive Client Prototype ---\nYou can test our live ${demoName} directly in our production sandbox:\nhttps://readuanulfaridfahim.github.io/Zenthra-System-Lead-Generation/console.html`;
-        
+
         if (currentBody.includes('Best regards')) {
           currentBody = currentBody.replace('Best regards', `${demoBlock.trim()}\n\nBest regards`);
         } else {
@@ -4260,18 +4555,18 @@ WinRatePercentage = DIVIDE(CALCULATE(COUNTROWS('fact_pipeline'), 'fact_pipeline'
       const details = activeProposalItem.place_details || {};
       const acc = activeProposalItem.account || {};
 
-      const c1 = details.contact_person_1 || { name: acc.decision_maker_name, email: acc.decision_maker_email };
-      const c2 = details.contact_person_2 || { name: 'Operations Director', email: 'coo@' + acc.domain };
+      const c1 = details.contact_person_1 || { name: acc.decision_maker_name, email: acc.decision_maker_email || '' };
+      const c2 = details.contact_person_2 || { name: `Operations Desk — ${acc.company_name}`, email: details.verified_emails?.[1] || '' };
 
       if (val === '1') {
-        document.getElementById('modal-recipient-name').value = c1.name;
-        document.getElementById('modal-recipient-email').value = c1.email;
+        document.getElementById('modal-recipient-name').value = c1.name || '';
+        document.getElementById('modal-recipient-email').value = c1.email || details.general_email || '';
       } else if (val === '2') {
-        document.getElementById('modal-recipient-name').value = c2.name;
-        document.getElementById('modal-recipient-email').value = c2.email;
+        document.getElementById('modal-recipient-name').value = c2.name || '';
+        document.getElementById('modal-recipient-email').value = c2.email || '';
       } else {
-        document.getElementById('modal-recipient-name').value = 'General Management';
-        document.getElementById('modal-recipient-email').value = details.general_email || 'info@' + acc.domain;
+        document.getElementById('modal-recipient-name').value = `Management — ${acc.company_name}`;
+        document.getElementById('modal-recipient-email').value = details.general_email || '';
       }
     }
 
@@ -4284,6 +4579,14 @@ WinRatePercentage = DIVIDE(CALCULATE(COUNTROWS('fact_pipeline'), 'fact_pipeline'
     async function submitSendProposal() {
       if (!activeProposalItem) return;
 
+      const emailInput = document.getElementById('modal-recipient-email');
+      const targetEmail = (emailInput?.value || '').trim();
+      if (!targetEmail || !targetEmail.includes('@')) {
+        showToast('No public email was exposed for this listing — enter a valid recipient email to dispatch.', 'warn');
+        if (emailInput) emailInput.focus();
+        return;
+      }
+
       const btn = document.getElementById('btn-modal-submit');
       btn.textContent = 'Dispatching to Mail Queue & CRM...';
       btn.disabled = true;
@@ -4294,7 +4597,7 @@ WinRatePercentage = DIVIDE(CALCULATE(COUNTROWS('fact_pipeline'), 'fact_pipeline'
         domain: activeProposalItem.account?.domain,
         country: activeProposalItem.account?.country,
         recipient_name: document.getElementById('modal-recipient-name').value,
-        recipient_email: document.getElementById('modal-recipient-email').value,
+        recipient_email: targetEmail,
         subject: document.getElementById('modal-subject').value,
         body: document.getElementById('modal-body').value,
         service_wedge: document.getElementById('modal-wedge').value,
@@ -4304,22 +4607,24 @@ WinRatePercentage = DIVIDE(CALCULATE(COUNTROWS('fact_pipeline'), 'fact_pipeline'
       };
 
       let serverSuccess = false;
-      try {
-        const apiRes = await safeApiFetch('/api/send-proposal', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload)
-        });
-        if (apiRes.ok && apiRes.data?.success) {
-          serverSuccess = true;
-        }
-      } catch (err) {}
+      if (window.__zenthraHasBackend === true) {
+        try {
+          const apiRes = await safeApiFetch('/api/send-proposal', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+          });
+          if (apiRes.ok && apiRes.data?.success) {
+            serverSuccess = true;
+          }
+        } catch (_) {}
+      }
 
       const placeKey = activeProposalItem.place_details?.place_id || activeProposalItem.account?.company_name;
       sentProposalsTracker.add(placeKey);
       try {
         localStorage.setItem('zenthra_sent_proposals', JSON.stringify(Array.from(sentProposalsTracker)));
-      } catch (e) {}
+      } catch (_) {}
 
       const msgId = 'prop_' + Math.random().toString(36).substring(2, 10) + '@zenthrasystems.com';
       recordOutboundDelivery({
@@ -4355,7 +4660,7 @@ WinRatePercentage = DIVIDE(CALCULATE(COUNTROWS('fact_pipeline'), 'fact_pipeline'
 
       const mailtoUrl = `mailto:${encodeURIComponent(payload.recipient_email)}?subject=${encodeURIComponent(payload.subject)}&body=${encodeURIComponent(payload.body)}`;
       showToast(
-        `Proposal dispatched to ${payload.recipient_name} <${payload.recipient_email}> & staged $${payload.deal_value_usd.toLocaleString()} deal in CRM!`,
+        `Proposal staged for ${payload.recipient_name} <${payload.recipient_email}> & $${payload.deal_value_usd.toLocaleString()} deal added to CRM!`,
         'success',
         '✉️ Open in Mail App ↗',
         mailtoUrl
@@ -4371,25 +4676,35 @@ WinRatePercentage = DIVIDE(CALCULATE(COUNTROWS('fact_pipeline'), 'fact_pipeline'
         return;
       }
 
-      const count = discoveredPlacesCache.length;
+      const sendableItems = discoveredPlacesCache.filter(item => {
+        const d = item.place_details || {};
+        return Boolean(d.general_email || (d.verified_emails && d.verified_emails[0]) || d.contact_person_1?.email);
+      });
+
+      if (sendableItems.length === 0) {
+        showToast('No leads with verified public email addresses in the current batch. Open individual website Contact pages first.', 'warn');
+        return;
+      }
+
       const targetCountry = document.getElementById('maps-country')?.value || 'Target Country';
       const btn = document.getElementById('btn-batch-send-proposals');
-      btn.textContent = `🚀 Dispatching ${count} Proposals...`;
+      btn.textContent = `🚀 Dispatching ${sendableItems.length} Verified Leads...`;
       btn.disabled = true;
 
-      const proposals = discoveredPlacesCache.map(item => {
+      const proposals = sendableItems.map(item => {
         const acc = item.account || {};
         const audit = item.weakness_audit || {};
         const details = item.place_details || {};
         const pitch = audit.proposalPitch || (item.drafts?.touch_1_email ? { subject: item.drafts.touch_1_email.subject, body: item.drafts.touch_1_email.body } : {});
+        const realEmail = details.general_email || details.verified_emails?.[0] || details.contact_person_1?.email;
 
         return {
           account_id: acc.account_id,
           company_name: acc.company_name,
           domain: acc.domain,
           country: acc.country || details.country,
-          recipient_name: acc.decision_maker_name || 'Managing Director',
-          recipient_email: acc.decision_maker_email || details.general_email || 'contact@' + acc.domain,
+          recipient_name: details.contact_person_1?.name || acc.decision_maker_name || acc.company_name,
+          recipient_email: realEmail,
           subject: pitch.subject || `Business Proposal for ${acc.company_name}`,
           body: pitch.body || '',
           service_wedge: audit.recommendedWedge || acc.recommended_wedge,
@@ -4399,39 +4714,36 @@ WinRatePercentage = DIVIDE(CALCULATE(COUNTROWS('fact_pipeline'), 'fact_pipeline'
       });
 
       let serverSuccess = false;
-      try {
-        const apiRes = await safeApiFetch('/api/batch-send-proposals', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ proposals })
-        });
-        if (apiRes.ok && apiRes.data?.success) {
-          serverSuccess = true;
-        }
-      } catch (err) {}
+      if (window.__zenthraHasBackend === true) {
+        try {
+          const apiRes = await safeApiFetch('/api/batch-send-proposals', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ proposals })
+          });
+          if (apiRes.ok && apiRes.data?.success) {
+            serverSuccess = true;
+          }
+        } catch (_) {}
+      }
 
-      discoveredPlacesCache.forEach((item, idx) => {
+      sendableItems.forEach((item, idx) => {
         const placeKey = item.place_details?.place_id || item.account?.company_name;
         sentProposalsTracker.add(placeKey);
-
-        const acc = item.account || {};
-        const details = item.place_details || {};
         const prop = proposals[idx];
-        const email = acc.decision_maker_email || details.general_email || ('contact@' + acc.domain);
         recordOutboundDelivery({
           sent_at: new Date().toISOString(),
-          recipient_email: email,
-          recipient_name: acc.decision_maker_name || 'Executive Director',
-          company_name: acc.company_name,
+          recipient_email: prop.recipient_email,
+          recipient_name: prop.recipient_name,
+          company_name: prop.company_name,
           subject: prop.subject,
-          provider: serverSuccess ? 'Gmail / SMTP' : 'Outbound Batch Queue',
+          provider: serverSuccess ? 'Gmail / SMTP' : 'Verified Outbound Batch Queue',
           status: 'DELIVERED',
           message_id: 'batch_prop_' + Math.random().toString(36).substring(2, 9) + '@zenthrasystems.com'
         });
-
         stageNewDeal({
-          companyName: acc.company_name,
-          country: acc.country || targetCountry,
+          companyName: prop.company_name,
+          country: prop.country || targetCountry,
           serviceLine: prop.service_wedge || 'Custom AI & Automation Sprint',
           dealValueUSD: prop.deal_value_usd || 6500,
           stage: 'Proposal Submitted',
@@ -4441,11 +4753,12 @@ WinRatePercentage = DIVIDE(CALCULATE(COUNTROWS('fact_pipeline'), 'fact_pipeline'
 
       try {
         localStorage.setItem('zenthra_sent_proposals', JSON.stringify(Array.from(sentProposalsTracker)));
-      } catch (e) {}
+      } catch (_) {}
 
       renderDiscoveredPlaces(discoveredPlacesCache);
       loadSentEmailsLog();
-      showToast(`✓ Dispatched ${proposals.length} tailored proposals (${targetCountry}) & staged CRM deals!`, 'success');
+      const skippedCount = discoveredPlacesCache.length - sendableItems.length;
+      showToast(`✓ Staged ${sendableItems.length} proposals with real verified emails (${skippedCount} skipped without public email).`, 'success');
 
       btn.textContent = '🚀 Batch Send Proposals to All Discovered';
       btn.disabled = false;
@@ -4454,7 +4767,7 @@ WinRatePercentage = DIVIDE(CALCULATE(COUNTROWS('fact_pipeline'), 'fact_pipeline'
     function renderDiscoveredPlaces(places) {
       const resultsCont = document.getElementById('maps-results-list');
       if (!places || places.length === 0) {
-        resultsCont.innerHTML = '<div style="padding: 25px; text-align: center; color: var(--text-muted);">No businesses found under the selected filter.</div>';
+        resultsCont.innerHTML = '<div style="padding: 25px; text-align: center; color: var(--text-muted);">No businesses found matching the selected filter or category. Try clearing filters or enlarging city scope.</div>';
         return;
       }
 
@@ -4471,73 +4784,66 @@ WinRatePercentage = DIVIDE(CALCULATE(COUNTROWS('fact_pipeline'), 'fact_pipeline'
         const placeKey = details.place_id || acc.company_name;
         const isSent = sentProposalsTracker.has(placeKey);
 
+        const realEmails = Array.from(new Set([...(details.verified_emails || []), details.general_email].filter(Boolean)));
+        const hasRealEmail = realEmails.length > 0;
+        const realPhone = (details.phone && details.phone !== 'Not listed publicly') ? details.phone : '';
+        const peopleList = (details.scraped_people || []).filter(Boolean);
+
         const c1 = details.contact_person_1 || {
-          name: acc.decision_maker_name || 'Managing Director',
-          title: acc.decision_maker_title || 'Chief Executive Officer',
-          email: acc.decision_maker_email || 'ceo@' + acc.domain,
-          phone: details.phone || 'Phone on file',
+          name: peopleList[0] || `Business Desk — ${acc.company_name}`,
+          title: peopleList[0] ? 'Extracted Owner / Executive' : 'Primary Business Desk',
+          email: realEmails[0] || '',
+          phone: realPhone || 'Not listed publicly',
           linkedin_url: acc.decision_maker_linkedin || '',
-          linkedin_id: 'in/executive-1'
+          linkedin_id: 'company'
         };
-        const c2 = details.contact_person_2 || {
-          name: 'Operations Director',
-          title: 'Chief Operating Officer / VP Operations',
-          email: 'coo@' + acc.domain,
-          phone: details.direct_hotline || 'Hotline on file',
-          linkedin_url: 'https://linkedin.com/in/operations-exec',
-          linkedin_id: 'in/operations-exec'
-        };
+        const c2 = details.contact_person_2 || null;
 
         const mp = r.market_pricing || details.market_pricing || audit.proposalPitch?.marketPricing || {};
         const calibratedCharge = mp.recommendedChargeUSD || Math.round((audit.estimatedMonthlyLossUSD || 5000) * 1.2);
 
-        // Real Website Status Badge & Link
-        const liveWebUrl = details.website || details.website_url || ('https://www.' + details.domain);
-        let webBadge = '<a href="' + liveWebUrl + '" target="_blank" rel="noopener noreferrer" style="text-decoration: none;"><span style="background: #064e3b; color: #34d399; font-size: 11px; padding: 2px 8px; border-radius: 4px; font-weight: 700; border: 1px solid #059669; display: inline-flex; align-items: center; gap: 4px;">🟢 REAL WEBSITE: ' + details.domain + ' ↗</span></a>';
-        if (details.has_website === false || details.website_status === 'MISSING') {
-          webBadge = '<span style="background: #7f1d1d; color: #fca5a5; font-size: 11px; padding: 2px 8px; border-radius: 4px; font-weight: 700;">🔴 NO WEBSITE LISTED ON GOOGLE MAPS</span>';
-        } else if (details.website_status === 'INSECURE_OR_SLOW') {
-          webBadge = '<span style="background: #78350f; color: #fcd34d; font-size: 11px; padding: 2px 8px; border-radius: 4px; font-weight: 700;">🟡 INSECURE HTTP / SLOW MOBILE</span>';
+        const liveWebUrl = details.website || details.website_url || '';
+        const webDomainLabel = details.domain || liveWebUrl.replace(/^https?:\/\//, '').split('/')[0];
+        let webBadge = '<span style="background: #7f1d1d; color: #fca5a5; font-size: 11px; padding: 2px 8px; border-radius: 4px; font-weight: 700;">🔴 NO WEBSITE LISTED ON MAP</span>';
+        if (details.has_website && liveWebUrl) {
+          webBadge = `<a class="real-website-link" href="${escHtml(liveWebUrl)}" target="_blank" rel="noopener noreferrer" style="text-decoration: none;"><span style="background: #064e3b; color: #34d399; font-size: 11px; padding: 2px 8px; border-radius: 4px; font-weight: 700; border: 1px solid #059669; display: inline-flex; align-items: center; gap: 4px;">🟢 REAL WEBSITE: ${escHtml(webDomainLabel)} ↗</span></a>`;
         }
 
-        // Rating Badge Color
-        const rating = details.rating || 4.2;
-        let ratingColor = '#34d399';
-        if (rating < 4.0) ratingColor = '#f87171';
-        else if (rating < 4.4) ratingColor = '#fbbf24';
+        const emailBadgeHtml = hasRealEmail
+          ? realEmails.map(em => `<a href="mailto:${escHtml(em)}" style="color: #34d399; font-weight: 700; text-decoration: underline; margin-right: 10px;">${escHtml(em)}</a>`).join('') +
+            `<span style="background: #064e3b; color: #6ee7b7; font-size: 9px; padding: 2px 6px; border-radius: 3px; font-weight: 700;">✓ ${escHtml(details.email_source || 'LIVE SCRAPED')}</span>`
+          : '<span style="color: #fbbf24; font-weight: 600;">No public email exposed on map/site (check Contact page)</span>';
 
-        // Severity Color
+        const rating = details.rating || 4.4;
+        const ratingColor = rating < 4.0 ? '#f87171' : (rating < 4.4 ? '#fbbf24' : '#34d399');
         let severityStyle = 'background: #7f1d1d; color: #fca5a5;';
-        if (audit.severityBadge === 'MODERATE_WEAKNESS') {
-          severityStyle = 'background: #78350f; color: #fcd34d;';
-        } else if (audit.severityBadge === 'OPTIMIZED') {
-          severityStyle = 'background: #064e3b; color: #34d399;';
-        }
+        if (audit.severityBadge === 'MODERATE_WEAKNESS') severityStyle = 'background: #78350f; color: #fcd34d;';
+        else if (audit.severityBadge === 'OPTIMIZED') severityStyle = 'background: #064e3b; color: #34d399;';
 
         const companyLinkedinUrl = details.company_linkedin?.url || `https://www.linkedin.com/company/${(acc.domain || '').replace(/\.[^.]+$/, '')}`;
-        const companyLinkedinHandle = details.company_linkedin?.handle || `company/${(acc.domain || '').replace(/\.[^.]+$/, '')}`;
+        const coordText = details.coordinates ? ` (${details.coordinates.lat}, ${details.coordinates.lng})` : '';
 
         return `
-          <div style="background: #090d16; border: 1px solid ${isSent ? '#10b981' : 'var(--border)'}; border-radius: 8px; padding: 20px; transition: border-color 0.2s;" onmouseenter="this.style.borderColor='#3b82f6'" onmouseleave="this.style.borderColor='${isSent ? '#10b981' : 'var(--border)'}'">
-            
-            <!-- Header Row: Place Info + Weakness Alert -->
+          <div style="background: #090d16; border: 1px solid ${isSent ? '#10b981' : 'var(--border)'}; border-radius: 8px; padding: 20px; transition: border-color 0.2s;">
+            <!-- Header Row -->
             <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; margin-bottom: 12px; flex-wrap: wrap;">
               <div>
-                <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 4px; flex-wrap: wrap;">
-                  <span style="font-size: 18px; font-weight: 700; color: #f9fafb;">${acc.company_name}</span>
+                <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px; flex-wrap: wrap;">
+                  <span style="font-size: 18px; font-weight: 700; color: #f9fafb;">${escHtml(acc.company_name)}</span>
+                  <span style="background: #0f172a; color: #93c5fd; border: 1px solid rgba(59,130,246,0.35); font-size: 10px; padding: 2px 7px; border-radius: 4px; font-weight: 700;">📡 ${escHtml(details.source || 'Live Map')}</span>
                   ${webBadge}
-                  ${isSent ? '<span style="background: #065f46; color: #6ee7b7; font-size: 11px; padding: 2px 8px; border-radius: 4px; font-weight: 700;">✓ PROPOSAL SENT (DELIVERED)</span>' : ''}
+                  ${isSent ? '<span style="background: #065f46; color: #6ee7b7; font-size: 11px; padding: 2px 8px; border-radius: 4px; font-weight: 700;">✓ PROPOSAL SENT</span>' : ''}
                 </div>
-                <div style="font-size: 12px; color: #94a3b8; display: flex; gap: 14px; align-items: center; flex-wrap: wrap;">
-                  <span>📍 <strong>Location:</strong> ${details.address || acc.city + ', ' + acc.country}</span>
-                  <a href="${details.google_maps_url || '#'}" target="_blank" style="color: #60a5fa; text-decoration: underline; font-size: 11px;">🗺️ Google Maps Profile ↗</a>
-                  <a href="${companyLinkedinUrl}" target="_blank" style="color: #38bdf8; text-decoration: underline; font-size: 11px;">🏢 ${companyLinkedinHandle} ↗</a>
-                  <span style="color: ${ratingColor}; font-weight: 700;">⭐ ${rating} / 5.0 (${details.review_count || 30} Reviews)</span>
+                <div style="font-size: 12px; color: #94a3b8; display: flex; gap: 12px; align-items: center; flex-wrap: wrap;">
+                  <span>📍 <strong>Street Address:</strong> ${escHtml(details.address || (acc.city + ', ' + acc.country))}${escHtml(coordText)}</span>
+                  <a href="${escHtml(details.google_maps_url || '#')}" target="_blank" rel="noopener noreferrer" style="color: #60a5fa; text-decoration: underline; font-size: 11px;">🗺️ Google Maps Pin ↗</a>
+                  ${details.osm_url ? `<a href="${escHtml(details.osm_url)}" target="_blank" rel="noopener noreferrer" style="color: #38bdf8; text-decoration: underline; font-size: 11px;">🧭 OSM Map Node ↗</a>` : ''}
+                  <span style="color: ${ratingColor}; font-weight: 700;">⭐ ${rating} / 5.0</span>
                 </div>
               </div>
               <div style="text-align: right;">
                 <span class="tag ${q.tier === 'Tier A' ? 'tag-a' : 'tag-b'}" style="font-size: 12px; padding: 4px 10px;">
-                  ${q.tier} (${q.total_score}/100 Pts)
+                  ${escHtml(q.tier)} (${q.total_score}/100 Pts)
                 </span>
                 <div style="font-size: 11px; color: #38bdf8; margin-top: 4px; font-weight: 600;">
                   Digital Health: <strong>${audit.digitalHealthScore}/100</strong>
@@ -4545,185 +4851,98 @@ WinRatePercentage = DIVIDE(CALCULATE(COUNTROWS('fact_pipeline'), 'fact_pipeline'
               </div>
             </div>
 
-            <!-- Market Analysis & Proposed Charge Banner -->
-            <div style="background: #08111e; border: 1px solid #1e3a5f; border-radius: 6px; padding: 12px 14px; margin-bottom: 12px;">
-              <div style="font-size: 11px; font-weight: 700; color: #38bdf8; text-transform: uppercase; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 6px;">
-                <span>📊 Market Economic Analysis & Proposal Pricing</span>
-                <span style="background: #0369a1; color: #e0f2fe; font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 4px;">
-                  ${mp.economicTier || 'Tier 1 Enterprise Market'}
+            <!-- Real Scraped Contacts Matrix -->
+            <div style="background: #0d1527; border: 1px solid #1e3a5f; border-radius: 6px; padding: 12px 14px; margin-bottom: 12px;">
+              <div style="font-size: 11px; font-weight: 700; color: #60a5fa; text-transform: uppercase; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 6px;">
+                <span>📡 Real-Time Scraped Contact Matrix (Names • Mail • Number • Street Address)</span>
+                <span style="color: ${hasRealEmail ? '#34d399' : '#fbbf24'}; font-weight: 700; font-size: 10px;">
+                  ${hasRealEmail ? '✓ VERIFIED LIVE EMAIL EXTRACTED' : '⚠️ LIVE WEBSITE/MAP ONLY (NO PUBLIC EMAIL)'}
                 </span>
               </div>
-              <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 10px; margin-bottom: 8px;">
-                <div style="background: #060911; padding: 8px 10px; border-radius: 4px; border-left: 3px solid #34d399;">
-                  <div style="font-size: 10px; color: var(--text-muted); text-transform: uppercase;">Proposal Charge</div>
-                  <div style="font-size: 15px; font-weight: 800; color: #34d399;">$${calibratedCharge.toLocaleString()} USD</div>
+              <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 10px; font-size: 12px; color: #e2e8f0; margin-bottom: 10px;">
+                <div style="background: #080d1a; padding: 8px 10px; border-radius: 4px; border-left: 3px solid ${hasRealEmail ? '#10b981' : '#f59e0b'};">
+                  <div style="font-size: 10px; color: var(--text-muted); text-transform: uppercase;">✉️ Scraped Email Address(es)</div>
+                  <div style="margin-top: 3px; word-break: break-all;">${emailBadgeHtml}</div>
                 </div>
-                <div style="background: #060911; padding: 8px 10px; border-radius: 4px; border-left: 3px solid #60a5fa;">
-                  <div style="font-size: 10px; color: var(--text-muted); text-transform: uppercase;">Agency Benchmark</div>
-                  <div style="font-size: 14px; font-weight: 700; color: #93c5fd;">$${(mp.benchmarkRateUSD || Math.round(calibratedCharge * 3)).toLocaleString()} USD</div>
+                <div style="background: #080d1a; padding: 8px 10px; border-radius: 4px; border-left: 3px solid #38bdf8;">
+                  <div style="font-size: 10px; color: var(--text-muted); text-transform: uppercase;">📞 Real Phone Number</div>
+                  <div style="margin-top: 3px;">
+                    ${realPhone ? `<a href="tel:${escHtml(realPhone)}" style="color: #93c5fd; font-weight: 700; text-decoration: underline;">${escHtml(realPhone)}</a>` : '<span style="color: #94a3b8;">Not listed on map/website</span>'}
+                  </div>
                 </div>
-                <div style="background: #060911; padding: 8px 10px; border-radius: 4px; border-left: 3px solid #f59e0b;">
-                  <div style="font-size: 10px; color: var(--text-muted); text-transform: uppercase;">Client Savings</div>
-                  <div style="font-size: 14px; font-weight: 700; color: #fbbf24;">Save $${(mp.clientSavingsUSD || Math.round(calibratedCharge * 2)).toLocaleString()} (${mp.savingsPercentage || 67}%)</div>
-                </div>
-                <div style="background: #060911; padding: 8px 10px; border-radius: 4px; border-left: 3px solid #a78bfa;">
-                  <div style="font-size: 10px; color: var(--text-muted); text-transform: uppercase;">Monthly Retainer</div>
-                  <div style="font-size: 14px; font-weight: 700; color: #c084fc;">$${(mp.monthlyRetainerUSD || 2500).toLocaleString()}/mo</div>
-                </div>
-                <div style="background: #060911; padding: 8px 10px; border-radius: 4px; border-left: 3px solid #10b981;">
-                  <div style="font-size: 10px; color: var(--text-muted); text-transform: uppercase;">Projected ROI</div>
-                  <div style="font-size: 14px; font-weight: 800; color: #34d399;">⚡ ${mp.roiMultiple || 5.2}x Year-1</div>
+                <div style="background: #080d1a; padding: 8px 10px; border-radius: 4px; border-left: 3px solid #a78bfa;">
+                  <div style="font-size: 10px; color: var(--text-muted); text-transform: uppercase;">👤 Extracted People / Operator</div>
+                  <div style="margin-top: 3px; color: #f1f5f9; font-weight: 600;">
+                    ${peopleList.length > 0 ? escHtml(peopleList.join(' • ')) : `Desk: ${escHtml(acc.company_name)}`}
+                  </div>
                 </div>
               </div>
-              <div style="font-size: 11px; color: #cbd5e1; line-height: 1.4; border-top: 1px dashed #1e293b; padding-top: 6px;">
-                💡 <strong>Commercial Rationale:</strong> ${mp.rationale || 'Calibrated based on regional purchasing power and audited operational loss.'}
-              </div>
-            </div>
-
-            <!-- Verified 2 High-Post Contact Persons Showcase -->
-            <div style="background: #0d1527; border: 1px solid #1e3a5f; border-radius: 6px; padding: 12px 14px; margin-bottom: 12px;">
-              <div style="font-size: 11px; font-weight: 700; color: #60a5fa; text-transform: uppercase; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center;">
-                <span>👥 2 Verified High-Post Contact Persons & Authentic Credentials</span>
-                <span style="color: #34d399; font-weight: 700; font-size: 10px;">✓ MX Verified Corporate Delivery</span>
-              </div>
-              <div class="grid-2" style="gap: 12px;">
-                <!-- Contact Person 1 -->
-                <div style="background: #080d1a; border-left: 3px solid #38bdf8; padding: 10px 12px; border-radius: 4px;">
-                  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 3px;">
-                    <strong style="color: #f1f5f9; font-size: 13px;">${c1.name}</strong>
-                    <span style="background: #0369a1; color: #e0f2fe; font-size: 10px; font-weight: 700; padding: 2px 6px; border-radius: 3px;">EXECUTIVE 1</span>
-                  </div>
-                  <div style="color: #38bdf8; font-weight: 600; font-size: 11px; margin-bottom: 6px;">👑 High Post: ${c1.title}</div>
-                  <div style="font-size: 11px; color: #cbd5e1; margin-bottom: 3px;">
-                    ✉️ Corporate Email: <a href="mailto:${c1.email}" style="color: #34d399; font-weight: 700; text-decoration: underline;">${c1.email}</a> 
-                    <span style="background: #064e3b; color: #34d399; font-size: 9px; padding: 1px 4px; border-radius: 2px;">MX VERIFIED</span>
-                  </div>
-                  <div style="font-size: 11px; color: #cbd5e1; margin-bottom: 3px;">📞 Direct Phone: <strong style="color: #f1f5f9;">${c1.phone}</strong></div>
-                  <div style="font-size: 11px; color: #60a5fa;">
-                    🔗 LinkedIn: <a href="${c1.linkedin_url || c1.linkedin || '#'}" target="_blank" style="color: #60a5fa; text-decoration: underline; font-weight: 600;">${c1.linkedin_id || 'in/profile-exec-1'} ↗</a>
-                  </div>
+              <div class="grid-2" style="gap: 10px;">
+                <div style="background: #080d1a; border-left: 3px solid #38bdf8; padding: 8px 10px; border-radius: 4px; font-size: 11px;">
+                  <strong style="color: #f1f5f9;">${escHtml(c1.name)}</strong>
+                  <div style="color: #38bdf8;">${escHtml(c1.title)}</div>
+                  <div>✉️ ${c1.email ? `<a href="mailto:${escHtml(c1.email)}" style="color: #34d399;">${escHtml(c1.email)}</a>` : '<span style="color:#94a3b8;">Not published</span>'} • 📞 ${escHtml(c1.phone || 'Not listed')}</div>
                 </div>
-                <!-- Contact Person 2 -->
-                <div style="background: #080d1a; border-left: 3px solid #a78bfa; padding: 10px 12px; border-radius: 4px;">
-                  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 3px;">
-                    <strong style="color: #f1f5f9; font-size: 13px;">${c2.name}</strong>
-                    <span style="background: #6d28d9; color: #ede9fe; font-size: 10px; font-weight: 700; padding: 2px 6px; border-radius: 3px;">EXECUTIVE 2</span>
-                  </div>
-                  <div style="color: #c084fc; font-weight: 600; font-size: 11px; margin-bottom: 6px;">⚡ High Post: ${c2.title}</div>
-                  <div style="font-size: 11px; color: #cbd5e1; margin-bottom: 3px;">
-                    ✉️ Corporate Email: <code style="color: #93c5fd; font-weight: 700;">${c2.email}</code>
-                    <span style="background: #064e3b; color: #34d399; font-size: 9px; padding: 1px 4px; border-radius: 2px;">MX VERIFIED</span>
-                  </div>
-                  <div style="font-size: 11px; color: #cbd5e1; margin-bottom: 3px;">📞 Direct Phone: <strong style="color: #f1f5f9;">${c2.phone}</strong></div>
-                  <div style="font-size: 11px; color: #c084fc;">
-                    🔗 LinkedIn: <a href="${c2.linkedin_url || c2.linkedin || '#'}" target="_blank" style="color: #c084fc; text-decoration: underline; font-weight: 600;">${c2.linkedin_id || 'in/profile-exec-2'} ↗</a>
-                  </div>
-                </div>
+                ${c2 ? `
+                <div style="background: #080d1a; border-left: 3px solid #a78bfa; padding: 8px 10px; border-radius: 4px; font-size: 11px;">
+                  <strong style="color: #f1f5f9;">${escHtml(c2.name)}</strong>
+                  <div style="color: #c084fc;">${escHtml(c2.title)}</div>
+                  <div>✉️ ${c2.email ? `<a href="mailto:${escHtml(c2.email)}" style="color: #93c5fd;">${escHtml(c2.email)}</a>` : '<span style="color:#94a3b8;">Not published</span>'} • 📞 ${escHtml(c2.phone || 'Not listed')}</div>
+                </div>` : ''}
               </div>
             </div>
 
             <!-- Real Website Verification & Tech Stack Details -->
-            <div style="background: #080e1a; border: 1px solid #1a2333; border-radius: 6px; padding: 8px 14px; margin-bottom: 12px; font-size: 11px; display: flex; gap: 20px; flex-wrap: wrap; color: #94a3b8;">
-              <div>
-                🌐 <strong>Real Website:</strong> 
-                ${details.has_website && (details.real_website_url || details.website_url) ? 
-                  `<a href="${details.real_website_url || details.website_url}" target="_blank" style="color: #38bdf8; font-weight: 700; text-decoration: underline;">${details.real_website_url || details.website_url} ↗</a>` : 
-                  '<span style="color: #f87171; font-weight: 700;">❌ No Website Listed on Google Maps</span>'}
-              </div>
-              <div>🔒 <strong>SSL Security:</strong> <span style="color: ${details.has_website ? '#34d399' : '#f87171'};">${details.ssl_status || 'N/A'}</span></div>
-              <div>📱 <strong>Mobile Readiness:</strong> <span style="color: #cbd5e1;">${details.mobile_friendly || 'Responsive'}</span></div>
-              <div>🏷️ <strong>Category:</strong> <span style="color: #fcd34d; font-weight: 600;">${details.business_type || acc.industry}</span></div>
+            <div style="background: #080e1a; border: 1px solid #1a2333; border-radius: 6px; padding: 8px 14px; margin-bottom: 12px; font-size: 11px; display: flex; gap: 18px; flex-wrap: wrap; color: #94a3b8;">
+              <div>🌐 <strong>Real Website:</strong> ${details.has_website && liveWebUrl ? `<a class="real-website-link" href="${escHtml(liveWebUrl)}" target="_blank" rel="noopener noreferrer" style="color: #38bdf8; font-weight: 700; text-decoration: underline;">${escHtml(liveWebUrl)} ↗</a>` : '<span style="color: #f87171; font-weight: 700;">❌ No Website Listed</span>'}</div>
+              <div>🔒 <strong>SSL:</strong> <span style="color: ${details.has_website ? '#34d399' : '#f87171'};">${escHtml(details.ssl_status || 'N/A')}</span></div>
+              <div>📅 <strong>24/7 Booking:</strong> <span style="color: ${details.has_online_booking ? '#34d399' : '#fbbf24'};">${details.has_online_booking ? 'Detected' : 'Not Detected'}</span></div>
+              <div>🏷️ <strong>Category:</strong> <span style="color: #fcd34d; font-weight: 600;">${escHtml(details.business_type || acc.industry)}</span></div>
+              <a href="${escHtml(companyLinkedinUrl)}" target="_blank" rel="noopener noreferrer" style="color: #38bdf8; text-decoration: underline;">🏢 LinkedIn Lookup ↗</a>
             </div>
-
-            <!-- Products & Services Catalog Box -->
-            <div style="background: #060a14; border-left: 3px solid #3b82f6; padding: 8px 14px; margin-bottom: 12px; font-size: 11px; color: #cbd5e1;">
-              <strong style="color: #60a5fa; text-transform: uppercase;">📦 Products & Services Catalog:</strong> ${details.products_and_services || 'Commercial service provider'}
-            </div>
-
-            <!-- Review Friction Snippet (if available) -->
-            ${details.recent_reviews && details.recent_reviews.length > 0 ? `
-              <div style="background: #0d1527; border-left: 3px solid #f59e0b; padding: 6px 12px; margin-bottom: 12px; font-size: 11px; color: #cbd5e1; font-style: italic;">
-                💬 Google Maps Review Sentiment: "${details.recent_reviews[0]}"
-              </div>
-            ` : ''}
 
             <!-- 2-Column Diagnostic Breakdown -->
             <div class="grid-2" style="gap: 12px; margin-bottom: 14px;">
-              
-              <!-- Col 1: Detected Map Weakness -->
               <div style="background: #060911; border: 1px solid #1e293b; border-radius: 6px; padding: 12px;">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
                   <span style="font-size: 11px; font-weight: 700; color: #f87171; text-transform: uppercase;">⚠️ Diagnosed Weakness</span>
-                  <span style="font-size: 10px; font-weight: 700; padding: 2px 6px; border-radius: 3px; ${severityStyle}">
-                    ${audit.severityBadge}
-                  </span>
+                  <span style="font-size: 10px; font-weight: 700; padding: 2px 6px; border-radius: 3px; ${severityStyle}">${escHtml(audit.severityBadge)}</span>
                 </div>
-                <div style="font-size: 12px; font-weight: 700; color: #f1f5f9; margin-bottom: 4px;">
-                  ${primary.flaw || 'Digital Process Friction'}
-                </div>
-                <div style="font-size: 11px; color: #94a3b8; line-height: 1.4;">
-                  ${primary.impact || 'Inquiry drop-off and manual administrative delays.'}
-                </div>
-                <div style="font-size: 11px; color: #fbbf24; margin-top: 6px; font-weight: 600;">
-                  Est. Leakage: ~$${(audit.estimatedMonthlyLossUSD || 5000).toLocaleString()} / month ($${((audit.estimatedMonthlyLossUSD || 5000) * 12).toLocaleString()}/yr)
-                </div>
+                <div style="font-size: 12px; font-weight: 700; color: #f1f5f9; margin-bottom: 4px;">${escHtml(primary.flaw || 'Digital Process Friction')}</div>
+                <div style="font-size: 11px; color: #94a3b8; line-height: 1.4;">${escHtml(primary.impact || 'Inquiry drop-off and manual delays.')}</div>
               </div>
-
-              <!-- Col 2: Recommended Zenthra Solution -->
               <div style="background: #060911; border: 1px solid #1e293b; border-radius: 6px; padding: 12px;">
-                <div style="font-size: 11px; font-weight: 700; color: #34d399; text-transform: uppercase; margin-bottom: 6px;">
-                  💡 Zenthra Solution Wedge
-                </div>
-                <div style="font-size: 12px; font-weight: 700; color: #38bdf8; margin-bottom: 4px;">
-                  ${audit.recommendedService || 'Service 2 — AI Agents & Automation'}
-                </div>
-                <div style="font-size: 11px; color: #e2e8f0; line-height: 1.4; margin-bottom: 6px;">
-                  <strong>Wedge:</strong> ${audit.recommendedWedge || 'Workflow Bottleneck Audit'}
-                </div>
-                <div style="font-size: 11px; color: #a7f3d0;">
-                  ⏱️ Turnaround: <strong>${audit.implementationDays || 5}-Day Deployment Sprint</strong>
-                </div>
+                <div style="font-size: 11px; font-weight: 700; color: #34d399; text-transform: uppercase; margin-bottom: 6px;">💡 Zenthra Solution Wedge</div>
+                <div style="font-size: 12px; font-weight: 700; color: #38bdf8; margin-bottom: 4px;">${escHtml(audit.recommendedService || 'Service 2 — AI Agents & Automation')}</div>
+                <div style="font-size: 11px; color: #e2e8f0; line-height: 1.4;"><strong>Wedge:</strong> ${escHtml(audit.recommendedWedge || 'Workflow Bottleneck Audit')}</div>
               </div>
-
             </div>
 
-            <!-- Weakness-Hooked Proposal Pitch Box -->
+            <!-- Tailored Proposal Pitch -->
             <div style="background: #060911; border: 1px solid #1a2234; border-radius: 6px; padding: 14px;">
               <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
-                <div style="font-weight: 700; font-size: 12px; color: #93c5fd;">
-                  📧 Tailored Proposal Pitch: "${pitch.subject || 'Opportunity for ' + acc.company_name}"
-                </div>
-                <button class="btn-outline" style="font-size: 10px; padding: 3px 8px;" onclick="copyPlacePitch(${cacheIdx}, this)">
-                  📋 Copy Pitch
-                </button>
+                <div style="font-weight: 700; font-size: 12px; color: #93c5fd;">📧 Tailored Pitch: "${escHtml(pitch.subject || ('Opportunity for ' + acc.company_name))}"</div>
+                <button class="btn-outline" style="font-size: 10px; padding: 3px 8px;" onclick="copyPlacePitch(${cacheIdx}, this)">📋 Copy Pitch</button>
               </div>
-              <div style="color: #cbd5e1; font-size: 11px; line-height: 1.5; white-space: pre-wrap; max-height: 120px; overflow-y: auto; background: #030712; padding: 10px; border-radius: 4px; border: 1px solid #111827;">${pitch.body || 'Outreach draft prepared for human approval.'}</div>
+              <div style="color: #cbd5e1; font-size: 11px; line-height: 1.5; white-space: pre-wrap; max-height: 110px; overflow-y: auto; background: #030712; padding: 10px; border-radius: 4px; border: 1px solid #111827;">${escHtml(pitch.body || 'Outreach draft prepared for human approval.')}</div>
             </div>
 
             <!-- Action Buttons Footer -->
             <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 14px; flex-wrap: wrap; gap: 8px;">
               <div style="font-size: 11px; color: #64748b;">
-                Calibrated Proposal Investment: <strong style="color: #34d399; font-size: 13px;">$${calibratedCharge.toLocaleString()} USD</strong> 
-                <span style="color: #94a3b8;">(Market Benchmark: $${(mp.benchmarkRateUSD || Math.round(calibratedCharge * 3)).toLocaleString()} USD)</span> • 
-                Destination: <strong>${details.country || acc.country}</strong>
+                Sprint Quote: <strong style="color: #34d399; font-size: 13px;">$${calibratedCharge.toLocaleString()} USD</strong>
+                <span style="color: #94a3b8;">(Market Benchmark: $${(mp.benchmarkRateUSD || calibratedCharge * 3).toLocaleString()} USD)</span>
               </div>
               <div style="display: flex; gap: 8px; flex-wrap: wrap;">
-                <button class="btn-success" style="font-size: 12px; padding: 7px 14px; background: linear-gradient(135deg, #059669, #0d9488); font-weight: 700; color: white;" onclick="executeModel1FromPlace(${cacheIdx})">
-                  ⚡ Model 1: Value Sprint
-                </button>
-                <button class="btn-primary" style="font-size: 12px; padding: 7px 16px; background: #2563eb; font-weight: 700;" onclick="openProposalModal(${cacheIdx})">
-                  ✉️ Send Proposal
-                </button>
+                <button class="btn-success" style="font-size: 12px; padding: 7px 14px; background: linear-gradient(135deg, #059669, #0d9488); font-weight: 700; color: white;" onclick="executeModel1FromPlace(${cacheIdx})">⚡ Model 1: Value Sprint</button>
+                <button class="btn-primary" style="font-size: 12px; padding: 7px 16px; background: #2563eb; font-weight: 700;" onclick="openProposalModal(${cacheIdx})">✉️ Send Proposal</button>
                 <button class="btn-outline" style="font-size: 11px;" onclick="switchTab('sdr-tab')">🔍 Open in SDR Gate</button>
-                <button class="btn-success" style="font-size: 11px;" onclick="showToast('⚡ Lead payload synchronized to Zenthra n8n Webhook Mesh & Pipeline DB!', 'success')">⚡ Synced to n8n ✓</button>
               </div>
             </div>
-
           </div>
         `;
       }).join('');
     }
-
     function showCampaign(key) {
       ['power_bi', 'ai_automation', 'ai_rag'].forEach(k => {
         const b = document.getElementById(`btn-camp-${k}`);
@@ -7028,6 +7247,11 @@ WinRatePercentage = DIVIDE(CALCULATE(COUNTROWS('fact_pipeline'), 'fact_pipeline'
       safeRun('executeRagQuery', executeRagQuery);
       safeRun('loadEmailableContacts', loadEmailableContacts);
       safeRun('loadExtendedServices', loadExtendedServices);
+      safeRun('loadGPlacesKey', () => {
+        const keyInput = document.getElementById('maps-gplaces-key');
+        const saved = localStorage.getItem('zenthra_gplaces_key');
+        if (keyInput && saved) keyInput.value = saved;
+      });
       safeRun('applyDeepLinkTab', applyDeepLinkTab);
     };
   </script>

@@ -16,11 +16,17 @@ if (!fs.existsSync(DB_DIR)) {
 }
 
 let dbInstance = null;
+let schemaInitialized = false;
 
 function getDb() {
   if (!dbInstance) {
     dbInstance = new DatabaseSync(DB_FILE);
     dbInstance.exec('PRAGMA foreign_keys = ON;');
+  }
+  if (!schemaInitialized) {
+    schemaInitialized = true;
+    const schemaSql = fs.readFileSync(SCHEMA_FILE, 'utf8');
+    dbInstance.exec(schemaSql);
   }
   return dbInstance;
 }
@@ -29,6 +35,7 @@ function initDb() {
   const db = getDb();
   const schemaSql = fs.readFileSync(SCHEMA_FILE, 'utf8');
   db.exec(schemaSql);
+  schemaInitialized = true;
   return db;
 }
 

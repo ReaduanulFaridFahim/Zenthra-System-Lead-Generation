@@ -397,6 +397,9 @@ const server = http.createServer(async (req, res) => {
         reply_to: settings.reply_to,
         has_api_key: Boolean(settings.api_key),
         auto_send_enabled: Boolean(settings.auto_send_enabled),
+        webhook_relay_url: settings.webhook_relay_url || '',
+        booking_url: settings.booking_url || 'https://cal.com/zenthra-systems-dyuqpi/30min',
+        payment_deposit_url: settings.payment_deposit_url || '',
         updated_at: settings.updated_at
       }
     }));

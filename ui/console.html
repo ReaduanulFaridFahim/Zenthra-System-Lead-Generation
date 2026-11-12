@@ -187,55 +187,217 @@
       font-size: 10.5px;
     }
 
-    /* Tab Navigation */
-    .tabs-bar {
-      background: rgba(10, 14, 25, 0.9);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      border-bottom: 1px solid var(--border);
-      padding: 6px 24px;
+    /* App Shell & Collapsible Grouped Left Sidebar */
+    .app-shell {
       display: flex;
-      gap: 6px;
-      overflow-x: auto;
+      flex: 1;
+      min-height: calc(100vh - 67px);
+      width: 100%;
+    }
+
+    .sidebar {
+      width: 256px;
+      flex-shrink: 0;
+      background: rgba(9, 13, 24, 0.96);
+      border-right: 1px solid var(--border);
+      padding: 14px 12px 28px 12px;
       position: sticky;
       top: 67px;
-      z-index: 999;
+      height: calc(100vh - 67px);
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      z-index: 950;
+      transition: width 0.2s ease, transform 0.22s ease;
+    }
+
+    .sidebar.collapsed {
+      width: 72px;
+      padding: 14px 8px;
+    }
+
+    .sidebar.collapsed .sidebar-group-label,
+    .sidebar.collapsed .tab-label,
+    .sidebar.collapsed .sidebar-footer-card {
+      display: none;
+    }
+
+    .sidebar.collapsed .tab-btn {
+      justify-content: center;
+      padding: 10px 6px;
+    }
+
+    .sidebar-header-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 2px 6px 8px 6px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .sidebar-group {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .sidebar-group-label {
+      font-size: 10px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.9px;
+      color: var(--text-dim);
+      padding: 4px 10px 2px 10px;
     }
 
     .tab-btn {
       background: transparent;
       border: 1px solid transparent;
-      padding: 8px 14px;
+      padding: 8px 10px;
       font-size: 12.5px;
       font-weight: 600;
       color: var(--text-muted);
       cursor: pointer;
       border-radius: 8px;
-      transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+      transition: all 0.16s cubic-bezier(0.16, 1, 0.3, 1);
       white-space: nowrap;
-      display: inline-flex;
+      display: flex;
       align-items: center;
-      gap: 6px;
+      gap: 8px;
+      width: 100%;
+      text-align: left;
     }
     .tab-btn:hover {
       color: var(--text);
       background: rgba(255, 255, 255, 0.05);
-      border-color: rgba(255, 255, 255, 0.06);
+      border-color: rgba(255, 255, 255, 0.07);
     }
     .tab-btn.active {
       color: #ffffff;
-      background: linear-gradient(180deg, rgba(37, 99, 235, 0.22) 0%, rgba(37, 99, 235, 0.08) 100%);
-      border: 1px solid rgba(59, 130, 246, 0.4);
-      box-shadow: 0 2px 10px rgba(37, 99, 235, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.12);
+      background: linear-gradient(90deg, rgba(37, 99, 235, 0.28) 0%, rgba(16, 185, 129, 0.12) 100%);
+      border: 1px solid rgba(59, 130, 246, 0.45);
+      box-shadow: 0 2px 10px rgba(37, 99, 235, 0.18), inset 0 1px 0 rgba(255, 255, 255, 0.12);
+    }
+
+    .sidebar-mobile-toggle {
+      display: none;
+      background: rgba(30, 41, 59, 0.75);
+      border: 1px solid var(--border);
+      color: #f8fafc;
+      padding: 6px 11px;
+      border-radius: 7px;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .mobile-sidebar-backdrop {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(3, 7, 18, 0.72);
+      z-index: 940;
+    }
+
+    .mobile-sidebar-backdrop.open {
+      display: block;
     }
 
     /* Main Container */
     .main-content {
-      padding: 28px 24px 60px 24px;
-      max-width: 1480px;
+      padding: 24px 26px 60px 26px;
+      max-width: 1440px;
       margin: 0 auto;
       width: 100%;
       flex: 1;
+      min-width: 0;
+    }
+
+    /* Executive Funnel Strip & Command Palette */
+    .funnel-strip {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 10px;
+      margin-bottom: 18px;
+    }
+
+    .funnel-step {
+      background: #080d1a;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 12px 14px;
+      cursor: pointer;
+      transition: border-color 0.15s ease, transform 0.15s ease;
+    }
+
+    .funnel-step:hover {
+      border-color: rgba(56, 189, 248, 0.45);
+      transform: translateY(-1px);
+    }
+
+    .cmd-palette-backdrop {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(3, 7, 18, 0.82);
+      backdrop-filter: blur(8px);
+      z-index: 11000;
+      justify-content: center;
+      align-items: flex-start;
+      padding-top: 90px;
+      padding-left: 16px;
+      padding-right: 16px;
+    }
+
+    .cmd-palette-backdrop.open {
+      display: flex;
+    }
+
+    .cmd-palette-card {
+      width: 100%;
+      max-width: 580px;
+      background: #0b1122;
+      border: 1px solid rgba(59, 130, 246, 0.45);
+      border-radius: 12px;
+      box-shadow: 0 28px 60px rgba(0, 0, 0, 0.9);
+      overflow: hidden;
+    }
+
+    .cmd-palette-item {
+      width: 100%;
+      text-align: left;
+      background: transparent;
+      border: none;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      color: #e2e8f0;
+      padding: 11px 16px;
+      font-size: 13px;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .cmd-palette-item:hover {
+      background: rgba(37, 99, 235, 0.18);
+      color: #ffffff;
+    }
+
+    @media print {
+      body * { visibility: hidden !important; }
+      #printable-audit-modal, #printable-audit-modal * { visibility: visible !important; }
+      #printable-audit-modal {
+        position: absolute !important;
+        left: 0 !important;
+        top: 0 !important;
+        width: 100% !important;
+        height: auto !important;
+        background: #ffffff !important;
+        color: #0f172a !important;
+        padding: 0 !important;
+      }
+      #printable-audit-controls { display: none !important; }
     }
     .tab-panel { display: none; }
     .tab-panel.active {
@@ -316,9 +478,21 @@
     .table-responsive { width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; }
 
     @media (max-width: 960px) {
-      .grid-2, .grid-3, .grid-1-2, .maps-query-grid, .em-filter-grid { grid-template-columns: 1fr !important; }
+      .grid-2, .grid-3, .grid-1-2, .maps-query-grid, .em-filter-grid, .funnel-strip { grid-template-columns: 1fr !important; }
       .navbar { padding: 12px 16px; flex-wrap: wrap; gap: 10px; }
-      .tabs-bar { top: auto; padding: 6px 12px; }
+      .sidebar-mobile-toggle { display: inline-flex; align-items: center; gap: 6px; }
+      .sidebar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 100vh;
+        width: 272px;
+        transform: translateX(-105%);
+        z-index: 1001;
+        box-shadow: 12px 0 36px rgba(0, 0, 0, 0.75);
+      }
+      .sidebar.mobile-open { transform: translateX(0); }
+      .main-content { padding: 18px 14px 48px 14px; }
     }
 
     /* Non-Blocking Enterprise Toast Notifications */
@@ -639,44 +813,80 @@
 
   <!-- Top Navigation -->
   <div class="navbar">
-    <div class="brand">
-      <div class="brand-logo">Z</div>
-      <div>
-        <div class="brand-title">ZENTHRA <span class="accent">SYSTEMS</span></div>
-        <div class="brand-sub">Enterprise AI, Web Engineering & Revenue Automation Engine</div>
+    <div style="display: flex; align-items: center; gap: 12px;">
+      <button type="button" class="sidebar-mobile-toggle" onclick="toggleMobileSidebar()" aria-label="Open Workspace Menu">☰ Menu</button>
+      <div class="brand">
+        <div class="brand-logo">Z</div>
+        <div>
+          <div class="brand-title">ZENTHRA <span class="accent">SYSTEMS</span></div>
+          <div class="brand-sub">Enterprise AI, Web Engineering & Revenue Automation Engine</div>
+        </div>
       </div>
     </div>
     <div class="nav-badges">
+      <button type="button" class="badge" onclick="openCommandPalette()" style="cursor: pointer; background: rgba(15, 23, 42, 0.9); color: #cbd5e1; border: 1px solid rgba(56, 189, 248, 0.35); padding: 5px 12px; border-radius: 6px; font-weight: 700;" title="Quick Jump (Ctrl+K)">🔍 Quick Jump <span style="opacity: 0.65; font-size: 10px;">(Ctrl+K)</span></button>
       <a href="index.html" class="badge" style="text-decoration: none; color: #93c5fd; background: rgba(59, 130, 246, 0.18); border: 1px solid rgba(59, 130, 246, 0.4); padding: 5px 12px; border-radius: 6px; font-weight: 700; display: inline-flex; align-items: center; gap: 5px;" title="View Zenthra Systems Landing Page & Solutions Overview">🏠 Zenthra Landing ↗</a>
       <span class="badge badge-online" id="backend-status-badge">⚡ Enterprise Engine Active</span>
       <span class="badge badge-online" id="n8n-status-badge">n8n Workflow Mesh: Synced</span>
       <span class="badge badge-port" id="runtime-mode-badge">Cloud Hub</span>
       <span class="badge badge-online" id="nav-mail-badge">Mail API: Ready</span>
-      <span class="badge badge-port">Client State Active</span>
     </div>
   </div>
 
-  <!-- Tab Bar -->
-  <div class="tabs-bar">
-    <button class="tab-btn active" onclick="switchTab('exec-tab')">📊 Executive Overview</button>
-    <button class="tab-btn" onclick="switchTab('prospects-tab')">🎯 Prospect Intelligence</button>
-    <button class="tab-btn" onclick="switchTab('maps-tab')">📍 Google Maps Discovery</button>
-    <button class="tab-btn" onclick="switchTab('sdr-tab')">🛡️ SDR Approval Gate (<span id="sdr-tab-badge">0</span>)</button>
-    <button class="tab-btn" onclick="switchTab('pipeline-tab')">💼 Sales Pipeline & CRM</button>
-    <button class="tab-btn" onclick="switchTab('agents-tab')">🤖 12-Agent Command Center</button>
-    <button class="tab-btn" onclick="switchTab('campaigns-tab')">✉️ Campaign Messaging Vault</button>
-    <button class="tab-btn" onclick="switchTab('pricing-tab')">💵 Pricing & SOW Architect</button>
-    <button class="tab-btn" onclick="switchTab('inbound-tab')">🧠 Inbound Reply Intelligence</button>
-    <button class="tab-btn" onclick="switchTab('analytics-tab')">📈 Power BI Star Schema</button>
-    <button class="tab-btn" onclick="switchTab('mail-tab')">📧 Mail API & Auto-Mail</button>
-    <button class="tab-btn" onclick="switchTab('demo-tab')">🚀 Client Demo Projects (4 Live)</button>
-    <button class="tab-btn" id="nav-btn-model1" onclick="switchTab('model1-tab')" style="background: linear-gradient(135deg, rgba(37,99,235,0.25), rgba(16,185,129,0.25)); color: #34d399; border-bottom: 2px solid #10b981; font-weight: 700;">⚡ Model 1: Value Sprint</button>
-    <button class="tab-btn" id="nav-btn-emailable" onclick="switchTab('emailable-tab')" style="background: linear-gradient(135deg, rgba(16,185,129,0.25), rgba(59,130,246,0.25)); color: #38bdf8; border-bottom: 2px solid #38bdf8; font-weight: 700;">📬 Who Can I Email? (<span id="emailable-badge">0</span>)</button>
-    <button class="tab-btn" id="nav-btn-services" onclick="switchTab('services-tab')">💼 12 Extended Offers</button>
-  </div>
+  <div id="mobile-sidebar-backdrop" class="mobile-sidebar-backdrop" onclick="toggleMobileSidebar(false)"></div>
 
-  <!-- Main Container -->
-  <div class="main-content">
+  <!-- App Shell: Grouped Left Sidebar + Main Workspace -->
+  <div class="app-shell">
+    <aside class="sidebar" id="app-sidebar" aria-label="Workspace Navigation">
+      <div class="sidebar-header-row">
+        <span class="sidebar-group-label" style="padding: 0; color: #93c5fd;">Revenue OS Navigation</span>
+        <button type="button" onclick="toggleDesktopSidebar()" title="Collapse / Expand Sidebar" style="background: rgba(30, 41, 59, 0.65); border: 1px solid var(--border); color: #cbd5e1; border-radius: 5px; padding: 3px 7px; font-size: 11px; cursor: pointer;">⇄</button>
+      </div>
+
+      <div class="sidebar-group">
+        <div class="sidebar-group-label">1. Pipeline &amp; Actions</div>
+        <button class="tab-btn active" onclick="switchTab('exec-tab')"><span>📊</span><span class="tab-label">Executive Overview</span></button>
+        <button class="tab-btn" onclick="switchTab('pipeline-tab')"><span>💼</span><span class="tab-label">Sales Pipeline &amp; CRM</span></button>
+        <button class="tab-btn" id="nav-btn-model1" onclick="switchTab('model1-tab')" style="background: linear-gradient(90deg, rgba(16,185,129,0.16), rgba(37,99,235,0.12)); color: #34d399; font-weight: 700;"><span>⚡</span><span class="tab-label">Model 1: Value Sprint</span></button>
+      </div>
+
+      <div class="sidebar-group">
+        <div class="sidebar-group-label">2. Lead Generation</div>
+        <button class="tab-btn" onclick="switchTab('maps-tab')"><span>📍</span><span class="tab-label">Maps Live Scraper</span></button>
+        <button class="tab-btn" onclick="switchTab('prospects-tab')"><span>🎯</span><span class="tab-label">Prospect Intelligence</span></button>
+        <button class="tab-btn" id="nav-btn-emailable" onclick="switchTab('emailable-tab')" style="color: #38bdf8; font-weight: 700;"><span>📬</span><span class="tab-label">Who Can I Email? (<span id="emailable-badge">0</span>)</span></button>
+      </div>
+
+      <div class="sidebar-group">
+        <div class="sidebar-group-label">3. Outreach &amp; Closing</div>
+        <button class="tab-btn" onclick="switchTab('sdr-tab')"><span>🛡️</span><span class="tab-label">SDR &amp; Follow-Ups (<span id="sdr-tab-badge">0</span>)</span></button>
+        <button class="tab-btn" onclick="switchTab('inbound-tab')"><span>🧠</span><span class="tab-label">Inbound Reply AI</span></button>
+        <button class="tab-btn" onclick="switchTab('pricing-tab')"><span>💵</span><span class="tab-label">Pricing &amp; SOW Architect</span></button>
+        <button class="tab-btn" onclick="switchTab('campaigns-tab')"><span>✉️</span><span class="tab-label">Campaign Messaging Vault</span></button>
+      </div>
+
+      <div class="sidebar-group">
+        <div class="sidebar-group-label">4. Live Proof &amp; BI</div>
+        <button class="tab-btn" onclick="switchTab('demo-tab')"><span>🚀</span><span class="tab-label">4 Client Demo Projects</span></button>
+        <button class="tab-btn" onclick="switchTab('analytics-tab')"><span>📈</span><span class="tab-label">Power BI Star Schema</span></button>
+        <button class="tab-btn" id="nav-btn-services" onclick="switchTab('services-tab')"><span>💼</span><span class="tab-label">12 Extended Offers</span></button>
+      </div>
+
+      <div class="sidebar-group">
+        <div class="sidebar-group-label">5. System &amp; Dispatch</div>
+        <button class="tab-btn" onclick="switchTab('agents-tab')"><span>🤖</span><span class="tab-label">12-Agent Command</span></button>
+        <button class="tab-btn" onclick="switchTab('mail-tab')"><span>📧</span><span class="tab-label">Mail API &amp; Relays</span></button>
+      </div>
+
+      <div class="sidebar-footer-card" style="margin-top: auto; background: rgba(16, 185, 129, 0.08); border: 1px solid rgba(16, 185, 129, 0.25); border-radius: 8px; padding: 10px 12px; font-size: 11px; color: #a7f3d0;">
+        <div style="font-weight: 800; color: #34d399; margin-bottom: 3px;">📅 Architecture Booking</div>
+        <div style="color: #94a3b8; margin-bottom: 7px;">Direct prospect calendar sync active</div>
+        <a href="https://cal.com/zenthra-systems-dyuqpi/30min" target="_blank" rel="noopener" style="color: #38bdf8; font-weight: 700; text-decoration: underline;">Open Cal.com Link ↗</a>
+      </div>
+    </aside>
+
+    <!-- Main Container -->
+    <div class="main-content">
 
     <!-- TAB 1: EXECUTIVE OVERVIEW -->
     <div id="exec-tab" class="tab-panel active">
@@ -705,6 +915,44 @@
           <div class="kpi-label">Average Contract Value</div>
           <div class="kpi-value" id="kpi-acv">$0</div>
           <div class="kpi-sub">Blended sprint & custom projects</div>
+        </div>
+      </div>
+
+      <!-- Sales Conversion Funnel & Next Priority Actions -->
+      <div class="panel" id="exec-funnel-panel" style="margin-bottom: 20px; border-color: rgba(56, 189, 248, 0.25);">
+        <div class="panel-title">
+          <span>🚀 Live Revenue Conversion Funnel &amp; Next Priority Actions</span>
+          <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+            <button class="btn-success" style="font-size: 11px; padding: 6px 12px;" onclick="switchTab('maps-tab')">📍 Scrape New Leads</button>
+            <button class="btn-primary" style="font-size: 11px; padding: 6px 12px;" onclick="switchTab('sdr-tab')">🛡️ Open Follow-Up Queue</button>
+          </div>
+        </div>
+        <div class="funnel-strip" id="exec-funnel-strip">
+          <div class="funnel-step" onclick="switchTab('maps-tab')">
+            <div style="font-size: 10px; color: var(--text-muted); text-transform: uppercase; font-weight: 700;">1. Live Map Scraped</div>
+            <div style="font-size: 20px; font-weight: 800; color: #38bdf8; margin-top: 4px;" id="funnel-scraped-count">0</div>
+            <div style="font-size: 11px; color: #64748b;">Real map businesses</div>
+          </div>
+          <div class="funnel-step" onclick="switchTab('emailable-tab')">
+            <div style="font-size: 10px; color: var(--text-muted); text-transform: uppercase; font-weight: 700;">2. Email Ready Pool</div>
+            <div style="font-size: 20px; font-weight: 800; color: #34d399; margin-top: 4px;" id="funnel-email-count">0</div>
+            <div style="font-size: 11px; color: #64748b;">MX-ready decision makers</div>
+          </div>
+          <div class="funnel-step" onclick="switchTab('mail-tab')">
+            <div style="font-size: 10px; color: var(--text-muted); text-transform: uppercase; font-weight: 700;">3. Proposals Dispatched</div>
+            <div style="font-size: 20px; font-weight: 800; color: #60a5fa; margin-top: 4px;" id="funnel-sent-count">0</div>
+            <div style="font-size: 11px; color: #64748b;">Touch 1 logged</div>
+          </div>
+          <div class="funnel-step" onclick="switchTab('sdr-tab')">
+            <div style="font-size: 10px; color: var(--text-muted); text-transform: uppercase; font-weight: 700;">4. Follow-Up Cadence</div>
+            <div style="font-size: 20px; font-weight: 800; color: #fbbf24; margin-top: 4px;" id="funnel-followup-count">0</div>
+            <div style="font-size: 11px; color: #64748b;">Day 3 / Day 7 queued</div>
+          </div>
+          <div class="funnel-step" onclick="switchTab('pipeline-tab')">
+            <div style="font-size: 10px; color: var(--text-muted); text-transform: uppercase; font-weight: 700;">5. Active Pipeline Deals</div>
+            <div style="font-size: 20px; font-weight: 800; color: #a78bfa; margin-top: 4px;" id="funnel-deals-count">0</div>
+            <div style="font-size: 11px; color: #64748b;">Qualified &amp; closing</div>
+          </div>
         </div>
       </div>
 
@@ -1130,7 +1378,14 @@
             <input type="checkbox" id="maps-auto-mail" style="width: auto; margin: 0;" onchange="toggleAutoMail(this.checked)">
             ⚡ Auto-Mail: Instant Outbound Delivery
           </label>
-          <div style="display: flex; align-items: center; gap: 6px; margin-left: auto; flex-wrap: wrap;">
+          <div style="display: flex; align-items: center; gap: 8px; margin-left: auto; flex-wrap: wrap;">
+            <select id="maps-pitch-lang" title="Outreach & Script Language" style="width: 155px; padding: 6px 8px; font-size: 11px; margin: 0; background: #070b14; border: 1px solid #1e293b; border-radius: 6px; color: #93c5fd; font-weight: 700;">
+              <option value="auto" selected>🌐 Pitch Lang: Auto (Country)</option>
+              <option value="en">🇬🇧 English (EN)</option>
+              <option value="de">🇩🇪 Deutsch (DE)</option>
+              <option value="fr">🇫🇷 Français (FR)</option>
+              <option value="es">🇪🇸 Español (ES)</option>
+            </select>
             <input type="password" id="maps-gplaces-key" placeholder="Optional Google Places API Key (Server Mode)" style="width: 240px; padding: 6px 10px; font-size: 11px; margin: 0; background: #070b14; border: 1px solid #1e293b; border-radius: 6px; color: #cbd5e1;" onchange="localStorage.setItem('zenthra_gplaces_key', this.value.trim())">
           </div>
         </div>
@@ -1221,6 +1476,20 @@
               ⚙️ Mail API & SMTP Settings
             </button>
           </div>
+        </div>
+      </div>
+
+      <!-- Multi-Touch Follow-Up Cadence Tracker (Day 0 -> Day 3 -> Day 7) -->
+      <div class="panel" id="sdr-cadence-panel" style="border: 1px solid rgba(16, 185, 129, 0.35); margin-bottom: 20px;">
+        <div class="panel-title">
+          <span style="color: #34d399;">📅 Multi-Touch Follow-Up Cadence Queue (Day 0 → Day 3 → Day 7)</span>
+          <span class="tag tag-a" id="sdr-cadence-count">0 Active Sequences</span>
+        </div>
+        <div class="panel-desc" style="margin-bottom: 12px;">
+          Most B2B sprint deals close on Touch 2–3. Proposals dispatched from Maps or Direct Mail are queued below for automated Day-3 case-study and Day-7 breakup follow-ups:
+        </div>
+        <div id="sdr-cadence-list" style="display: flex; flex-direction: column; gap: 8px;">
+          <div style="font-size: 12px; color: var(--text-muted); padding: 10px; background: #060911; border-radius: 6px;">No active follow-up sequences yet — dispatch a proposal from Maps Discovery to queue Day 3 &amp; Day 7 touches.</div>
         </div>
       </div>
 
@@ -1573,6 +1842,24 @@ WinRatePercentage = DIVIDE(CALCULATE(COUNTROWS('fact_pipeline'), 'fact_pipeline'
             <div>
               <label style="font-size: 11px; color: var(--text-muted); font-weight: 600;">Reply-To Email Address:</label>
               <input type="email" id="mail-cfg-replyto" value="contact@zenthrasystems.com">
+            </div>
+
+            <!-- Cloud Webhook Relay + Booking & Kickoff Payment Links -->
+            <div style="background: #080d1a; border: 1px solid #1e293b; border-radius: 6px; padding: 12px; display: flex; flex-direction: column; gap: 10px;">
+              <div>
+                <label style="font-size: 11px; color: #93c5fd; font-weight: 700;">🌐 Optional Cloud Mail / n8n Webhook Relay URL (For GitHub Pages Static Sending):</label>
+                <input type="url" id="mail-cfg-webhook" placeholder="https://your-n8n-or-cloudflare-worker.example.com/send-mail" style="margin-top: 4px;">
+              </div>
+              <div class="grid-2">
+                <div>
+                  <label style="font-size: 11px; color: var(--text-muted); font-weight: 600;">📅 Unified Cal.com Booking URL:</label>
+                  <input type="url" id="mail-cfg-booking-url" value="https://cal.com/zenthra-systems-dyuqpi/30min" style="margin-top: 4px;">
+                </div>
+                <div>
+                  <label style="font-size: 11px; color: var(--text-muted); font-weight: 600;">💳 Optional 50% Kickoff Deposit Link (Stripe/Wise):</label>
+                  <input type="url" id="mail-cfg-payment-url" placeholder="https://buy.stripe.com/... or invoice link" style="margin-top: 4px;">
+                </div>
+              </div>
             </div>
 
             <!-- Auto-Send Master Toggle -->
@@ -2293,6 +2580,7 @@ WinRatePercentage = DIVIDE(CALCULATE(COUNTROWS('fact_pipeline'), 'fact_pipeline'
     </div>
 
   </div>
+  </div> <!-- End .app-shell -->
 
   <script>
     
@@ -2553,7 +2841,80 @@ WinRatePercentage = DIVIDE(CALCULATE(COUNTROWS('fact_pipeline'), 'fact_pipeline'
         panel.classList.add('active');
         window.scrollTo({ top: 0, behavior: 'smooth' });
       }
+      if (window.innerWidth <= 960) toggleMobileSidebar(false);
+      if (tabId === 'exec-tab' && typeof updateExecFunnel === 'function') updateExecFunnel();
+      if (tabId === 'sdr-tab' && typeof renderFollowupCadence === 'function') renderFollowupCadence();
     }
+
+    function toggleDesktopSidebar() {
+      const sb = document.getElementById('app-sidebar');
+      if (sb) sb.classList.toggle('collapsed');
+    }
+
+    function toggleMobileSidebar(forceState) {
+      const sb = document.getElementById('app-sidebar');
+      const bd = document.getElementById('mobile-sidebar-backdrop');
+      if (!sb) return;
+      const shouldOpen = typeof forceState === 'boolean' ? forceState : !sb.classList.contains('mobile-open');
+      sb.classList.toggle('mobile-open', shouldOpen);
+      if (bd) bd.classList.toggle('open', shouldOpen);
+    }
+
+    const CMD_PALETTE_ITEMS = [
+      { label: '📊 Executive Overview & Revenue Funnel', hint: 'Workspace', run: () => switchTab('exec-tab') },
+      { label: '📍 Google Maps Live Scraper (Real Emails & Sites)', hint: 'Lead Gen', run: () => switchTab('maps-tab') },
+      { label: '📬 Who Can I Email? (Verified Decision-Makers)', hint: 'Lead Gen', run: () => switchTab('emailable-tab') },
+      { label: '🛡️ SDR Approval Gate & Day 3/7 Follow-Ups', hint: 'Outreach', run: () => switchTab('sdr-tab') },
+      { label: '💼 Sales Pipeline & CRM Deals', hint: 'CRM', run: () => switchTab('pipeline-tab') },
+      { label: '⚡ Model 1: Value-Anchored 10-Day Sprint', hint: 'Closing', run: () => switchTab('model1-tab') },
+      { label: '💵 Pricing & Instant SOW Generator', hint: 'Closing', run: () => switchTab('pricing-tab') },
+      { label: '📧 Mail API, Webhook Relay & Kickoff Deposit Links', hint: 'Config', run: () => switchTab('mail-tab') },
+      { label: '🚀 4 Live Client Demo Prototypes (RAG / AI / BI / OCR)', hint: 'Proof', run: () => switchTab('demo-tab') },
+      { label: '🎯 Preset: Hamburg Logistics Live Scrape (DE)', hint: 'Maps Preset', run: () => { switchTab('maps-tab'); setMapsPreset('logistics in Hamburg', 'Germany', 'Hamburg', 'logistics'); } },
+      { label: '🎯 Preset: Miami Dental Live Scrape (USA)', hint: 'Maps Preset', run: () => { switchTab('maps-tab'); setMapsPreset('dental clinics in Miami', 'United States', 'Miami', 'dental'); } },
+      { label: '🎯 Preset: Berlin Manufacturing Live Scrape (DE)', hint: 'Maps Preset', run: () => { switchTab('maps-tab'); setMapsPreset('precision manufacturing in Berlin', 'Germany', 'Berlin', 'manufacturing'); } }
+    ];
+
+    function openCommandPalette() {
+      const m = document.getElementById('cmd-palette-modal');
+      const inp = document.getElementById('cmd-palette-input');
+      if (!m) return;
+      m.classList.add('open');
+      if (inp) { inp.value = ''; filterCommandPalette(); setTimeout(() => inp.focus(), 40); }
+    }
+
+    function closeCommandPalette() {
+      const m = document.getElementById('cmd-palette-modal');
+      if (m) m.classList.remove('open');
+    }
+
+    function filterCommandPalette() {
+      const q = (document.getElementById('cmd-palette-input')?.value || '').trim().toLowerCase();
+      const box = document.getElementById('cmd-palette-results');
+      if (!box) return;
+      const matches = CMD_PALETTE_ITEMS.filter(it => !q || it.label.toLowerCase().includes(q) || it.hint.toLowerCase().includes(q));
+      box.innerHTML = matches.length ? matches.map((it, i) => `
+        <button type="button" class="cmd-palette-item" onclick="executeCommandPaletteIdx(${CMD_PALETTE_ITEMS.indexOf(it)})">
+          <span>${escHtml(it.label)}</span>
+          <span style="font-size: 10.5px; color: #38bdf8; background: rgba(56,189,248,0.12); padding: 2px 7px; border-radius: 4px;">${escHtml(it.hint)}</span>
+        </button>
+      `).join('') : '<div style="padding: 16px; text-align: center; font-size: 12px; color: var(--text-muted);">No matching workspace or preset found.</div>';
+    }
+
+    function executeCommandPaletteIdx(idx) {
+      const item = CMD_PALETTE_ITEMS[idx];
+      closeCommandPalette();
+      if (item && typeof item.run === 'function') item.run();
+    }
+
+    document.addEventListener('keydown', (ev) => {
+      if ((ev.ctrlKey || ev.metaKey) && ev.key.toLowerCase() === 'k') {
+        ev.preventDefault();
+        openCommandPalette();
+      } else if (ev.key === 'Escape') {
+        closeCommandPalette();
+      }
+    });
 
     function loadPreset(key) {
       const p = PRESETS[key];
@@ -4512,6 +4873,17 @@ WinRatePercentage = DIVIDE(CALCULATE(COUNTROWS('fact_pipeline'), 'fact_pipeline'
       const demoSelector = document.getElementById('modal-demo-project');
       if (demoSelector) {
         demoSelector.value = 'demo-rag';
+      }
+
+      const touchSel = document.getElementById('modal-touch-stage');
+      if (touchSel) touchSel.value = String(item._preferredTouch || 1);
+      const mapLang = document.getElementById('maps-pitch-lang')?.value || 'auto';
+      const modalLang = document.getElementById('modal-pitch-lang');
+      if (modalLang) modalLang.value = mapLang;
+
+      if (item._preferredTouch && item._preferredTouch > 1 || mapLang !== 'auto') {
+        applyModalTouchAndLang();
+      } else {
         onModalDemoChange();
       }
 
@@ -4603,10 +4975,13 @@ WinRatePercentage = DIVIDE(CALCULATE(COUNTROWS('fact_pipeline'), 'fact_pipeline'
         service_wedge: document.getElementById('modal-wedge').value,
         deal_value_usd: parseFloat(document.getElementById('modal-quote').value) || 5000,
         demo_project_key: document.getElementById('modal-demo-project')?.value || 'demo-rag',
+        touch_number: parseInt(document.getElementById('modal-touch-stage')?.value || '1', 10) || 1,
+        language: document.getElementById('modal-pitch-lang')?.value || 'auto',
         channel: 'EMAIL_AND_N8N'
       };
 
       let serverSuccess = false;
+      let webhookSuccess = false;
       if (window.__zenthraHasBackend === true) {
         try {
           const apiRes = await safeApiFetch('/api/send-proposal', {
@@ -4618,6 +4993,16 @@ WinRatePercentage = DIVIDE(CALCULATE(COUNTROWS('fact_pipeline'), 'fact_pipeline'
             serverSuccess = true;
           }
         } catch (_) {}
+      } else if (currentMailSettings && currentMailSettings.webhook_relay_url) {
+        try {
+          const whRes = await fetch(currentMailSettings.webhook_relay_url, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ event: 'ZENTHRA_PROPOSAL_DISPATCH', ...payload }),
+            signal: AbortSignal.timeout(7000)
+          });
+          if (whRes.ok) webhookSuccess = true;
+        } catch (_) {}
       }
 
       const placeKey = activeProposalItem.place_details?.place_id || activeProposalItem.account?.company_name;
@@ -4626,6 +5011,22 @@ WinRatePercentage = DIVIDE(CALCULATE(COUNTROWS('fact_pipeline'), 'fact_pipeline'
         localStorage.setItem('zenthra_sent_proposals', JSON.stringify(Array.from(sentProposalsTracker)));
       } catch (_) {}
 
+      recordFollowupCadence({
+        key: placeKey,
+        company_name: payload.company_name,
+        country: payload.country || 'Global',
+        recipient_name: payload.recipient_name,
+        recipient_email: payload.recipient_email,
+        phone: activeProposalItem.place_details?.phone || '',
+        website_url: activeProposalItem.place_details?.website_url || '',
+        service_wedge: payload.service_wedge,
+        deal_value_usd: payload.deal_value_usd,
+        touch_number: payload.touch_number,
+        language: payload.language,
+        last_sent_at: new Date().toISOString(),
+        replied: false
+      });
+
       const msgId = 'prop_' + Math.random().toString(36).substring(2, 10) + '@zenthrasystems.com';
       recordOutboundDelivery({
         sent_at: new Date().toISOString(),
@@ -4633,7 +5034,7 @@ WinRatePercentage = DIVIDE(CALCULATE(COUNTROWS('fact_pipeline'), 'fact_pipeline'
         recipient_name: payload.recipient_name,
         company_name: payload.company_name,
         subject: payload.subject,
-        provider: serverSuccess ? 'Gmail / SMTP' : 'Direct Email Client / Proposal Queue',
+        provider: serverSuccess ? 'Server Mail / SMTP' : (webhookSuccess ? 'Cloud Webhook Relay' : 'Direct Email Client / Proposal Queue'),
         status: 'DELIVERED',
         message_id: msgId
       });
@@ -4646,6 +5047,7 @@ WinRatePercentage = DIVIDE(CALCULATE(COUNTROWS('fact_pipeline'), 'fact_pipeline'
         stage: 'Proposal Submitted',
         probability: 0.4
       });
+      if (typeof updateExecFunnel === 'function') updateExecFunnel();
 
       const fullProposal = `Subject: ${payload.subject}\n\n${payload.body}`;
       if (navigator.clipboard && navigator.clipboard.writeText) {
@@ -4857,6 +5259,7 @@ WinRatePercentage = DIVIDE(CALCULATE(COUNTROWS('fact_pipeline'), 'fact_pipeline'
                 <span>📡 Real-Time Scraped Contact Matrix (Names • Mail • Number • Street Address)</span>
                 <span style="color: ${hasRealEmail ? '#34d399' : '#fbbf24'}; font-weight: 700; font-size: 10px;">
                   ${hasRealEmail ? '✓ VERIFIED LIVE EMAIL EXTRACTED' : '⚠️ LIVE WEBSITE/MAP ONLY (NO PUBLIC EMAIL)'}
+                  <span id="mx-badge-${cacheIdx}" style="margin-left: 6px; font-weight: 700;"></span>
                 </span>
               </div>
               <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 10px; font-size: 12px; color: #e2e8f0; margin-bottom: 10px;">
@@ -4934,6 +5337,8 @@ WinRatePercentage = DIVIDE(CALCULATE(COUNTROWS('fact_pipeline'), 'fact_pipeline'
                 <span style="color: #94a3b8;">(Market Benchmark: $${(mp.benchmarkRateUSD || calibratedCharge * 3).toLocaleString()} USD)</span>
               </div>
               <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                <button class="btn-outline" style="font-size: 11px; padding: 7px 12px; border-color: rgba(16, 185, 129, 0.45); color: #34d399;" onclick="openOutreachScriptsModal(${cacheIdx})">📞 Call / LinkedIn / WA</button>
+                <button class="btn-outline" style="font-size: 11px; padding: 7px 12px; border-color: rgba(56, 189, 248, 0.45); color: #38bdf8;" onclick="openPrintableAudit(${cacheIdx})">📄 Print Audit PDF</button>
                 <button class="btn-success" style="font-size: 12px; padding: 7px 14px; background: linear-gradient(135deg, #059669, #0d9488); font-weight: 700; color: white;" onclick="executeModel1FromPlace(${cacheIdx})">⚡ Model 1: Value Sprint</button>
                 <button class="btn-primary" style="font-size: 12px; padding: 7px 16px; background: #2563eb; font-weight: 700;" onclick="openProposalModal(${cacheIdx})">✉️ Send Proposal</button>
                 <button class="btn-outline" style="font-size: 11px;" onclick="switchTab('sdr-tab')">🔍 Open in SDR Gate</button>
@@ -4942,6 +5347,424 @@ WinRatePercentage = DIVIDE(CALCULATE(COUNTROWS('fact_pipeline'), 'fact_pipeline'
           </div>
         `;
       }).join('');
+
+      places.forEach((r, i) => {
+        const origIdx = discoveredPlacesCache.indexOf(r);
+        const cacheIdx = origIdx >= 0 ? origIdx : i;
+        const dom = r.place_details?.domain || r.account?.domain || '';
+        if (dom) verifyDomainMX(dom, 'mx-badge-' + cacheIdx);
+      });
+      if (typeof updateExecFunnel === 'function') updateExecFunnel();
+    }
+
+    // ========================================================
+    // MULTI-CHANNEL SCRIPTS, MX CHECK, PDF AUDIT & FOLLOW-UPS
+    // ========================================================
+    const mxVerificationCache = new Map();
+
+    async function verifyDomainMX(domain, badgeId) {
+      if (!domain) return;
+      const cleanDom = domain.replace(/^www\./, '').toLowerCase();
+      const applyBadge = (status) => {
+        const el = document.getElementById(badgeId);
+        if (!el) return;
+        if (status === 'MX_OK') {
+          el.innerHTML = '<span style="background: rgba(16,185,129,0.16); color: #34d399; border: 1px solid rgba(16,185,129,0.4); padding: 1px 6px; border-radius: 3px;">✓ MX Verified</span>';
+        } else if (status === 'NO_MX') {
+          el.innerHTML = '<span style="background: rgba(245,158,11,0.14); color: #fbbf24; border: 1px solid rgba(245,158,11,0.35); padding: 1px 6px; border-radius: 3px;">⚠️ Check MX</span>';
+        }
+      };
+
+      if (mxVerificationCache.has(cleanDom)) {
+        applyBadge(mxVerificationCache.get(cleanDom));
+        return;
+      }
+
+      try {
+        const res = await fetch(`https://dns.google/resolve?name=${encodeURIComponent(cleanDom)}&type=MX`, {
+          signal: AbortSignal.timeout(3500)
+        });
+        if (res.ok) {
+          const data = await res.json();
+          const hasMx = Array.isArray(data.Answer) && data.Answer.length > 0;
+          const st = hasMx ? 'MX_OK' : 'NO_MX';
+          mxVerificationCache.set(cleanDom, st);
+          applyBadge(st);
+        }
+      } catch (_) {}
+    }
+
+    function resolveAutoPitchLang(country) {
+      const c = (country || '').toLowerCase();
+      if (/(germany|deutschland|austria|österreich|switzerland|schweiz|liechtenstein)/.test(c)) return 'de';
+      if (/(france|belgium|luxembourg|monaco)/.test(c)) return 'fr';
+      if (/(spain|españa|mexico|colombia|argentina|chile)/.test(c)) return 'es';
+      return 'en';
+    }
+
+    function buildMultiTouchPitch(item, touchNum, langPref, recName, wedge, quote) {
+      const acc = item.account || {};
+      const details = item.place_details || {};
+      const audit = item.weakness_audit || {};
+      const lang = (!langPref || langPref === 'auto') ? resolveAutoPitchLang(acc.country || details.country) : langPref;
+      const company = acc.company_name || 'your company';
+      const first = (recName && !recName.startsWith('Business Desk') && !recName.startsWith('Front Desk')) ? recName.split(' ')[0] : (lang === 'de' ? 'Team' : (lang === 'fr' ? 'équipe' : (lang === 'es' ? 'equipo' : 'Team')));
+      const flaw = audit.primaryWeakness?.flaw || 'manual intake and operational reporting friction';
+      const loss = (audit.estimatedMonthlyLossUSD || 7500).toLocaleString();
+      const bookingUrl = (currentMailSettings && currentMailSettings.booking_url) || 'https://cal.com/zenthra-systems-dyuqpi/30min';
+      const payUrl = (currentMailSettings && currentMailSettings.payment_deposit_url) || '';
+      const senderEmail = (currentMailSettings && (currentMailSettings.from_email || currentMailSettings.smtp_user)) || 'solutions@zenthrasystems.com';
+      const payLine = payUrl ? `\nOptional Sprint Kickoff Deposit Link: ${payUrl}` : '';
+
+      if (lang === 'de') {
+        if (touchNum === 2) {
+          return {
+            subject: `Re: Kurze ROI-Analyse für ${company} (${wedge})`,
+            body: `Hallo ${first},\n\nich knüpfe kurz an unsere Analyse zu ${company} an: Bei vergleichbaren Unternehmen in ${details.city || acc.country} sehen wir durch "${flaw}" aktuell ca. $${loss}/Monat Effizienzverlust.\n\nMit unserem 10-Tage-Sprint ("${wedge}", Festpreis $${Number(quote).toLocaleString()} USD) amortisiert sich das Setup oft in unter 30 Tagen.${payLine}\n\nKurzer 20-Minuten-Check hier buchbar: ${bookingUrl}\n\nViele Grüße\nZenthra Systems Solutions\n${senderEmail}`
+          };
+        }
+        if (touchNum === 3) {
+          return {
+            subject: `Soll ich den Sprint-Slot für ${company} wieder freigeben?`,
+            body: `Hallo ${first},\n\nda ich keine Rückmeldung erhalten habe, gehe ich davon aus, dass "${wedge}" bei ${company} aktuell keine Priorität hat.\n\nFalls sich das ändert, buchen Sie hier direkt einen unverbindlichen Architektur-Termin: ${bookingUrl}\n\nBeste Grüße\nZenthra Systems Solutions`
+          };
+        }
+        return {
+          subject: `${company}: ~$${loss}/Monat Optimierungspotenzial (${wedge})`,
+          body: `Hallo ${first},\n\nbei unserer Live-Prüfung von ${company} (${details.website_url || details.address || ''}) ist uns folgender Engpass aufgefallen:\n- Befund: ${flaw}\n\nWir setzen "${wedge}" als 10-Tage-Festpreis-Sprint ($${Number(quote).toLocaleString()} USD) schlüsselfertig um — ohne Agentur-Overhead.${payLine}\n\nDirekt Termin wählen: ${bookingUrl}\n\nViele Grüße\nZenthra Systems Solutions\n${senderEmail}`
+        };
+      }
+
+      if (lang === 'fr') {
+        if (touchNum === 2) {
+          return {
+            subject: `Re: Audit ROI rapide pour ${company} (${wedge})`,
+            body: `Bonjour ${first},\n\nSuite à notre analyse de ${company}, corriger "${flaw}" permet généralement de récupérer ~$${loss}/mois en productivité et leads qualifiés.\n\nNotre Sprint de 10 jours (${wedge} — $${Number(quote).toLocaleString()} USD) est livré clé en main.${payLine}\n\nRéserver un créneau de 20 min : ${bookingUrl}\n\nCordialement,\nZenthra Systems Solutions\n${senderEmail}`
+          };
+        }
+        if (touchNum === 3) {
+          return {
+            subject: `Clôture de votre audit ${company} ?`,
+            body: `Bonjour ${first},\n\nSans retour de votre part, je suppose que le projet "${wedge}" n'est pas prioritaire ce trimestre. Mon lien agenda reste ouvert si besoin : ${bookingUrl}\n\nBien cordialement,\nZenthra Systems Solutions`
+          };
+        }
+        return {
+          subject: `${company} : ~$${loss}/mois de potentiel récupérable (${wedge})`,
+          body: `Bonjour ${first},\n\nLors de notre analyse en direct de ${company}, nous avons identifié un point de friction clair : ${flaw}.\n\nZenthra Systems déploie "${wedge}" en 10 jours ouvrés pour $${Number(quote).toLocaleString()} USD forfaitaires.${payLine}\n\nPlanifier un échange : ${bookingUrl}\n\nCordialement,\nZenthra Systems Solutions\n${senderEmail}`
+        };
+      }
+
+      if (lang === 'es') {
+        if (touchNum === 2) {
+          return {
+            subject: `Re: Auditoría breve de ROI para ${company}`,
+            body: `Hola ${first},\n\nDando seguimiento a nuestra revisión de ${company}: resolver "${flaw}" suele recuperar ~$${loss}/mes en capacidad operativa.\n\nNuestro Sprint fijo de 10 días (${wedge} — $${Number(quote).toLocaleString()} USD) se entrega llave en mano.${payLine}\n\nAgenda 20 minutos aquí: ${bookingUrl}\n\nSaludos,\nZenthra Systems Solutions\n${senderEmail}`
+          };
+        }
+        if (touchNum === 3) {
+          return {
+            subject: `¿Cerramos la propuesta para ${company}?`,
+            body: `Hola ${first},\n\nComo no recibí respuesta, asumo que automatizar "${wedge}" no es prioridad ahora. Si desean retomarlo más adelante, pueden agendar aquí: ${bookingUrl}\n\nUn saludo,\nZenthra Systems Solutions`
+          };
+        }
+        return {
+          subject: `${company}: ~$${loss}/mes recuperables con ${wedge}`,
+          body: `Hola ${first},\n\nAl revisar en vivo ${company}, detectamos una fricción clave: ${flaw}.\n\nImplementamos "${wedge}" en un Sprint de 10 días ($${Number(quote).toLocaleString()} USD fijos).${payLine}\n\nAgenda una revisión técnica: ${bookingUrl}\n\nSaludos,\nZenthra Systems Solutions\n${senderEmail}`
+        };
+      }
+
+      // Default EN
+      if (touchNum === 2) {
+        return {
+          subject: `Re: ${company} — benchmark ROI on ${wedge}`,
+          body: `Hi ${first},\n\nFollowing up briefly on ${company}. Across comparable teams in ${details.city || acc.country}, eliminating "${flaw}" typically recovers ~$${loss}/mo within the first 30 days.\n\nWe deploy ${wedge} as a fixed 10-day sprint ($${Number(quote).toLocaleString()} USD) with zero hourly agency bloat.${payLine}\n\nBook a 20-minute architecture walk: ${bookingUrl}\n\nBest regards,\nZenthra Systems Solutions\n${senderEmail}`
+        };
+      }
+      if (touchNum === 3) {
+        return {
+          subject: `Should I close out the ${company} teardown file?`,
+          body: `Hi ${first},\n\nSince I haven't heard back, I'll assume solving "${flaw}" isn't a priority this month. If you ever want a live walkthrough of the 10-day sprint setup, my calendar is here: ${bookingUrl}\n\nBest regards,\nZenthra Systems Solutions`
+        };
+      }
+      return {
+        subject: `${company}: ~$${loss}/mo leak spotted (${wedge})`,
+        body: `Hi ${first},\n\nWhile auditing ${company} (${details.website_url || details.address || ''}), we flagged a concrete conversion & workflow leak: ${flaw}.\n\nAt Zenthra Systems, we deploy "${wedge}" in 10 business days ($${Number(quote).toLocaleString()} USD fixed sprint).${payLine}\n\nPick a 20-minute walkthrough slot: ${bookingUrl}\n\nBest regards,\nZenthra Systems Solutions\n${senderEmail}`
+      };
+    }
+
+    function applyModalTouchAndLang() {
+      if (!activeProposalItem) return;
+      const touchNum = parseInt(document.getElementById('modal-touch-stage')?.value || '1', 10) || 1;
+      const langPref = document.getElementById('modal-pitch-lang')?.value || 'auto';
+      const recName = document.getElementById('modal-recipient-name')?.value || '';
+      const wedge = document.getElementById('modal-wedge')?.value || '';
+      const quote = document.getElementById('modal-quote')?.value || 7500;
+
+      const generated = buildMultiTouchPitch(activeProposalItem, touchNum, langPref, recName, wedge, quote);
+      const subEl = document.getElementById('modal-subject');
+      const bodyEl = document.getElementById('modal-body');
+      if (subEl) subEl.value = generated.subject;
+      if (bodyEl) bodyEl.value = generated.body;
+      onModalDemoChange();
+    }
+
+    function copyTextToClipboard(text, btn) {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).catch(() => fallbackCopyToClipboard(text));
+      } else {
+        fallbackCopyToClipboard(text);
+      }
+      if (btn) {
+        const orig = btn.textContent;
+        btn.textContent = '✓ Copied!';
+        setTimeout(() => { btn.textContent = orig; }, 1600);
+      }
+    }
+
+    function openOutreachScriptsModal(cacheIdx) {
+      const item = discoveredPlacesCache[cacheIdx];
+      if (!item) return;
+      const acc = item.account || {};
+      const details = item.place_details || {};
+      const audit = item.weakness_audit || {};
+      const company = acc.company_name || 'Target Business';
+      const person = (details.scraped_people && details.scraped_people[0]) || details.contact_person_1?.name || 'Managing Director';
+      const flaw = audit.primaryWeakness?.flaw || 'after-hours booking & intake latency';
+      const wedge = audit.recommendedWedge || '10-Day Automation Sprint';
+      const loss = (audit.estimatedMonthlyLossUSD || 7500).toLocaleString();
+      const phone = (details.phone && details.phone !== 'Not listed publicly') ? details.phone : '';
+      const waDigits = phone.replace(/[^\d]/g, '');
+      const bookingUrl = (currentMailSettings && currentMailSettings.booking_url) || 'https://cal.com/zenthra-systems-dyuqpi/30min';
+      const langPref = document.getElementById('maps-pitch-lang')?.value || 'auto';
+      const lang = langPref === 'auto' ? resolveAutoPitchLang(acc.country || details.country) : langPref;
+
+      const callScript = lang === 'de'
+        ? `Gatekeeper: "Hallo, mein Name ist [Ihr Name] von Zenthra Systems — darf ich kurz mit ${person} über Ihre Online-Kundenanfragen bei ${company} sprechen?"\n\nEntscheider-Opener: "Hallo ${person}, ich halte es bei 20 Sekunden: Bei ${company} fiel uns auf (${flaw}), was schätzungsweise $${loss}/Monat Potenzial kostet. Wenn ich Ihnen heute ein 1-seitiges Audit-PDF schicke — lohnt sich ein 15-Minuten-Blick diese Woche?"`
+        : `Gatekeeper: "Hi, this is [Your Name] calling from Zenthra Systems — could you connect me briefly with ${person} regarding ${company}'s customer intake setup?"\n\nDecision-Maker Opener: "Hi ${person}, I'll be brief — we ran a quick digital check on ${company} and noticed ${flaw} (roughly $${loss}/mo in missed pipeline). Can I send you our 1-page teardown PDF and grab 15 minutes Thursday?"`;
+
+      const waText = lang === 'de'
+        ? `Hallo ${person}, kurzes Feedback zu ${company}: Wir haben bei Ihnen "${flaw}" entdeckt (~$${loss}/Mo Potenzial). Hier unverbindlich unser 20-Min-Terminlink falls interessant: ${bookingUrl}`
+        : `Hi ${person}, quick note for ${company} — we spotted "${flaw}" (~$${loss}/mo opportunity). Happy to share a 1-page teardown or meet 15 mins here: ${bookingUrl}`;
+
+      const liText = `Hi ${person} — noticed ${company} in ${details.city || acc.country} and saw a quick win around ${flaw}. We deploy ${wedge} in 10 business days without agency overhead. Open to seeing a 1-page breakdown?`;
+
+      document.getElementById('scripts-modal-sub').textContent = `${company} (${details.city || ''}, ${details.country || ''}) • Language: ${lang.toUpperCase()} • ${phone ? 'Phone: ' + phone : 'No direct phone listed'}`;
+      document.getElementById('scripts-modal-body').innerHTML = `
+        <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+          ${phone ? `<a href="tel:${escHtml(phone)}" class="btn-success" style="text-decoration: none; padding: 8px 14px; font-size: 12px; font-weight: 700;">📞 Dial ${escHtml(phone)}</a>` : ''}
+          ${waDigits.length >= 7 ? `<a href="https://wa.me/${escHtml(waDigits)}?text=${encodeURIComponent(waText)}" target="_blank" rel="noopener" class="btn-primary" style="text-decoration: none; padding: 8px 14px; font-size: 12px; font-weight: 700; background: #059669;">💬 Open WhatsApp Chat ↗</a>` : ''}
+          ${details.company_linkedin?.url ? `<a href="${escHtml(details.company_linkedin.url)}" target="_blank" rel="noopener" class="btn-outline" style="text-decoration: none; padding: 8px 14px; font-size: 12px;">🏢 Company LinkedIn ↗</a>` : ''}
+        </div>
+
+        <div style="background: #060911; border: 1px solid #1e293b; border-radius: 8px; padding: 14px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+            <strong style="color: #34d399; font-size: 12.5px;">📞 Cold Call &amp; Gatekeeper Script</strong>
+            <button type="button" class="btn-outline" style="font-size: 11px; padding: 4px 10px;" onclick="copyTextToClipboard(document.getElementById('script-call-txt').textContent, this)">📋 Copy Call Script</button>
+          </div>
+          <pre id="script-call-txt" style="white-space: pre-wrap; color: #e2e8f0; margin: 0;">${escHtml(callScript)}</pre>
+        </div>
+
+        <div style="background: #060911; border: 1px solid #1e293b; border-radius: 8px; padding: 14px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+            <strong style="color: #38bdf8; font-size: 12.5px;">💬 WhatsApp / SMS Direct Opener</strong>
+            <button type="button" class="btn-outline" style="font-size: 11px; padding: 4px 10px;" onclick="copyTextToClipboard(document.getElementById('script-wa-txt').textContent, this)">📋 Copy WhatsApp</button>
+          </div>
+          <pre id="script-wa-txt" style="white-space: pre-wrap; color: #e2e8f0; margin: 0;">${escHtml(waText)}</pre>
+        </div>
+
+        <div style="background: #060911; border: 1px solid #1e293b; border-radius: 8px; padding: 14px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+            <strong style="color: #a78bfa; font-size: 12.5px;">🔗 LinkedIn Executive DM</strong>
+            <button type="button" class="btn-outline" style="font-size: 11px; padding: 4px 10px;" onclick="copyTextToClipboard(document.getElementById('script-li-txt').textContent, this)">📋 Copy LinkedIn DM</button>
+          </div>
+          <pre id="script-li-txt" style="white-space: pre-wrap; color: #e2e8f0; margin: 0;">${escHtml(liText)}</pre>
+        </div>
+      `;
+
+      const modal = document.getElementById('outreach-scripts-modal');
+      if (modal) modal.style.display = 'flex';
+    }
+
+    function closeOutreachScriptsModal() {
+      const modal = document.getElementById('outreach-scripts-modal');
+      if (modal) modal.style.display = 'none';
+    }
+
+    function openPrintableAudit(cacheIdx) {
+      const item = discoveredPlacesCache[cacheIdx];
+      if (!item) return;
+      const acc = item.account || {};
+      const details = item.place_details || {};
+      const audit = item.weakness_audit || {};
+      const mp = item.market_pricing || details.market_pricing || {};
+      const charge = mp.recommendedChargeUSD || 9500;
+      const benchmark = mp.benchmarkRateUSD || charge * 3;
+      const loss = audit.estimatedMonthlyLossUSD || 7500;
+      const paybackDays = Math.max(7, Math.round(charge / Math.max(1, loss / 30)));
+      const bookingUrl = (currentMailSettings && currentMailSettings.booking_url) || 'https://cal.com/zenthra-systems-dyuqpi/30min';
+      const paymentUrl = (currentMailSettings && currentMailSettings.payment_deposit_url) || '';
+      const senderEmail = (currentMailSettings && (currentMailSettings.from_email || currentMailSettings.smtp_user)) || 'solutions@zenthrasystems.com';
+
+      document.getElementById('printable-audit-sheet').innerHTML = `
+        <div style="display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 2px solid #0f172a; padding-bottom: 14px; margin-bottom: 20px;">
+          <div>
+            <div style="font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.08em; color: #059669;">Zenthra Systems Solutions &bull; Executive Diagnostic</div>
+            <h1 style="font-size: 24px; font-weight: 900; margin: 4px 0; color: #0f172a;">${escHtml(acc.company_name)} — Digital &amp; Revenue Audit</h1>
+            <div style="font-size: 12px; color: #475569;">${escHtml(details.address || (details.city + ', ' + details.country))} &bull; ${escHtml(details.website_url || 'No Website Listed')}</div>
+          </div>
+          <div style="text-align: right; font-size: 12px;">
+            <div><strong>Date:</strong> ${new Date().toISOString().split('T')[0]}</div>
+            <div><strong>Health Score:</strong> ${audit.digitalHealthScore || 72}/100</div>
+            <div><strong>Contact:</strong> ${escHtml(details.general_email || details.phone || 'Executive Desk')}</div>
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 20px;">
+          <div style="background: #fef2f2; border: 1px solid #fecaca; border-radius: 8px; padding: 12px;">
+            <div style="font-size: 10px; text-transform: uppercase; color: #991b1b; font-weight: 700;">Estimated Monthly Drag</div>
+            <div style="font-size: 20px; font-weight: 900; color: #b91c1c;">$${Number(loss).toLocaleString()} / mo</div>
+          </div>
+          <div style="background: #ecfdf5; border: 1px solid #a7f3d0; border-radius: 8px; padding: 12px;">
+            <div style="font-size: 10px; text-transform: uppercase; color: #065f46; font-weight: 700;">Fixed 10-Day Sprint Fee</div>
+            <div style="font-size: 20px; font-weight: 900; color: #047857;">$${Number(charge).toLocaleString()} USD</div>
+          </div>
+          <div style="background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 8px; padding: 12px;">
+            <div style="font-size: 10px; text-transform: uppercase; color: #1e40af; font-weight: 700;">Projected Payback</div>
+            <div style="font-size: 20px; font-weight: 900; color: #1d4ed8;">${paybackDays} Days</div>
+          </div>
+        </div>
+
+        <div style="margin-bottom: 18px;">
+          <h3 style="font-size: 14px; font-weight: 800; color: #0f172a; margin-bottom: 6px;">1. Audited Operational &amp; Website Findings</h3>
+          <ul style="margin-left: 18px; font-size: 13px; color: #334155;">
+            <li><strong>Primary Weakness:</strong> ${escHtml(audit.primaryWeakness?.flaw || 'Manual intake & workflow latency')}</li>
+            <li><strong>Business Impact:</strong> ${escHtml(audit.primaryWeakness?.impact || 'Lost conversion speed and manual team overhead.')}</li>
+            <li><strong>SSL / Booking / Contact Status:</strong> ${escHtml(details.ssl_status || 'N/A')} &bull; Booking Widget: ${details.has_online_booking ? 'Detected' : 'Missing'} &bull; Phone: ${escHtml(details.phone || 'Not listed')}</li>
+          </ul>
+        </div>
+
+        <div style="margin-bottom: 20px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 14px;">
+          <h3 style="font-size: 14px; font-weight: 800; color: #0f172a; margin-bottom: 6px;">2. Recommended 10-Day Sprint Scope (${escHtml(audit.recommendedWedge || 'Automation Sprint')})</h3>
+          <p style="font-size: 12.5px; color: #334155; margin-bottom: 8px;">Days 1–2: Architecture &amp; read-only data hookup &bull; Days 3–7: Engineering &amp; live workflow automation &bull; Days 8–10: QA, team handoff &amp; 30-day warranty.</p>
+          <div style="font-size: 12px; color: #475569;"><strong>Market Agency Benchmark:</strong> $${Number(benchmark).toLocaleString()} USD &bull; <strong>Direct Sprint Savings:</strong> $${Number(benchmark - charge).toLocaleString()} USD</div>
+        </div>
+
+        <div style="border-top: 1px solid #cbd5e1; padding-top: 14px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; font-size: 12px;">
+          <div>
+            <strong>Schedule Walkthrough:</strong> <a href="${escHtml(bookingUrl)}" target="_blank" rel="noopener" style="color: #2563eb;">${escHtml(bookingUrl)}</a><br>
+            ${paymentUrl ? `<strong>50% Kickoff Deposit Link:</strong> <a href="${escHtml(paymentUrl)}" target="_blank" rel="noopener" style="color: #059669;">${escHtml(paymentUrl)}</a>` : `<strong>Prepared by:</strong> Zenthra Systems Solutions (${escHtml(senderEmail)})`}
+          </div>
+          <span style="background: #0f172a; color: #34d399; padding: 6px 12px; border-radius: 6px; font-weight: 700;">10-Day Fixed Delivery Guarantee</span>
+        </div>
+      `;
+
+      const modal = document.getElementById('printable-audit-modal');
+      if (modal) modal.style.display = 'flex';
+    }
+
+    function closePrintableAudit() {
+      const modal = document.getElementById('printable-audit-modal');
+      if (modal) modal.style.display = 'none';
+    }
+
+    function loadFollowupCadence() {
+      try {
+        return JSON.parse(localStorage.getItem('zenthra_followup_cadence') || '[]');
+      } catch (_) {
+        return [];
+      }
+    }
+
+    function recordFollowupCadence(entry) {
+      const list = loadFollowupCadence();
+      const idx = list.findIndex(x => x.key === entry.key);
+      if (idx >= 0) {
+        list[idx] = { ...list[idx], ...entry };
+      } else {
+        list.unshift(entry);
+      }
+      try {
+        localStorage.setItem('zenthra_followup_cadence', JSON.stringify(list.slice(0, 60)));
+      } catch (_) {}
+      renderFollowupCadence();
+    }
+
+    function advanceFollowupTouch(key) {
+      const list = loadFollowupCadence();
+      const entry = list.find(x => x.key === key);
+      if (!entry) return;
+      const nextTouch = Math.min(3, (Number(entry.touch_number) || 1) + 1);
+      const cachedIdx = discoveredPlacesCache.findIndex(r => (r.place_details?.place_id || r.account?.company_name) === key);
+      if (cachedIdx >= 0) {
+        discoveredPlacesCache[cachedIdx]._preferredTouch = nextTouch;
+        openProposalModal(cachedIdx);
+        return;
+      }
+      const syntheticItem = {
+        account: { company_name: entry.company_name, country: entry.country, recommended_wedge: entry.service_wedge },
+        place_details: { place_id: entry.key, general_email: entry.recipient_email, phone: entry.phone, website_url: entry.website_url, country: entry.country },
+        weakness_audit: { primaryWeakness: { flaw: 'digital conversion & ops friction' }, estimatedMonthlyLossUSD: entry.deal_value_usd || 7500, recommendedWedge: entry.service_wedge }
+      };
+      const generated = buildMultiTouchPitch(syntheticItem, nextTouch, entry.language || 'auto', entry.recipient_name, entry.service_wedge, entry.deal_value_usd || 7500);
+      const mailtoUrl = `mailto:${encodeURIComponent(entry.recipient_email)}?subject=${encodeURIComponent(generated.subject)}&body=${encodeURIComponent(generated.body)}`;
+      recordFollowupCadence({ ...entry, touch_number: nextTouch, last_sent_at: new Date().toISOString() });
+      showToast(`Prepared Touch #${nextTouch} for ${entry.company_name}!`, 'success', '✉️ Open in Mail App ↗', mailtoUrl);
+    }
+
+    function markCadenceReplied(key) {
+      const list = loadFollowupCadence();
+      const entry = list.find(x => x.key === key);
+      if (!entry) return;
+      entry.replied = true;
+      try { localStorage.setItem('zenthra_followup_cadence', JSON.stringify(list)); } catch (_) {}
+      renderFollowupCadence();
+      if (typeof updateExecFunnel === 'function') updateExecFunnel();
+      showToast(`✓ Marked ${entry.company_name} as Replied (auto-cadence paused).`, 'success');
+    }
+
+    function renderFollowupCadence() {
+      const list = loadFollowupCadence();
+      const active = list.filter(x => !x.replied);
+      const cntEl = document.getElementById('sdr-cadence-count');
+      const box = document.getElementById('sdr-cadence-list');
+      if (cntEl) cntEl.textContent = `${active.length} Active Sequences`;
+      if (!box) return;
+      if (list.length === 0) {
+        box.innerHTML = '<div style="font-size: 12px; color: var(--text-muted); padding: 10px; background: #060911; border-radius: 6px;">No active follow-up sequences yet — dispatch a proposal from Maps Discovery to queue Day 3 &amp; Day 7 touches.</div>';
+        return;
+      }
+      box.innerHTML = list.slice(0, 8).map(item => `
+        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; background: #060911; border: 1px solid ${item.replied ? '#059669' : '#1e293b'}; border-radius: 6px; padding: 10px 12px; font-size: 12px;">
+          <div>
+            <strong style="color: #f8fafc;">${escHtml(item.company_name)}</strong>
+            <span style="color: #38bdf8; margin-left: 8px;">${escHtml(item.recipient_email)}</span>
+            <div style="font-size: 11px; color: #94a3b8; margin-top: 2px;">Touch #${item.touch_number || 1} Sent • ${escHtml(item.service_wedge || 'Sprint')} • ${item.replied ? '✅ Replied / Paused' : (Number(item.touch_number) >= 3 ? 'Final Touch Complete' : 'Next: Touch #' + ((Number(item.touch_number) || 1) + 1))}</div>
+          </div>
+          <div style="display: flex; gap: 8px;">
+            ${!item.replied && Number(item.touch_number) < 3 ? `<button type="button" class="btn-primary" style="font-size: 11px; padding: 5px 10px;" onclick="advanceFollowupTouch('${escHtml(item.key)}')">🚀 Launch Touch #${(Number(item.touch_number) || 1) + 1}</button>` : ''}
+            ${!item.replied ? `<button type="button" class="btn-outline" style="font-size: 11px; padding: 5px 10px;" onclick="markCadenceReplied('${escHtml(item.key)}')">✓ Replied</button>` : ''}
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function updateExecFunnel() {
+      const setTxt = (id, v) => { const el = document.getElementById(id); if (el) el.textContent = v; };
+      const scraped = (discoveredPlacesCache || []).length;
+      const emailReady = Array.isArray(emailableContactsData) ? emailableContactsData.length : 0;
+      const cadence = loadFollowupCadence();
+      const activeFollowups = cadence.filter(c => !c.replied).length;
+      let sentCount = sentProposalsTracker ? sentProposalsTracker.size : 0;
+      try {
+        const logs = JSON.parse(localStorage.getItem('zenthra_sent_emails_log') || '[]');
+        sentCount = Math.max(sentCount, logs.length);
+      } catch (_) {}
+      const dealsCount = (globalData && Array.isArray(globalData.deals)) ? globalData.deals.length : 0;
+      setTxt('funnel-scraped-count', scraped);
+      setTxt('funnel-email-count', emailReady);
+      setTxt('funnel-sent-count', sentCount);
+      setTxt('funnel-followup-count', activeFollowups);
+      setTxt('funnel-deals-count', dealsCount);
     }
     function showCampaign(key) {
       ['power_bi', 'ai_automation', 'ai_rag'].forEach(k => {
@@ -5105,8 +5928,12 @@ WinRatePercentage = DIVIDE(CALCULATE(COUNTROWS('fact_pipeline'), 'fact_pipeline'
         }
       } catch (err) {}
 
-      if (!sowText) {
-        sowText = `# STATEMENT OF WORK (SOW)\n\n## 1. Project Title: ${pkg.name}\n**Package Tier:** ${pkg.tier || 'Tier 1 Sprint'}\n**Client:** Apex Global Logistics Inc.\n**Fixed Investment:** $${price.toLocaleString()} USD\n**Delivery Timeline:** 2 Weeks (10 Business Days)\n**Service Category:** Enterprise Digital Engineering & AI Automation\n\n## 2. Executive Problem Statement\n15+ hours weekly spent consolidating manual ERP spreadsheets across 3 regional distribution hubs, creating report valuation latency and intake friction.\n\n## 3. Scope of Deliverables\n${(pkg.deliverables || []).map((d, i) => `${i + 1}. ${d}`).join('\n')}\n\n## 4. Acceptance Criteria & SLA\n- 99.98% Automation Pipeline Uptime\n- Automated Webhook Error Trapping & Incident Alerting\n- 30-Day Post-Launch Warranty & Runbook`;
+        if (!sowText) {
+        const bookingUrl = currentMailSettings?.booking_url || 'https://cal.com/zenthra-systems-dyuqpi/30min';
+        const paymentUrl = currentMailSettings?.payment_deposit_url || '';
+        const kickoffBlock = `\n\n## 5. Kickoff Booking & Authorization\n- Architecture Review & Sprint Scheduling: ${bookingUrl}` +
+          (paymentUrl ? `\n- 50% Kickoff Deposit / Authorization Link: ${paymentUrl}` : '');
+        sowText = `# STATEMENT OF WORK (SOW)\n\n## 1. Project Title: ${pkg.name}\n**Package Tier:** ${pkg.tier || 'Tier 1 Sprint'}\n**Client:** Apex Global Logistics Inc.\n**Fixed Investment:** $${price.toLocaleString()} USD\n**Delivery Timeline:** 2 Weeks (10 Business Days)\n**Service Category:** Enterprise Digital Engineering & AI Automation\n\n## 2. Executive Problem Statement\n15+ hours weekly spent consolidating manual ERP spreadsheets across 3 regional distribution hubs, creating report valuation latency and intake friction.\n\n## 3. Scope of Deliverables\n${(pkg.deliverables || []).map((d, i) => `${i + 1}. ${d}`).join('\n')}\n\n## 4. Acceptance Criteria & SLA\n- 99.98% Automation Pipeline Uptime\n- Automated Webhook Error Trapping & Incident Alerting\n- 30-Day Post-Launch Warranty & Runbook${kickoffBlock}`;
       }
 
       const out = document.getElementById('sow-output');
@@ -5138,7 +5965,7 @@ WinRatePercentage = DIVIDE(CALCULATE(COUNTROWS('fact_pipeline'), 'fact_pipeline'
             category: 'INTERESTED_BOOK_CALL',
             confidence: 0.94,
             recommended_action: 'CAL_DISPATCH_AND_SLACK_NOTIFY',
-            suggested_reply: 'Thanks for reaching back out! Would Thursday at 2:00 PM EST work for a 20-minute architecture walk? Here is our booking portal: https://cal.com/zenthra-systems'
+            suggested_reply: 'Thanks for reaching back out! Would Thursday at 2:00 PM EST work for a 20-minute architecture walk? Here is our booking portal: https://cal.com/zenthra-systems-dyuqpi/30min'
           };
         } else if (lower.includes('unsubscribe') || lower.includes('remove') || lower.includes('stop') || lower.includes('not interested')) {
           c = {
@@ -5198,10 +6025,13 @@ WinRatePercentage = DIVIDE(CALCULATE(COUNTROWS('fact_pipeline'), 'fact_pipeline'
           smtp_host: 'smtp.gmail.com',
           smtp_port: 587,
           smtp_secure: false,
-          smtp_user: 'connect.zenthra@gmail.com',
+          smtp_user: '',
           from_name: 'Zenthra Systems Solutions',
-          from_email: 'connect.zenthra@gmail.com',
-          reply_to: 'connect.zenthra@gmail.com',
+          from_email: 'solutions@zenthrasystems.com',
+          reply_to: 'contact@zenthrasystems.com',
+          webhook_relay_url: '',
+          booking_url: 'https://cal.com/zenthra-systems-dyuqpi/30min',
+          payment_deposit_url: '',
           auto_send_enabled: true
         };
       }
@@ -5220,16 +6050,25 @@ WinRatePercentage = DIVIDE(CALCULATE(COUNTROWS('fact_pipeline'), 'fact_pipeline'
       if (secIn) secIn.checked = Boolean(s.smtp_secure);
 
       const userIn = document.getElementById('mail-cfg-user');
-      if (userIn) userIn.value = s.smtp_user || 'connect.zenthra@gmail.com';
+      if (userIn) userIn.value = s.smtp_user || '';
 
       const fromNameIn = document.getElementById('mail-cfg-fromname');
       if (fromNameIn) fromNameIn.value = s.from_name || 'Zenthra Systems Solutions';
 
       const fromEmailIn = document.getElementById('mail-cfg-fromemail');
-      if (fromEmailIn) fromEmailIn.value = s.from_email || 'connect.zenthra@gmail.com';
+      if (fromEmailIn) fromEmailIn.value = s.from_email || 'solutions@zenthrasystems.com';
 
       const replyToIn = document.getElementById('mail-cfg-replyto');
-      if (replyToIn) replyToIn.value = s.reply_to || 'connect.zenthra@gmail.com';
+      if (replyToIn) replyToIn.value = s.reply_to || 'contact@zenthrasystems.com';
+
+      const webhookIn = document.getElementById('mail-cfg-webhook');
+      if (webhookIn) webhookIn.value = s.webhook_relay_url || '';
+
+      const bookIn = document.getElementById('mail-cfg-booking-url');
+      if (bookIn) bookIn.value = s.booking_url || 'https://cal.com/zenthra-systems-dyuqpi/30min';
+
+      const payIn = document.getElementById('mail-cfg-payment-url');
+      if (payIn) payIn.value = s.payment_deposit_url || '';
 
       const autoSendIn = document.getElementById('mail-cfg-autosend');
       if (autoSendIn) autoSendIn.checked = Boolean(s.auto_send_enabled);
@@ -5277,12 +6116,15 @@ WinRatePercentage = DIVIDE(CALCULATE(COUNTROWS('fact_pipeline'), 'fact_pipeline'
         smtp_host: document.getElementById('mail-cfg-host')?.value || 'smtp.gmail.com',
         smtp_port: parseInt(document.getElementById('mail-cfg-port')?.value || '587', 10) || 587,
         smtp_secure: Boolean(document.getElementById('mail-cfg-secure')?.checked),
-        smtp_user: document.getElementById('mail-cfg-user')?.value || 'connect.zenthra@gmail.com',
+        smtp_user: document.getElementById('mail-cfg-user')?.value || '',
         smtp_pass: document.getElementById('mail-cfg-pass')?.value || '',
         from_name: document.getElementById('mail-cfg-fromname')?.value || 'Zenthra Systems Solutions',
-        from_email: document.getElementById('mail-cfg-fromemail')?.value || 'connect.zenthra@gmail.com',
-        reply_to: document.getElementById('mail-cfg-replyto')?.value || 'connect.zenthra@gmail.com',
+        from_email: document.getElementById('mail-cfg-fromemail')?.value || 'solutions@zenthrasystems.com',
+        reply_to: document.getElementById('mail-cfg-replyto')?.value || 'contact@zenthrasystems.com',
         api_key: document.getElementById('mail-cfg-apikey')?.value || '',
+        webhook_relay_url: (document.getElementById('mail-cfg-webhook')?.value || '').trim(),
+        booking_url: (document.getElementById('mail-cfg-booking-url')?.value || 'https://cal.com/zenthra-systems-dyuqpi/30min').trim(),
+        payment_deposit_url: (document.getElementById('mail-cfg-payment-url')?.value || '').trim(),
         auto_send_enabled: Boolean(document.getElementById('mail-cfg-autosend')?.checked)
       };
 
@@ -6948,13 +7790,18 @@ WinRatePercentage = DIVIDE(CALCULATE(COUNTROWS('fact_pipeline'), 'fact_pipeline'
       if (!contact) return;
 
       activePreviewContact = contact;
+      const activeFromEmail = (currentMailSettings && (currentMailSettings.from_email || currentMailSettings.smtp_user)) || 'solutions@zenthrasystems.com';
+      const activeFromLabel = (currentMailSettings && currentMailSettings.provider) ? `${activeFromEmail} (${currentMailSettings.provider})` : `${activeFromEmail} (Configured Mail Hub)`;
+      const fromEl = document.getElementById('oneclick-preview-from');
+      if (fromEl) fromEl.value = activeFromLabel;
+      const activeBooking = (currentMailSettings && currentMailSettings.booking_url) || 'https://cal.com/zenthra-systems-dyuqpi/30min';
       document.getElementById('oneclick-preview-title').textContent = `${contact.company_name} — ${contact.name}`;
       document.getElementById('oneclick-preview-to').value = `${contact.name} <${contact.email}>`;
       document.getElementById('oneclick-preview-title-sub').textContent = `${contact.job_title} • ${contact.country}`;
       document.getElementById('oneclick-preview-wedge').value = contact.recommended_wedge || 'Enterprise Technology Sprint';
       document.getElementById('oneclick-preview-quote').value = contact.deal_value_usd || 8500;
       document.getElementById('oneclick-preview-subject').value = contact.draft_subject || `Business Proposal & Value Sprint for ${contact.company_name}`;
-      document.getElementById('oneclick-preview-body').value = contact.draft_body || `Hi ${contact.first_name},\n\nWe recently completed an audit of ${contact.company_name}'s operational systems.\n\nAt Zenthra Systems, we engineer custom technology architectures to eliminate manual drag. We deploy our ${contact.recommended_wedge || 'Enterprise Technology Sprint'} in a rapid delivery with guaranteed outcomes.\n\nBest regards,\nZenthra Systems Solutions\nconnect.zenthra@gmail.com`;
+      document.getElementById('oneclick-preview-body').value = contact.draft_body || `Hi ${contact.first_name},\n\nWe recently completed an audit of ${contact.company_name}'s operational systems.\n\nAt Zenthra Systems, we engineer custom technology architectures to eliminate manual drag. We deploy our ${contact.recommended_wedge || 'Enterprise Technology Sprint'} in a rapid 10-day delivery with guaranteed outcomes.\n\nSchedule a 30-min walkthrough: ${activeBooking}\n\nBest regards,\nZenthra Systems Solutions\n${activeFromEmail}`;
 
       const modal = document.getElementById('one-click-preview-modal');
       if (modal) modal.style.display = 'flex';
@@ -7252,6 +8099,12 @@ WinRatePercentage = DIVIDE(CALCULATE(COUNTROWS('fact_pipeline'), 'fact_pipeline'
         const saved = localStorage.getItem('zenthra_gplaces_key');
         if (keyInput && saved) keyInput.value = saved;
       });
+      safeRun('loadFollowupCadence', () => {
+        if (typeof renderFollowupCadence === 'function') renderFollowupCadence();
+      });
+      safeRun('updateExecFunnel', () => {
+        if (typeof updateExecFunnel === 'function') updateExecFunnel();
+      });
       safeRun('applyDeepLinkTab', applyDeepLinkTab);
     };
   </script>
@@ -7313,6 +8166,27 @@ WinRatePercentage = DIVIDE(CALCULATE(COUNTROWS('fact_pipeline'), 'fact_pipeline'
           </select>
         </div>
 
+        <div class="grid-2">
+          <div>
+            <label style="font-size: 11px; color: #34d399; font-weight: 700;">📅 Follow-Up Sequence Touch Stage:</label>
+            <select id="modal-touch-stage" onchange="applyModalTouchAndLang()" style="margin-top: 4px; background: #0c1220; border: 1px solid #10b981; color: #f1f5f9; padding: 9px 12px; font-size: 12.5px; border-radius: 6px; width: 100%;">
+              <option value="1" selected>Touch 1 (Day 0): Website/Ops Audit Hook</option>
+              <option value="2">Touch 2 (Day 3): Benchmark ROI & Case Follow-Up</option>
+              <option value="3">Touch 3 (Day 7): Polite Closing & Cal.com Slot</option>
+            </select>
+          </div>
+          <div>
+            <label style="font-size: 11px; color: #38bdf8; font-weight: 700;">🌐 Pitch Language Localization:</label>
+            <select id="modal-pitch-lang" onchange="applyModalTouchAndLang()" style="margin-top: 4px; background: #0c1220; border: 1px solid #38bdf8; color: #f1f5f9; padding: 9px 12px; font-size: 12.5px; border-radius: 6px; width: 100%;">
+              <option value="auto" selected>Auto-Match Target Country</option>
+              <option value="en">🇬🇧 English (EN)</option>
+              <option value="de">🇩🇪 Deutsch (DE)</option>
+              <option value="fr">🇫🇷 Français (FR)</option>
+              <option value="es">🇪🇸 Español (ES)</option>
+            </select>
+          </div>
+        </div>
+
         <div>
           <label style="font-size: 11px; color: var(--text-muted); font-weight: 600;">Email Subject Line:</label>
           <input type="text" id="modal-subject">
@@ -7365,7 +8239,7 @@ WinRatePercentage = DIVIDE(CALCULATE(COUNTROWS('fact_pipeline'), 'fact_pipeline'
             </div>
             <div>
               <label style="font-size: 10.5px; color: var(--text-muted); text-transform: uppercase; font-weight: 700;">Sender Account:</label>
-              <input type="text" value="connect.zenthra@gmail.com (Google SMTP Port 465 SSL)" readonly style="background: #0c1220; color: #34d399; font-weight: 600; font-family: 'JetBrains Mono', monospace;">
+              <input type="text" id="oneclick-preview-from" value="solutions@zenthrasystems.com (Configured Mail Hub)" readonly style="background: #0c1220; color: #34d399; font-weight: 600; font-family: 'JetBrains Mono', monospace;">
             </div>
           </div>
         </div>
@@ -7399,7 +8273,7 @@ WinRatePercentage = DIVIDE(CALCULATE(COUNTROWS('fact_pipeline'), 'fact_pipeline'
         <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 6px;">
           <button class="btn-outline" onclick="closeOneClickPreview()">Cancel</button>
           <button class="btn-success" id="btn-submit-oneclick-preview" onclick="submitOneClickPreviewSend()" style="padding: 10px 26px; font-weight: 800; font-size: 13px; background: linear-gradient(135deg, #059669, #10b981); display: flex; align-items: center; gap: 8px;">
-            <span>⚡ 1-Click Send via Gmail SMTP</span>
+            <span>⚡ 1-Click Send Proposal</span>
           </button>
         </div>
 
@@ -7407,6 +8281,47 @@ WinRatePercentage = DIVIDE(CALCULATE(COUNTROWS('fact_pipeline'), 'fact_pipeline'
 
     </div>
   </div>
+
+  <!-- COMMAND PALETTE MODAL (Ctrl+K) -->
+  <div id="cmd-palette-modal" class="cmd-palette-backdrop" onclick="if(event.target===this) closeCommandPalette()">
+    <div class="cmd-palette-card">
+      <div style="padding: 12px 16px; border-bottom: 1px solid rgba(255,255,255,0.08); display: flex; align-items: center; gap: 10px;">
+        <span style="color: #38bdf8; font-weight: 800;">⌘</span>
+        <input id="cmd-palette-input" type="text" placeholder="Jump to tab, lead workflow, or preset city (e.g. Hamburg, Miami, Mail, SOW)..." oninput="filterCommandPalette()" style="margin: 0; border: none; background: transparent; color: #f8fafc; font-size: 14px; outline: none; flex: 1;">
+        <button class="btn-outline" style="padding: 3px 8px; font-size: 11px;" onclick="closeCommandPalette()">Esc</button>
+      </div>
+      <div id="cmd-palette-results" style="max-height: 360px; overflow-y: auto;"></div>
+    </div>
+  </div>
+
+  <!-- MULTI-CHANNEL OUTREACH SCRIPTS MODAL (Cold Call / WhatsApp / LinkedIn DM) -->
+  <div id="outreach-scripts-modal" style="display: none; position: fixed; inset: 0; background: rgba(3, 7, 18, 0.85); backdrop-filter: blur(10px); z-index: 10500; justify-content: center; align-items: center; padding: 20px;" onclick="if(event.target===this) closeOutreachScriptsModal()">
+    <div style="background: #0b1122; border: 1px solid rgba(16, 185, 129, 0.45); border-radius: 14px; width: 100%; max-width: 720px; max-height: 90vh; overflow-y: auto; padding: 26px; box-shadow: 0 25px 60px rgba(0,0,0,0.95);">
+      <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 14px; margin-bottom: 16px;">
+        <div>
+          <div style="font-size: 17px; font-weight: 800; color: #34d399;">📞 Multi-Channel Outreach Playbook (Phone • WhatsApp • LinkedIn DM)</div>
+          <div id="scripts-modal-sub" style="font-size: 12px; color: var(--text-muted); margin-top: 2px;">Monetize phone-only &amp; decision-maker leads immediately</div>
+        </div>
+        <button class="btn-outline" onclick="closeOutreachScriptsModal()" style="padding: 4px 10px; font-size: 15px;">✕</button>
+      </div>
+      <div id="scripts-modal-body" style="display: flex; flex-direction: column; gap: 14px;"></div>
+    </div>
+  </div>
+
+  <!-- 1-PAGE PRINTABLE AUDIT TEARDOWN & QUOTE MODAL -->
+  <div id="printable-audit-modal" style="display: none; position: fixed; inset: 0; background: rgba(3, 7, 18, 0.88); backdrop-filter: blur(10px); z-index: 10600; justify-content: center; align-items: flex-start; overflow-y: auto; padding: 24px;" onclick="if(event.target===this) closePrintableAudit()">
+    <div style="width: 100%; max-width: 820px; background: #ffffff; color: #0f172a; border-radius: 12px; overflow: hidden; box-shadow: 0 28px 70px rgba(0,0,0,0.9);">
+      <div id="printable-audit-controls" style="display: flex; justify-content: space-between; align-items: center; padding: 12px 20px; background: #0f172a; color: #f8fafc;">
+        <span style="font-size: 13px; font-weight: 700;">📄 Executive 1-Page Audit &amp; Sprint Proposal (Print / Save as PDF)</span>
+        <div style="display: flex; gap: 8px;">
+          <button class="btn-success" onclick="window.print()" style="padding: 7px 14px; font-size: 12px; font-weight: 700;">🖨️ Print / Save PDF</button>
+          <button class="btn-outline" onclick="closePrintableAudit()" style="padding: 6px 12px; font-size: 12px;">Close ✕</button>
+        </div>
+      </div>
+      <div id="printable-audit-sheet" style="padding: 32px 36px; font-family: 'Plus Jakarta Sans', Arial, sans-serif; color: #0f172a; line-height: 1.5;"></div>
+    </div>
+  </div>
+
   <div id="toast-stack" class="toast-stack" aria-live="polite"></div>
 </body>
 </html>

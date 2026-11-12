@@ -453,6 +453,8 @@ function recordSentProposal(p) {
   }
 
   // 3. Mark or insert draft as SENT
+  const touchNum = Math.max(1, Math.min(5, parseInt(p.touch_number, 10) || 1));
+  const langTag = p.language ? String(p.language).toUpperCase().slice(0, 6) : '';
   let draftId = p.draft_id;
   if (draftId) {
     const stmt = db.prepare('UPDATE outreach_drafts SET status = ?, reviewed_at = ? WHERE draft_id = ?');
@@ -470,7 +472,7 @@ function recordSentProposal(p) {
       accountId,
       contactId,
       'EMAIL',
-      1,
+      touchNum,
       p.subject || 'Tailored Business Proposal',
       p.body || '',
       'SENT',
@@ -510,7 +512,7 @@ function recordSentProposal(p) {
   );
 
   // 5. Log activity
-  logActivity('Human SDR / Outbound Engine', 'PROPOSAL_SENT', `Dispatched proposal to ${p.recipient_email} (${p.company_name}) for ${p.service_wedge || 'Services'}`, accountId);
+  logActivity('Human SDR / Outbound Engine', 'PROPOSAL_SENT', `Dispatched Touch #${touchNum}${langTag ? ' (' + langTag + ')' : ''} proposal to ${p.recipient_email} (${p.company_name}) for ${p.service_wedge || 'Services'}`, accountId);
 
   return {
     success: true,
@@ -539,6 +541,9 @@ function ensureMailTables() {
       reply_to TEXT DEFAULT 'contact@zenthrasystems.com',
       api_key TEXT DEFAULT '',
       auto_send_enabled INTEGER DEFAULT 0,
+      webhook_relay_url TEXT DEFAULT '',
+      booking_url TEXT DEFAULT 'https://cal.com/zenthra-systems-dyuqpi/30min',
+      payment_deposit_url TEXT DEFAULT '',
       updated_at TEXT NOT NULL
     );
     CREATE TABLE IF NOT EXISTS sent_emails_log (
@@ -557,6 +562,10 @@ function ensureMailTables() {
       sent_at TEXT NOT NULL
     );
   `);
+  const cols = new Set(db.prepare('PRAGMA table_info(mail_settings)').all().map(c => c.name));
+  if (!cols.has('webhook_relay_url')) db.exec("ALTER TABLE mail_settings ADD COLUMN webhook_relay_url TEXT DEFAULT ''");
+  if (!cols.has('booking_url')) db.exec("ALTER TABLE mail_settings ADD COLUMN booking_url TEXT DEFAULT 'https://cal.com/zenthra-systems-dyuqpi/30min'");
+  if (!cols.has('payment_deposit_url')) db.exec("ALTER TABLE mail_settings ADD COLUMN payment_deposit_url TEXT DEFAULT ''");
 }
 
 function getMailSettings() {
@@ -569,8 +578,9 @@ function getMailSettings() {
     db.prepare(`
       INSERT INTO mail_settings (
         id, provider, smtp_host, smtp_port, smtp_secure, smtp_user, smtp_pass,
-        from_name, from_email, reply_to, api_key, auto_send_enabled, updated_at
-      ) VALUES (1, 'SIMULATED', 'smtp.gmail.com', 587, 0, '', '', 'Zenthra Systems Solutions', 'solutions@zenthrasystems.com', 'contact@zenthrasystems.com', '', 0, ?)
+        from_name, from_email, reply_to, api_key, auto_send_enabled,
+        webhook_relay_url, booking_url, payment_deposit_url, updated_at
+      ) VALUES (1, 'SIMULATED', 'smtp.gmail.com', 587, 0, '', '', 'Zenthra Systems Solutions', 'solutions@zenthrasystems.com', 'contact@zenthrasystems.com', '', 0, '', 'https://cal.com/zenthra-systems-dyuqpi/30min', '', ?)
     `).run(now);
     row = stmt.get();
   }
@@ -580,13 +590,15 @@ function getMailSettings() {
 function saveMailSettings(s) {
   const db = getDb();
   ensureMailTables();
+  const existing = getMailSettings();
   const now = new Date().toISOString();
   const stmt = db.prepare(`
     INSERT INTO mail_settings (
       id, provider, smtp_host, smtp_port, smtp_secure, smtp_user, smtp_pass,
-      from_name, from_email, reply_to, api_key, auto_send_enabled, updated_at
+      from_name, from_email, reply_to, api_key, auto_send_enabled,
+      webhook_relay_url, booking_url, payment_deposit_url, updated_at
     ) VALUES (
-      1, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
+      1, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
     )
     ON CONFLICT(id) DO UPDATE SET
       provider=excluded.provider,
@@ -600,21 +612,27 @@ function saveMailSettings(s) {
       reply_to=excluded.reply_to,
       api_key=excluded.api_key,
       auto_send_enabled=excluded.auto_send_enabled,
+      webhook_relay_url=excluded.webhook_relay_url,
+      booking_url=excluded.booking_url,
+      payment_deposit_url=excluded.payment_deposit_url,
       updated_at=excluded.updated_at
   `);
 
   stmt.run(
-    s.provider || 'SIMULATED',
-    s.smtp_host || 'smtp.gmail.com',
-    parseInt(s.smtp_port, 10) || 587,
-    s.smtp_secure ? 1 : 0,
-    s.smtp_user || '',
-    s.smtp_pass || '',
-    s.from_name || 'Zenthra Systems Solutions',
-    s.from_email || 'solutions@zenthrasystems.com',
-    s.reply_to || 'contact@zenthrasystems.com',
-    s.api_key || '',
-    s.auto_send_enabled ? 1 : 0,
+    s.provider || existing.provider || 'SIMULATED',
+    s.smtp_host || existing.smtp_host || 'smtp.gmail.com',
+    parseInt(s.smtp_port, 10) || existing.smtp_port || 587,
+    s.smtp_secure !== undefined ? (s.smtp_secure ? 1 : 0) : (existing.smtp_secure || 0),
+    s.smtp_user !== undefined ? (s.smtp_user || '') : (existing.smtp_user || ''),
+    s.smtp_pass ? s.smtp_pass : (existing.smtp_pass || ''),
+    s.from_name || existing.from_name || 'Zenthra Systems Solutions',
+    s.from_email || existing.from_email || 'solutions@zenthrasystems.com',
+    s.reply_to || existing.reply_to || 'contact@zenthrasystems.com',
+    s.api_key ? s.api_key : (existing.api_key || ''),
+    s.auto_send_enabled !== undefined ? (s.auto_send_enabled ? 1 : 0) : (existing.auto_send_enabled || 0),
+    s.webhook_relay_url !== undefined ? (s.webhook_relay_url || '') : (existing.webhook_relay_url || ''),
+    s.booking_url !== undefined ? (s.booking_url || 'https://cal.com/zenthra-systems-dyuqpi/30min') : (existing.booking_url || 'https://cal.com/zenthra-systems-dyuqpi/30min'),
+    s.payment_deposit_url !== undefined ? (s.payment_deposit_url || '') : (existing.payment_deposit_url || ''),
     now
   );
 
